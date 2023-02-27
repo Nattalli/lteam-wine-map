@@ -10,7 +10,7 @@ Python 3.10+ is a must
 2. Make the following command and populate it with required data:
 `cp .env.sample .env`
 3. Create virtual env:
-`python3.9 -m venv venv`
+`python3.10 -m venv venv`
 4. Setup virtual env:
     * On Windows: `venv\Scripts\activate`
     * On Linux or MacOS: `source venv/bin/activate`
