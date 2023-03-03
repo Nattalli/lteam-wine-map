@@ -1,9 +1,7 @@
 ## Installing
 
 1. First, make sure you have Node.js LTS version(18.14.2 for now) installed on your computer. You can download it from the official Node.js website https://nodejs.org/en/.
-2. Open your terminal or command prompt and enter the following command to install Create React App globally:
-`npm install -g create-react-app`
-3. Once the installation is complete, navigate to the frontend directory and run:
+2. Once the installation is complete, navigate to the frontend directory and run:
 `npm install`
 
 ## Available Scripts
