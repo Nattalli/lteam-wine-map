@@ -13,7 +13,7 @@ class SignUpSerializer(serializers.ModelSerializer):
             "last_name": {"required": True}
         }
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> User:
         user = User.objects.create(
             username=validated_data["email"],
             email=validated_data["email"],
