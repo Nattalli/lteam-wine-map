@@ -1,5 +1,3 @@
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 from .serializers import SignUpSerializer
 from rest_framework import generics
