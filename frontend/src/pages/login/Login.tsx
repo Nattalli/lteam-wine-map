@@ -4,6 +4,26 @@ import { Col, Row, Button, Form, Input, Modal} from 'antd';
 import './Login.scss';
 import messageImg from '../../assets/img/message.svg';
 import heartImg from '../../assets/img/heart.svg';
+import { Rule } from 'antd/es/form';
+
+
+const EmailRules: Rule[] = [
+  {
+    type: 'email',
+    message: 'Enter valid email',
+  },
+  {
+    required: true,
+    message: 'This field is required',
+  }
+];
+
+const PasswordRules: Rule[] = [
+  {
+    required: true,
+    message: 'This field is required',
+  }
+];
 
 export default function Login () {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,26 +53,12 @@ export default function Login () {
         >
           <Form.Item
             name="email"
-            rules={[
-              {
-                type: 'email',
-                message: 'Enter valid email',
-              },
-              {
-                required: true,
-                message: 'This field is required',
-              },
-            ]}>
+            rules={EmailRules}>
             <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
-            rules={[
-              {
-                required: true,
-                message: 'This field is required',
-              },
-            ]}>
+            rules={PasswordRules}>
             <Input placeholder="Password" />
           </Form.Item>
           <Form.Item>
@@ -60,7 +66,6 @@ export default function Login () {
           </Form.Item>
         </Form>
         <div onClick={showModal} className="forgot-password">I forgot the password</div>
-
         <Modal title="I forgot the password" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered footer={null}>
           <Form
             layout={'vertical'}
@@ -69,17 +74,8 @@ export default function Login () {
             className="forgot-password-form"
           >
             <Form.Item
-              name="email"
-              rules={[
-                {
-                  type: 'email',
-                  message: 'Enter valid email',
-                },
-                {
-                  required: true,
-                  message: 'This field is required',
-                },
-              ]}
+              name="forgot-email"
+              rules={EmailRules}
             >
               <Input placeholder="Email" />
             </Form.Item>
