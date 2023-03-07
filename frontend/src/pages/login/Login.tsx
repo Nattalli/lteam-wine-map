@@ -29,10 +29,28 @@ export default function Login () {
           initialValues={{ layout: 'vertical' }}
           style={{ maxWidth: 600 }}
         >
-          <Form.Item>
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                message: 'Enter valid email',
+              },
+              {
+                required: true,
+                message: 'This field is required',
+              },
+            ]}>
             <Input placeholder="Email" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'This field is required',
+              },
+            ]}>
             <Input placeholder="Password" />
           </Form.Item>
           <Form.Item>
