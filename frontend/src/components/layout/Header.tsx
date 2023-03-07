@@ -12,8 +12,8 @@ export default function Header() {
       <Space size={35} className="header-tabs">
         <Typography.Link>Catalog</Typography.Link>
         <Typography.Link>Quiz</Typography.Link>
-        <Button type="primary">
-          <Link to={'linktologin'}>Get Started</Link>
+        <Button type="primary" className='get-started-btn'>
+          <Link to={'login'}>Get Started</Link>
         </Button>
       </Space>
     </Layout.Header>
