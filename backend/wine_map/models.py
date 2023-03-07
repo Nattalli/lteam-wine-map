@@ -39,7 +39,7 @@ class Wine(models.Model):
         return f"{self.name} ({self.year})"
 
 
-class Brand(models.Model) :
+class Brand(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self) -> str:
@@ -76,9 +76,7 @@ class Country(models.Model):
 
 class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
-    wine = models.ForeignKey(
-        "Wine", on_delete=models.CASCADE, related_name="comments"
-    )
+    wine = models.ForeignKey("Wine", on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(
         "User", on_delete=models.CASCADE, related_name="comments"
     )
