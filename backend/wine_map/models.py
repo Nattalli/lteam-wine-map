@@ -12,6 +12,9 @@ class User(AbstractUser):
         blank=True,
     )
 
+    def __str__(self) -> str:
+        return self.username
+
 
 class Wine(models.Model):
     WINE_TYPES = [
@@ -32,25 +35,43 @@ class Wine(models.Model):
         validators=[MinValueValidator(0.0), MaxValueValidator(100.0)], default=0.0
     )
 
+    def __str__(self) -> str:
+        return f"{self.name} ({self.year})"
 
-class Brand(models.Model):
+
+class Brand(models.Model) :
     name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Sweetness(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Taste(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class DishCategory(models.Model):
     name = models.CharField(max_length=255)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Country(models.Model):
     name = models.CharField(max_length=255)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Comment(models.Model):
@@ -63,9 +84,15 @@ class Comment(models.Model):
     )
     content = models.TextField()
 
+    def __str__(self) -> str:
+        return f"{self.author.username} on {self.wine.name} ({self.wine.year})"
+
 
 class WineAdditionalInfo(models.Model):
     wine = models.ForeignKey("Wine", on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     price = models.FloatField(MinValueValidator(0.0))
     url = models.URLField(max_length=255)
+
+    def __str__(self) -> str:
+        return f"{self.name} for {self.wine.name} ({self.wine.year})"
