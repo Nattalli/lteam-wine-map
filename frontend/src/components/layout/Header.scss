@@ -1,0 +1,20 @@
+@import "../../assets/scss/variables.scss";
+
+.header {
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5rem;
+  background-color: #FFFFFF;
+
+  .header-title {
+    margin: 0px;
+    color: $primary;
+    font-weight: bold;
+  }
+
+  .header-tabs a {
+    font-size: 16px;
+  }
+}

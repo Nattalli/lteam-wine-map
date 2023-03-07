@@ -1,0 +1,18 @@
+.home-info-section {
+  padding: 4rem;
+  
+  &.about-us-section {
+    img {
+      max-width: 350px;
+      max-height: 350px;
+    }
+  }
+
+  .home-info-paragraph {
+    font-size: 20px;
+  }
+
+  .home-info-title {
+    margin-top: 0px;
+  }
+}
