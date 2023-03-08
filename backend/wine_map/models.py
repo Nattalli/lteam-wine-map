@@ -28,7 +28,7 @@ class Wine(models.Model):
     wine_type = models.CharField(choices=WINE_TYPES, max_length=5)
     country = models.ForeignKey("Country", on_delete=models.CASCADE)
     sweetness = models.ManyToManyField("Sweetness")
-    taste = models.ManyToManyField("Taste")
+    tastes = models.ManyToManyField("Taste")
     pairs_with = models.ManyToManyField("DishCategory")
     year = models.IntegerField()
     percent_of_alcohol = models.FloatField(
@@ -83,7 +83,7 @@ class Comment(models.Model):
     content = models.TextField()
 
     def __str__(self) -> str:
-        return f"{self.author.username} on {self.wine.name} ({self.wine.year})"
+        return f"{self.author} on {self.wine}"
 
 
 class WineAdditionalInfo(models.Model):
@@ -93,4 +93,4 @@ class WineAdditionalInfo(models.Model):
     url = models.URLField(max_length=255)
 
     def __str__(self) -> str:
-        return f"{self.name} for {self.wine.name} ({self.wine.year})"
+        return f"{self.name} for {self.wine}"
