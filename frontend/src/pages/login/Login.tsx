@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row, Button, Form, Input, Modal } from 'antd';
 import './Login.scss';
@@ -48,7 +48,6 @@ export default function Login() {
           layout={'vertical'}
           form={form}
           initialValues={{ layout: 'vertical' }}
-          style={{ maxWidth: 600 }}
         >
           <Form.Item name="email" rules={EmailRules}>
             <Input placeholder="Email" />
