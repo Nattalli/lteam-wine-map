@@ -24,7 +24,7 @@ const PasswordRules: Rule[] = [
   },
 ];
 
-export const Login: React.FC = () => {
+export default function Login() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -111,4 +111,4 @@ export const Login: React.FC = () => {
       </Col>
     </Row>
   );
-};
+}
