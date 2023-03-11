@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './Header.scss';
 
 export default function Header() {
+  // toDo pass user as prop and conditionally render button or username
   return (
     <Layout.Header className="header">
       <Row justify="space-between" align="middle">
