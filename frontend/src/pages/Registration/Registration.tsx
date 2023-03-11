@@ -63,7 +63,7 @@ export default function Registration() {
             </Form.Item>
           </div>
           <Form.Item name="password" rules={TextRules}>
-            <Input placeholder="Password" />
+            <Input.Password placeholder="Password" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" size="large" block htmlType="submit">

@@ -73,7 +73,7 @@ export default function Login() {
             <Input placeholder="Username" />
           </Form.Item>
           <Form.Item name="password" rules={TextRules}>
-            <Input placeholder="Password" />
+            <Input.Password placeholder="Password" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" size="large" block htmlType="submit">
