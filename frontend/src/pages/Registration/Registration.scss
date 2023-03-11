@@ -1,5 +1,7 @@
+@import '../../assets/scss/variables';
+
 .content {
-  border: 1px solid #c92f49;
+  border: 1px solid $primary;
 
   > * {
     height: 100%;
@@ -12,8 +14,8 @@
     padding: 0 80px;
 
     .login-btn {
-      background-color: #f7d9d9;
-      color: #c92f49;
+      background-color: $secondary;
+      color: $primary;
     }
   }
 
@@ -26,7 +28,7 @@
 
   .register-section {
     padding: 0 100px;
-    background-color: #fbebeb;
+    background-color: $secondary;
 
     .name-input {
       display: flex;
