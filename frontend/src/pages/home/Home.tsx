@@ -1,29 +1,85 @@
 import { Row, Col, Typography } from 'antd';
+import { aboutUsText, goodMoodText, socializingText } from './homeTextConsts';
 
-import firstImage from '../../assets/img/home-page-img.svg';
+import AboutUs from '../../assets/img/about-us.svg';
+import SocializingIcon from '../../assets/img/socializing.svg';
+import GoodMood from '../../assets/img/good-mood.svg';
+import Wines from '../../assets/img/wines.svg';
 import './Home.scss';
 
 export default function Home() {
   return (
-    <Row className="home-info-section about-us-section" align="top">
-      <Col span={14}>
-        <Typography.Title level={1} className="home-info-title">
-          About Us: Our Team
-        </Typography.Title>
-        <Typography.Paragraph className="home-info-paragraph">
-          Our team consists of experts in the field of viticulture, winemaking,
-          and wine tasting. We work diligently to provide users with the best
-          possible experience when they are looking to choose the right wine. We
-          have created several custom algorithms and a unique test that factors
-          in the user’s taste preferences and budget to provide you with the
-          perfect wine recommendation.
-        </Typography.Paragraph>
-      </Col>
-      <Col span={10}>
-        <Row justify="center">
-          <img src={firstImage} alt="Img" />
+    <>
+      <Row className="home-info-section about-us-section" align="top">
+        <Col xs={24} md={14}>
+          <Typography.Title level={1} className="home-info-title">
+            About Us: Our Team
+          </Typography.Title>
+          <Typography.Paragraph className="home-info-paragraph">
+            {aboutUsText}
+          </Typography.Paragraph>
+        </Col>
+        <Col xs={24} md={10}>
+          <Row justify="center">
+            <img src={AboutUs} alt="About us" />
+          </Row>
+        </Col>
+      </Row>
+      <div className="why-wine-section">
+        <Row justify="center" align="middle" className="why-wine-header">
+          <Typography.Title level={2} className="why-wine-title">
+            Why Wine?
+          </Typography.Title>
         </Row>
-      </Col>
-    </Row>
+        <Row
+          gutter={[50, 60]}
+          justify="center"
+          align="middle"
+          className="why-wine-subsection"
+        >
+          <Col xs={24} md={6}>
+            <Row justify="center" align="middle" gutter={[50, 0]}>
+              <Col span={8}>
+                <img src={SocializingIcon} alt="Socializing" />
+              </Col>
+              <Col span={16} className="why-wine-subsection-title">
+                Socializing
+              </Col>
+            </Row>
+          </Col>
+          <Col span={18} className="why-wine-subsection-text">
+            {socializingText}
+          </Col>
+          <Col xs={24} md={6}>
+            <Row justify="center" align="middle" gutter={[50, 0]}>
+              <Col span={8}>
+                <img src={GoodMood} alt="Socializing" />
+              </Col>
+              <Col span={16} className="why-wine-subsection-title">
+                Good mood
+              </Col>
+            </Row>
+          </Col>
+          <Col span={18} className="why-wine-subsection-text">
+            {goodMoodText}
+          </Col>
+        </Row>
+      </div>
+      <div className="home-info-section">
+        <div className="suggest-section">
+          <Typography.Title level={1} className="home-info-title">
+            What Do We Suggest?
+          </Typography.Title>
+          <Typography.Paragraph className="home-info-paragraph">
+            Drink wine every day and enjoy your life ;)
+          </Typography.Paragraph>
+        </div>
+        <div className="wines-image">
+          <Row justify="center" align="middle">
+            <img src={Wines} alt="Wines" />
+          </Row>
+        </div>
+      </div>
+    </>
   );
 }
