@@ -8,7 +8,9 @@
 
   .header-title {
     margin: 0px;
-    color: $primary;
+    a {
+      color: $primary;
+    }
     font-weight: bold;
   }
 

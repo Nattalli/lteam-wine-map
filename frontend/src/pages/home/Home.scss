@@ -1,9 +1,10 @@
-@import "../../assets/scss/variables";
+@import '../../assets/scss/variables';
 
 .home-info-section {
   padding: 90px;
 
   &.about-us-section {
+    padding-bottom: 0px;
     img {
       width: clamp(200px, 100%, 350px);
     }
@@ -18,53 +19,71 @@
   }
 }
 
-.why-wine-section {
-  background-color: $secondary;
-  padding: 45px 90px;
+.why-wine-section-wrapper {
+  padding: 50px 0px;
 
-  background-image: url("../../assets/img/dots.svg");
-  background-size: 150px;
-  background-repeat: no-repeat;
-  background-position: 85% 10%;
+  #why-wine-squares-img {
+    position: absolute;
+    right: 0px;
+  }
 
-  .why-wine-header {
-    padding-bottom: 30px;
+  .why-wine-section {
+    background-color: $secondary;
+    padding: 45px 90px;
+    margin-top: 120px;
 
-    .why-wine-title {
-      color: $primary;
-      font-weight: bold;
-      margin: 0px;
+    background-image: url('../../assets/img/dots.svg');
+    background-size: 150px;
+    background-repeat: no-repeat;
+    background-position: 85% 10%;
+
+    .why-wine-header {
+      padding-bottom: 30px;
+
+      .why-wine-title {
+        color: $primary;
+        font-weight: bold;
+        margin: 0px;
+      }
     }
-  }
 
-  .why-wine-subsection-title {
-    font-size: 20px;
-    font-weight: 500;
-  }
+    .why-wine-subsection-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
 
-  .why-wine-subsection-text {
-    font-size: 18px;
+    .why-wine-subsection-text {
+      font-size: 18px;
+    }
   }
 }
 
-.suggest-section {
-  min-height: 170px;
-  background-image: url("../../assets/img/dots.svg");
-  background-size: 150px;
-  background-repeat: no-repeat;
-  background-position: 5% 15%;
+.suggest-section-wrapper {
+  padding-bottom: 10px;
+
+  .suggest-section {
+    min-height: 170px;
+    background-image: url('../../assets/img/dots.svg');
+    background-size: 150px;
+    background-repeat: no-repeat;
+    background-position: 5% 15%;
+  }
 }
 
 .wines-image {
-  padding: 75px 0px;
+  padding: 0px 0px 165px 0px;
 
-  background-image: url("../../assets/img/dots.svg");
+  background-image: url('../../assets/img/dots.svg');
   background-size: 150px;
   background-repeat: no-repeat;
-  background-position: 90% 80%;
+  background-position: 85% 64%;
 
   img {
     padding: 20px;
     width: clamp(400px, 100%, 730px);
-  } 
+  }
+
+  #suggest-squares-img {
+
+  }
 }
