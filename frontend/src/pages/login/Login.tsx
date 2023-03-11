@@ -18,7 +18,7 @@ const EmailRules: Rule[] = [
   },
 ];
 
-const PasswordRules: Rule[] = [
+const TextRules: Rule[] = [
   {
     required: true,
     message: 'This field is required',
@@ -69,10 +69,10 @@ export default function Login() {
           initialValues={{ layout: 'vertical' }}
           onFinish={onFinish}
         >
-          <Form.Item name="username" rules={PasswordRules}>
+          <Form.Item name="username" rules={TextRules}>
             <Input placeholder="Username" />
           </Form.Item>
-          <Form.Item name="password" rules={PasswordRules}>
+          <Form.Item name="password" rules={TextRules}>
             <Input placeholder="Password" />
           </Form.Item>
           <Form.Item>

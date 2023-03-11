@@ -15,7 +15,7 @@ const EmailRules: Rule[] = [
   },
 ];
 
-const PasswordRules: Rule[] = [
+const TextRules: Rule[] = [
   {
     required: true,
     message: 'This field is required',
@@ -35,7 +35,7 @@ export default function Registration() {
 
   return (
     <Row className="content">
-      <Col span={11} className="input-section">
+      <Col span={11} className="login-redirect">
         <div className="title">Already registered?</div>
         <Link to="/login">
           <Button type="primary" size="large" block className="login-btn">
@@ -55,14 +55,14 @@ export default function Registration() {
             <Input placeholder="Email" />
           </Form.Item>
           <div className="name-input">
-            <Form.Item name="first_name" rules={PasswordRules}>
+            <Form.Item name="first_name" rules={TextRules}>
               <Input placeholder="First Name" />
             </Form.Item>
-            <Form.Item name="last_name" rules={PasswordRules}>
+            <Form.Item name="last_name" rules={TextRules}>
               <Input placeholder="Last Name" />
             </Form.Item>
           </div>
-          <Form.Item name="password" rules={PasswordRules}>
+          <Form.Item name="password" rules={TextRules}>
             <Input placeholder="Password" />
           </Form.Item>
           <Form.Item>
