@@ -1,7 +1,6 @@
 .content {
-  height: 100%;
-  border: 1px solid #C92F49;
-  
+  border: 1px solid #c92f49;
+
   > * {
     height: 100%;
     padding-top: 100px !important;
@@ -20,7 +19,7 @@
     }
   }
 
-  .title{
+  .title {
     font-size: 27px;
     margin-bottom: 80px;
     text-align: center;
@@ -29,12 +28,12 @@
 
   .register-section {
     padding: 0 100px;
-    background-color: #FBEBEB;
+    background-color: #fbebeb;
 
     .create-account {
-      color: #C92F49;
+      color: #c92f49;
       filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-      background-color: #F7D9D9;
+      background-color: #f7d9d9;
     }
 
     .advantages {
@@ -58,5 +57,3 @@
   flex-direction: column;
   gap: 10px;
 }
-
-

@@ -7,9 +7,9 @@ import './App.scss';
 function App() {
   return (
     <>
-      <Layout className='layout'>
+      <Layout className="layout">
         <Header />
-        <Layout.Content>
+        <Layout.Content className="main-section">
           <Outlet />
         </Layout.Content>
         <Footer />
