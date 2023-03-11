@@ -1,0 +1,46 @@
+@import "../../assets/scss/variables";
+
+.footer {
+  background-color: $primary;
+  padding: 0px;
+  color: white;
+
+  .footer-main-section {
+    padding: 30px 120px;
+
+    .footer-title {
+      color: white;
+      font-weight: bold;
+    }
+
+    .footer-link-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 18px;
+      font-weight: 400;
+      padding: 0px 80px;
+
+      .footer-link-title {
+        margin-bottom: 5px;
+
+        .footer-link-title-text {
+          font-size: 22px;
+          font-weight: 500;
+          border-bottom: 3px solid white;
+          padding-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .footer-copyright-section {
+    padding: 10px 0px;
+    border-top: 1px solid white;
+
+    .footer-copyright-text {
+      color: white;
+      font-weight: bold;
+    }
+  }
+}

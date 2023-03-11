@@ -1,12 +1,10 @@
 @import "../../assets/scss/variables.scss";
 
 .header {
-  height: 100px;
-  display: flex;
-  justify-content: space-between;
+  min-height: 100px;
   align-items: center;
-  padding: 0 5rem;
-  background-color: #FFFFFF;
+  background-color: white;
+  padding: 30px 120px;
 
   .header-title {
     margin: 0px;
@@ -15,6 +13,7 @@
   }
 
   .header-tabs a {
-    font-size: 16px;
+    font-size: 20px;
+    line-height: 0px;
   }
 }
