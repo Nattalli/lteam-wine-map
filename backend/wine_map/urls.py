@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import WineList, WineDetail
+from .views import WineListView, WineDetailView
 
 
 urlpatterns = [
-    path("wine/", WineList.as_view(), name="wine-list"),
-    path("wine/<int:pk>/", WineDetail.as_view(), name="wine-detail"),
+    path("", WineListView.as_view(), name="wine-list"),
+    path("<int:id>/", WineDetailView.as_view(), name="wine_detail"),
 ]
 
 app_name = "webhooks"
