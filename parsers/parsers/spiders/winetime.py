@@ -2,6 +2,7 @@ import re
 
 import scrapy
 from scrapy.http import Response
+from scrapy.selector import SelectorList
 
 
 class WinetimeSpider(scrapy.Spider):
@@ -31,10 +32,10 @@ class WinetimeSpider(scrapy.Spider):
 
         wine_params = response.xpath('//table[@class="char-item-table"]/tr')
 
-        def get_name(row):
+        def get_name(row: SelectorList) -> str:
             return row.xpath("td[1]/text()").get(default='').strip()
 
-        def get_value(row):
+        def get_value(row: SelectorList) -> str:
             return row.xpath("td[2]/text()").get(default='').strip()
 
         wine_params = {
