@@ -10,6 +10,7 @@ class WinetimeSpider(scrapy.Spider):
     allowed_domains = ["winetime.com.ua"]
     start_urls = ["https://winetime.com.ua/ua/wine"]
 
+    # noqa: Q000
     def parse(self, response: Response):
         self.logger.info(f"Parsing catalog page {response.url}")
 
@@ -20,6 +21,8 @@ class WinetimeSpider(scrapy.Spider):
 
         if wine_urls.get():
             yield self.follow_to_next_catalog_page(response)
+
+    # noqa: Q000
 
     def parse_wine_info(self, response: Response):
         self.logger.info(f"Parsing wine page {response.url}")
