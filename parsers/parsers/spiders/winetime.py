@@ -1,3 +1,5 @@
+# flake8: noqa: Q000
+
 import re
 
 import scrapy
@@ -10,7 +12,7 @@ class WinetimeSpider(scrapy.Spider):
     allowed_domains = ["winetime.com.ua"]
     start_urls = ["https://winetime.com.ua/ua/wine"]
 
-    def parse(self, response: Response):  # noqa: Q000
+    def parse(self, response: Response):
         self.logger.info(f"Parsing catalog page {response.url}")
 
         wine_urls = response.xpath('//div[@class="products-main-slider-item"]'
@@ -23,7 +25,7 @@ class WinetimeSpider(scrapy.Spider):
 
     # noqa: Q000
 
-    def parse_wine_info(self, response: Response):  # noqa: Q000
+    def parse_wine_info(self, response: Response):
         self.logger.info(f"Parsing wine page {response.url}")
 
         wine_name = response.xpath('//div[@class="characteristic-item-title"]'
