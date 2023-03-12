@@ -17,10 +17,11 @@ class SignUpUserAPIView(generics.CreateAPIView):
 class UserDetailsAPIView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
-    def retrieve(self, request: Request, *args: dict[str, Any], **kwargs: dict[str, Any]) -> Response:
-        token = request.headers['Authorization'][7:]
+    def retrieve(self, request: Request, *args: dict[str, Any],
+                 **kwargs: dict[str, Any]) -> Response:
+        token = request.headers["Authorization"][7:]
         access_token_obj = AccessToken(token)
-        user_id = access_token_obj['user_id']
+        user_id = access_token_obj["user_id"]
         user = get_user_model().objects.get(id=user_id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
