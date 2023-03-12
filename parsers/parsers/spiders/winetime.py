@@ -23,7 +23,8 @@ class WinetimeSpider(scrapy.Spider):
     def parse_wine_info(self, response: Response):
         self.logger.info(f"Parsing wine page {response.url}")
 
-        wine_name = response.xpath('//div[@class="characteristic-item-title"]/h2/span/text()').get()
+        wine_name = response.xpath('//div[@class="characteristic-item-title"]'
+                                   '/h2/span/text()').get()
         image_url = response.xpath('//div[@class="main-tab-wrapper"]'
                                    '/div[@class="left-main-tab"]'
                                    '//a/img/@src').get()
@@ -36,7 +37,10 @@ class WinetimeSpider(scrapy.Spider):
         def get_value(row):
             return row.xpath("td[2]/text()").get(default='').strip()
 
-        wine_params = {get_name(wine_param): get_value(wine_param) for wine_param in wine_params}
+        wine_params = {
+            get_name(wine_param): get_value(wine_param)
+            for wine_param in wine_params
+        }
         yield {
             "name": wine_name,
             "image_url": image_url,
@@ -46,7 +50,8 @@ class WinetimeSpider(scrapy.Spider):
             "tastes": wine_params.get("Смак"),
             "pairs_with": wine_params.get("З чим подавати"),
             "brand": wine_params.get("Бренд"),
-            "percent_of_alcohol": float(wine_params["Алкоголь, %"]) if "Алкоголь, %" in wine_params else None,
+            "percent_of_alcohol": (float(wine_params["Алкоголь, %"])
+                                   if "Алкоголь, %" in wine_params else None),
             "region": wine_params.get("Регіон"),
         }
 
