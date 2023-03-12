@@ -36,13 +36,13 @@ class WinetimeSpider(scrapy.Spider):
         wine_params = {get_name(wine_param): get_value(wine_param) for wine_param in wine_params}
         yield {
             "name": wine_name,
-            "wine_type": wine_params["Колір вина"],
+            "wine_type": wine_params.get("Колір вина"),
             "country": wine_params.get("Країна"),
             "sweetness": wine_params.get("Солодкість"),
-            "tastes": "Not implemented",
-            "pairs_with": "Not implemented",
+            "tastes": wine_params.get("Смак"),
+            "pairs_with": wine_params.get("З чим подавати"),
             "brand": wine_params.get("Бренд"),
-            "percent_of_alcohol": float(wine_params["Алкоголь, %"]),
+            "percent_of_alcohol": float(wine_params["Алкоголь, %"]) if "Алкоголь, %" in wine_params else None,
             "region": wine_params.get("Регіон"),
         }
 
