@@ -24,6 +24,9 @@ class WinetimeSpider(scrapy.Spider):
         self.logger.info(f"Parsing wine page {response.url}")
 
         wine_name = response.xpath('//div[@class="characteristic-item-title"]/h2/span/text()').get()
+        image_url = response.xpath('//div[@class="main-tab-wrapper"]'
+                                   '/div[@class="left-main-tab"]'
+                                   '//a/img/@src').get()
 
         wine_params = response.xpath('//table[@class="char-item-table"]/tr')
 
@@ -36,6 +39,7 @@ class WinetimeSpider(scrapy.Spider):
         wine_params = {get_name(wine_param): get_value(wine_param) for wine_param in wine_params}
         yield {
             "name": wine_name,
+            "image_url": image_url,
             "wine_type": wine_params.get("Колір вина"),
             "country": wine_params.get("Країна"),
             "sweetness": wine_params.get("Солодкість"),
