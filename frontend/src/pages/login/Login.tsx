@@ -1,28 +1,26 @@
 import { useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
 import { Col, Row, Button, Form, Input, Modal } from 'antd';
-import './Login.scss';
+import './Login.scoped.scss';
 import messageImg from '../../assets/img/message.svg';
 import heartImg from '../../assets/img/heart.svg';
+import squares from '../../assets/img/squares.svg';
 import { type Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
-
-const EmailRules: Rule[] = [
-  {
-    type: 'email',
-    message: 'Enter valid email',
-  },
-  {
-    required: true,
-    message: 'This field is required',
-  },
-];
 
 const TextRules: Rule[] = [
   {
     required: true,
-    message: 'This field is required',
+    message: 'Це поле обовʼязкове',
   },
+];
+
+const EmailRules: Rule[] = [
+  {
+    type: 'email',
+    message: 'Введіть валідний e-mail',
+  },
+  ...TextRules,
 ];
 
 interface TokenContext {
@@ -62,7 +60,7 @@ export default function Login() {
   return (
     <Row className="content">
       <Col span={11} className="input-section">
-        <div className="title">Already registered?</div>
+        <div className="title">Уже зареєстровані?</div>
         <Form
           layout={'vertical'}
           form={form}
@@ -70,19 +68,19 @@ export default function Login() {
           onFinish={onFinish}
         >
           <Form.Item name="username" rules={TextRules}>
-            <Input placeholder="Username" />
+            <Input placeholder="Імʼя користувача" />
           </Form.Item>
           <Form.Item name="password" rules={TextRules}>
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="Пароль" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" size="large" block htmlType="submit">
-              Login
+              Увійти
             </Button>
           </Form.Item>
         </Form>
         <div onClick={showModal} className="forgot-password">
-          I forgot the password
+          Забув(ла) пароль
         </div>
         <Modal
           title="I forgot the password"
@@ -110,21 +108,22 @@ export default function Login() {
         </Modal>
       </Col>
       <Col span={13} className="register-section">
-        <div className="title">Is this your first visit?</div>
+        <div className="title">Вперше на сайті?</div>
+        <img className="squares-img" src={squares} alt="Squares" />
         <Link to="/register">
           <Button type="primary" size="large" block className="create-account">
-            Create an account
+            Створити акаунт
           </Button>
         </Link>
         <div className="advantages">
-          <span>Advantages:</span>
+          <span>Переваги:</span>
           <div className="list-item">
             <img src={messageImg} alt="Img" />
-            <span>Ability to leave comments</span>
+            <span>Можливість залишати коментарі</span>
           </div>
           <div className="list-item">
             <img src={heartImg} alt="Img" />
-            <span>Add wines to favourites</span>
+            <span>Додавати вина до обраного</span>
           </div>
         </div>
       </Col>

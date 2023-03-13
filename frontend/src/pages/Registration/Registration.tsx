@@ -1,25 +1,23 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Col, Row, Button, Form, Input } from 'antd';
-import './Registration.scss';
+import './Registration.scoped.scss';
+import squares from '../../assets/img/squares.svg';
 import { type Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
-
-const EmailRules: Rule[] = [
-  {
-    type: 'email',
-    message: 'Enter valid email',
-  },
-  {
-    required: true,
-    message: 'This field is required',
-  },
-];
 
 const TextRules: Rule[] = [
   {
     required: true,
-    message: 'This field is required',
+    message: 'Це поле обовʼязкове',
   },
+];
+
+const EmailRules: Rule[] = [
+  {
+    type: 'email',
+    message: 'Введіть валідний e-mail',
+  },
+  ...TextRules,
 ];
 
 export default function Registration() {
@@ -36,15 +34,16 @@ export default function Registration() {
   return (
     <Row className="content">
       <Col span={11} className="login-redirect">
-        <div className="title">Already registered?</div>
+        <div className="title">Уже зареєстровані?</div>
+        <img className="squares-img" src={squares} alt="Squares" />
         <Link to="/login">
           <Button type="primary" size="large" block className="login-btn">
-            Login
+            Увійти
           </Button>
         </Link>
       </Col>
       <Col span={13} className="register-section">
-        <div className="title">Is this your first visit?</div>
+        <div className="title">Вперше на сайті?</div>
         <Form
           layout={'vertical'}
           form={form}
@@ -52,22 +51,22 @@ export default function Registration() {
           onFinish={onFinish}
         >
           <Form.Item name="email" rules={EmailRules}>
-            <Input placeholder="Email" />
+            <Input placeholder="Електронна пошта" />
           </Form.Item>
           <div className="name-input">
             <Form.Item name="first_name" rules={TextRules}>
-              <Input placeholder="First Name" />
+              <Input placeholder="Імʼя" />
             </Form.Item>
             <Form.Item name="last_name" rules={TextRules}>
-              <Input placeholder="Last Name" />
+              <Input placeholder="Прізвище" />
             </Form.Item>
           </div>
           <Form.Item name="password" rules={TextRules}>
-            <Input.Password placeholder="Password" />
+            <Input.Password placeholder="Пароль" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" size="large" block htmlType="submit">
-              Create an account
+              Створити акаунт
             </Button>
           </Form.Item>
         </Form>
