@@ -5,7 +5,7 @@ import AboutUs from '../../assets/img/about-us.svg';
 import SocializingIcon from '../../assets/img/socializing.svg';
 import GoodMood from '../../assets/img/good-mood.svg';
 import Wines from '../../assets/img/wines.svg';
-import WhyWineSquares from '../../assets/img/why-wine-squares.svg';
+import Squares from '../../assets/img/squares.svg';
 import './Home.scss';
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
         </Col>
       </Row>
       <div className="why-wine-section-wrapper">
-        <img id="why-wine-squares-img" src={WhyWineSquares} alt="Squares" />
+        <img id="why-wine-squares-img" src={Squares} alt="Squares" />
         <div className="why-wine-section">
           <Row justify="center" align="middle" className="why-wine-header">
             <Typography.Title level={2} className="why-wine-title">
