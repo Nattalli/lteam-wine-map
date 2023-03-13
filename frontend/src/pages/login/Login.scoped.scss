@@ -1,0 +1,71 @@
+@import '../../assets/scss/variables';
+
+.content {
+  border: 1px solid $primary;
+
+  > * {
+    height: 100%;
+    padding-top: 100px !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-section {
+    padding: 0 80px;
+    background-image: url('../../assets/img/dots.svg');
+    background-size: 120px;
+    background-repeat: no-repeat;
+
+    .forgot-password {
+      text-align: center;
+    }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .title {
+    font-size: 27px;
+    margin-bottom: 80px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .register-section {
+    padding: 0 100px;
+    background-color: $secondary;
+    background-image: none;
+
+    .squares-img {
+      position: absolute;
+      right: 0;
+      bottom: -40px;
+    }
+
+    .create-account {
+      color: $primary;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      background-color: #f7d9d9;
+    }
+
+    .advantages {
+      margin-top: 64px;
+      font-size: 18px;
+      line-height: 36px;
+
+      .list-item {
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+  }
+}
+
+.forgot-password-form {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

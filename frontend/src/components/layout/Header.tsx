@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './Header.scss';
 
 export default function Header() {
+  // toDo pass user as prop and conditionally render button or username
   return (
     <Layout.Header className="header">
       <Row justify="space-between" align="middle">
@@ -17,8 +18,8 @@ export default function Header() {
             <Space size={[35, 5]} className="header-tabs">
               <Typography.Link>Каталог</Typography.Link>
               <Typography.Link>Тест</Typography.Link>
-              <Button type="primary">
-                <Link to={'linktologin'}>Увійти</Link>
+              <Button type="primary" className="get-started-btn">
+                <Link to={'login'}>Увійти</Link>
               </Button>
             </Space>
           </Row>
