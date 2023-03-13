@@ -1,5 +1,5 @@
-import { ConfigProvider } from 'antd';
 import React from 'react';
+import { ConfigProvider } from 'antd';
 
 export default function AntdConfigProvider({ children }: React.PropsWithChildren) {
   return (
@@ -10,6 +10,8 @@ export default function AntdConfigProvider({ children }: React.PropsWithChildren
           borderRadius: 30,
           colorBgLayout: '#FFFFFF',
           colorLink: '#000000',
+          colorLinkHover: '#C92F49',
+          colorLinkActive: '#D65465'
         },
       }}
     >

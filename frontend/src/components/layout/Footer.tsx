@@ -13,18 +13,18 @@ export default function Footer() {
           <Row justify="end">
             <div className="footer-link-section">
               <div className="footer-link-title">
-                <span className="footer-link-title-text">Quick Links</span>
+                <span className="footer-link-title-text">Посилання</span>
               </div>
-              <div>Sign Up</div>
-              <div>Login</div>
-              <div>Favorite</div>
+              <div>Реєстрація</div>
+              <div>Авторизація</div>
+              <div>Обране</div>
             </div>
             <Col className="footer-link-section">
               <div className="footer-link-title">
-                <span className="footer-link-title-text">Others</span>
+                <span className="footer-link-title-text">Інше</span>
               </div>
-              <div>Quiz</div>
-              <div>Catalog</div>
+              <div>Тест</div>
+              <div>Каталог</div>
             </Col>
           </Row>
         </Col>

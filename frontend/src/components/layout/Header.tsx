@@ -9,15 +9,17 @@ export default function Header() {
     <Layout.Header className="header">
       <Row justify="space-between" align="middle">
         <Col flex="150px">
-          <Typography.Title className="header-title">LWINE</Typography.Title>
+          <Typography.Title className="header-title">
+            <Link to="/">LWINE</Link>
+          </Typography.Title>
         </Col>
         <Col flex="auto">
           <Row justify="end" align="middle">
             <Space size={[35, 5]} className="header-tabs">
-              <Typography.Link>Catalog</Typography.Link>
-              <Typography.Link>Quiz</Typography.Link>
+              <Typography.Link>Каталог</Typography.Link>
+              <Typography.Link>Тест</Typography.Link>
               <Button type="primary" className="get-started-btn">
-                <Link to={'login'}>Get Started</Link>
+                <Link to={'login'}>Увійти</Link>
               </Button>
             </Space>
           </Row>
