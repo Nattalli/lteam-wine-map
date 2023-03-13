@@ -17,6 +17,14 @@
       background-color: $secondary;
       color: $primary;
     }
+
+    .squares-img {
+      position: absolute;
+      left: 0;
+      bottom: -40px;
+      z-index: 1;
+      transform: rotate(180deg);
+    }
   }
 
   .title {
@@ -29,6 +37,10 @@
   .register-section {
     padding: 0 100px;
     background-color: $secondary;
+    background-image: url('../../assets/img/dots.svg');
+    background-size: 130px;
+    background-repeat: no-repeat;
+    background-position: 100% 0%;
 
     .name-input {
       display: flex;

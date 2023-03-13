@@ -12,6 +12,9 @@
 
   .input-section {
     padding: 0 80px;
+    background-image: url('../../assets/img/dots.svg');
+    background-size: 120px;
+    background-repeat: no-repeat;
 
     .forgot-password {
       text-align: center;
@@ -31,6 +34,13 @@
   .register-section {
     padding: 0 100px;
     background-color: $secondary;
+    background-image: none;
+
+    .squares-img {
+      position: absolute;
+      right: 0;
+      bottom: -40px;
+    }
 
     .create-account {
       color: $primary;
