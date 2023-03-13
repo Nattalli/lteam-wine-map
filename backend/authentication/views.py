@@ -15,7 +15,7 @@ class SignUpUserAPIView(generics.CreateAPIView):
 
 
 class UserDetailsAPIView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = (AllowAny,)
 
     def retrieve(self, request: Request, *args: dict[str, Any],
                  **kwargs: dict[str, Any]) -> Response:

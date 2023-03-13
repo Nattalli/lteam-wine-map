@@ -8,6 +8,6 @@ urlpatterns = [
     path("log-in/", TokenObtainPairView.as_view(), name="log_in_user"),
     path("user/", UserDetailsAPIView.as_view(), name="user_details"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("password_reset/", include("django_rest_passwordreset.urls",
+    path("password-reset/", include("django_rest_passwordreset.urls",
                                     namespace="password_reset")),
 ]

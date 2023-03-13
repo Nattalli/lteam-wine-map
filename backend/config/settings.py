@@ -147,7 +147,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-DEFAULT_FROM_EMAIL = "r_bogdan@knu.ua"
+DEFAULT_FROM_EMAIL = os.getenv("SENDGRID_EMAIL")
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
