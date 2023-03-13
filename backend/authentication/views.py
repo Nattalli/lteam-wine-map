@@ -1,4 +1,4 @@
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import SignUpSerializer, UserSerializer
 from rest_framework import generics
 from django.contrib.auth import get_user_model
@@ -14,7 +14,7 @@ class SignUpUserAPIView(generics.CreateAPIView):
 
 
 class UserDetailsAPIView(generics.RetrieveAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
 
     def retrieve(self, request: Request, *args: dict[str, Any],
                  **kwargs: dict[str, Any]) -> Response:

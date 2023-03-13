@@ -12,4 +12,4 @@ def password_reset_token_created(reset_password_token: Token):
         reverse("password_reset:reset-password-request"),
         reset_password_token.key)
     send_mail("Password Reset for Wine Card", email_plaintext_message,
-              os.getenv("SENDGRID_EMAIL").__str__(), [reset_password_token.user.email])
+              os.getenv("SENDGRID_EMAIL"), [reset_password_token.user.email])
