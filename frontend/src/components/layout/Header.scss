@@ -1,0 +1,21 @@
+@import "../../assets/scss/variables.scss";
+
+.header {
+  min-height: 100px;
+  align-items: center;
+  background-color: white;
+  padding: 30px 120px;
+
+  .header-title {
+    margin: 0px;
+    a {
+      color: $primary;
+    }
+    font-weight: bold;
+  }
+
+  .header-tabs a {
+    font-size: 20px;
+    line-height: 0px;
+  }
+}
