@@ -3,17 +3,27 @@ import { Layout } from 'antd';
 import Footer from './components/layout/Footer';
 import { Outlet } from 'react-router-dom';
 import './App.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getRequest } from './api';
 
 function App() {
-  const [token, setToken] = useState('');
+  const [user, setUser] = useState({ first_name: '' });
+
+  const fetchUser = async () => {
+    const { data } = await getRequest('/api/users/me');
+    setUser(data);
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <>
       <Layout className="layout">
-        <Header />
+        <Header user={user} setUser={setUser} />
         <Layout.Content className="main-section">
-          <Outlet context={{ setToken }} />
+          <Outlet context={{ setUser }} />
         </Layout.Content>
         <Footer />
       </Layout>
