@@ -67,8 +67,8 @@ export default function Login() {
           initialValues={{ layout: 'vertical' }}
           onFinish={onFinish}
         >
-          <Form.Item name="username" rules={TextRules}>
-            <Input placeholder="Імʼя користувача" />
+          <Form.Item name="username" rules={EmailRules}>
+            <Input placeholder="Електронна пошта" />
           </Form.Item>
           <Form.Item name="password" rules={TextRules}>
             <Input.Password placeholder="Пароль" />
