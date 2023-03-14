@@ -24,7 +24,7 @@ export default function Registration() {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const onFinish = async (values: object) => {
+  const signUp = async (values: object) => {
     const { data } = await postRequest('/auth/sign-up/', values);
     if (!data) return;
 
@@ -48,7 +48,7 @@ export default function Registration() {
           layout={'vertical'}
           form={form}
           initialValues={{ layout: 'vertical' }}
-          onFinish={onFinish}
+          onFinish={signUp}
         >
           <Form.Item name="email" rules={EmailRules}>
             <Input placeholder="Електронна пошта" />
