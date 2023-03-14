@@ -30,7 +30,7 @@ export default function Header({ user, setUser}: HeaderProps) {
     {
       key: '1',
       label: (
-        <div onClick={logout}>Logout</div>
+        <div onClick={logout}>Вийти</div>
       ),
     },
   ];
