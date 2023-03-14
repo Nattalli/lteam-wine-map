@@ -19,7 +19,8 @@ Python 3.10+ is a must
 7. Install requirements: `pip install -r requirements.txt`
 8. Make migrations: `python manage.py migrate`
 9. Create superuser to access the admin panel: `python manage.py createsuperuser`. Or you can use already existed credentials.
-10. Now you can run it: `python manage.py runserver`
+10. Collect static: `python manage.py collectstatic`
+11. Now you can run it: `python manage.py runserver`
 
 ## Installing frontend
 

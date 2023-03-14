@@ -10,6 +10,7 @@ class WineResource(resources.ModelResource):
         report_skipped = False
         fields = (
             "name",
+            "image_url",
             "wine_type",
             "country",
             "sweetness",
