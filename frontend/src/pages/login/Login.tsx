@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { Link, useOutletContext } from 'react-router-dom';
-import { Col, Row, Button, Form, Input, Modal } from 'antd';
+import { Link, useOutletContext, useNavigate } from 'react-router-dom';
+import { Col, Row, Button, Form, Input, Modal, Alert } from 'antd';
 import './Login.scoped.scss';
 import messageImg from '../../assets/img/message.svg';
 import heartImg from '../../assets/img/heart.svg';
 import squares from '../../assets/img/squares.svg';
+import emailIcon from '../../assets/img/email.svg';
 import { type Rule } from 'antd/es/form';
-import { postRequest } from '../../api';
+import { postRequest, getRequest } from '../../api';
 
 const TextRules: Rule[] = [
   {
@@ -24,38 +25,61 @@ const EmailRules: Rule[] = [
 ];
 
 interface TokenContext {
-  setToken: Function;
+  setUser: Function;
 }
 
 export default function Login() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { setToken }: TokenContext = useOutletContext();
-  const [form] = Form.useForm();
+  const [loginError, setLoginError] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+  const [resetEmail, setResetEmail] = useState('');
+
+  const [loginForm] = Form.useForm();
+  const [resetPasswordForm] = Form.useForm();
+
+  const [isResetModalOpen, setResetModalOpen] = useState(false);
+  const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
+
+  const navigate = useNavigate();
+  const { setUser }: TokenContext = useOutletContext();
 
   const showModal: () => void = () => {
-    setIsModalOpen(true);
+    setResetModalOpen(true);
   };
 
-  const handleOk: () => void = () => {
-    setIsModalOpen(false);
+  const logIn = async (credentials: any) => {
+    try {
+      const {data} = await postRequest('/auth/log-in/', credentials);
+
+      localStorage.setItem('access', data.access);
+      localStorage.setItem('refresh', data.refresh);
+
+      const user = await fetchUser();
+      setUser(user);
+
+      navigate('/', { replace: true });
+    } catch (error: any) {
+      setLoginError(error.response.data.detail);
+    }
   };
 
-  const handleCancel: () => void = () => {
-    setIsModalOpen(false);
-  };
+  const fetchUser = async () => {
+    const {data} = await getRequest('/api/users/me');
+    return data;
+  }
 
-  const onFinish = async (credentials: any) => {
-    const { data } = await postRequest('/auth/log-in/', credentials);
-    if (!data) return;
+  const sendResetLink = async (param: any) => {
+    try {
+      await postRequest('/auth/password-reset/', param);
+      setResetEmail(param.email);
 
-    localStorage.setItem('access', data.access);
-    localStorage.setItem('refresh', data.refresh);
-
-    // toDo: setUser instead
-    setToken(data.access);
-
-    // toDo: fetch user
-  };
+      setResetModalOpen(false);
+      setSuccessModalOpen(true);
+    } catch (error: any) {
+      console.log(error.response.data.email)
+      setEmailError(error.response.data.email[0]);
+    }
+  }
 
   return (
     <Row className="content">
@@ -63,9 +87,10 @@ export default function Login() {
         <div className="title">Уже зареєстровані?</div>
         <Form
           layout={'vertical'}
-          form={form}
+          form={loginForm}
           initialValues={{ layout: 'vertical' }}
-          onFinish={onFinish}
+          onInput={() => setLoginError('')}
+          onFinish={logIn}
         >
           <Form.Item name="username" rules={EmailRules}>
             <Input placeholder="Електронна пошта" />
@@ -82,29 +107,46 @@ export default function Login() {
         <div onClick={showModal} className="forgot-password">
           Забув(ла) пароль
         </div>
+        { loginError && <Alert message={loginError} type="error" showIcon/> }
         <Modal
-          title="I forgot the password"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
+          title="Я забув(ла) пароль"
+          open={isResetModalOpen}
           centered
           footer={null}
+          onCancel={() => setResetModalOpen(false)}
         >
           <Form
             layout={'vertical'}
-            form={form}
+            form={resetPasswordForm}
             initialValues={{ layout: 'vertical' }}
             className="forgot-password-form"
+            onFinish={sendResetLink}
+            onInput={() => setEmailError('')}
           >
-            <Form.Item name="forgot-email" rules={EmailRules}>
-              <Input placeholder="Email" />
+            <Form.Item name="email" rules={EmailRules}>
+              <Input placeholder="Електронна пошта" />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" size="large" block>
-                Send
+              <Button type="primary" size="large" block htmlType="submit">
+                Надіслати
               </Button>
             </Form.Item>
           </Form>
+          { emailError && <Alert message={emailError} type="error" showIcon/> }
+        </Modal>
+        <Modal
+          title="Я забув(ла) пароль"
+          open={isSuccessModalOpen}
+          centered
+          footer={null}
+          onCancel={() => setSuccessModalOpen(false)}
+        >
+          <div className='success-sent'>
+            <img src={emailIcon} alt="email"/>
+            <span>
+              If you have an account linked to {resetEmail}, you will receive an email with a password reset link.
+            </span>
+          </div>
         </Modal>
       </Col>
       <Col span={13} className="register-section">
