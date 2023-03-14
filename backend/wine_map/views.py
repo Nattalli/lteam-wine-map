@@ -11,16 +11,12 @@ class WinePagination(LimitOffsetPagination):
 
 
 class WineListView(generics.ListAPIView):
-    queryset = (Wine.objects
-                .select_related("country", "brand")
-                .prefetch_related("sweetness", "tastes", "pairs_with"))
+    queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     pagination_class = WinePagination
 
 
 class WineDetailView(generics.RetrieveAPIView):
-    queryset = (Wine.objects
-                .select_related("country", "brand")
-                .prefetch_related("sweetness", "tastes", "pairs_with"))
+    queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     lookup_field = "id"
