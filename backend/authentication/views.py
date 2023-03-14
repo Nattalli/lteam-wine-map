@@ -6,4 +6,3 @@ from rest_framework import generics
 class SignUpUserAPIView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = SignUpSerializer
-

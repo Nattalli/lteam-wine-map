@@ -103,9 +103,9 @@ DATABASES = {
 }
 
 DJOSER = {
-    'SERIALIZERS': {
-        'user': 'authentication.serializers.UserSerializer',
-        'current_user': 'authentication.serializers.UserSerializer',
+    "SERIALIZERS": {
+        "user": "authentication.serializers.UserSerializer",
+        "current_user": "authentication.serializers.UserSerializer",
     },
 }
 
