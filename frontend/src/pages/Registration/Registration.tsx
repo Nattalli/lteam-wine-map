@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Col, Row, Button, Form, Input } from 'antd';
+import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
 import { type Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
+import { useState } from 'react';
 
 const TextRules: Rule[] = [
   {
@@ -21,15 +22,21 @@ const EmailRules: Rule[] = [
 ];
 
 export default function Registration() {
+  const [error, setError] = useState('');
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const signUp = async (values: object) => {
-    const { data } = await postRequest('/auth/sign-up/', values);
-    if (!data) return;
-
-    navigate('/login', { replace: true });
+    try {
+      const { data } = await postRequest('/auth/sign-up/', values);
+  
+      navigate('/login', { replace: true });
+    } catch (error: any) {
+      setError(error.response.data.detail);
+    }
   };
+
 
   return (
     <Row className="content">
@@ -70,6 +77,7 @@ export default function Registration() {
             </Button>
           </Form.Item>
         </Form>
+        { error && <Alert message={error} type="error" showIcon/> }
       </Col>
     </Row>
   );
