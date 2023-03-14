@@ -16,9 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+api = [
+    path("wine/", include("wine_map.urls")),
+    path("", include("djoser.urls")),
+]
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/wine/", include("wine_map.urls")),
+    path("api/", include(api)),
     path("auth/", include("django.contrib.auth.urls")),
     path("auth/", include("authentication.urls")),
 ]

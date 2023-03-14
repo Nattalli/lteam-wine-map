@@ -1,6 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
 
 
 class User(AbstractUser):
@@ -18,25 +18,41 @@ class User(AbstractUser):
 
 class Wine(models.Model):
     WINE_TYPES = [
-        ("red", "Red"),
-        ("white", "White"),
-        ("rose", "Rosé"),
+        ("red", "Червоне"),
+        ("white", "Біле"),
+        ("rose", "Рожеве"),
+    ]
+    WINE_SWEETNESS = [
+        ("brut", "брют"),
+        ("semi-sweet", "напівсолодке"),
+        ("semi-dry", "напівсухе"),
+        ("sweet", "солодке"),
+        ("dry", "сухе"),
     ]
 
     name = models.CharField(max_length=255)
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE, related_name="brand")
-    wine_type = models.CharField(choices=WINE_TYPES, max_length=5)
-    country = models.ForeignKey("Country", on_delete=models.CASCADE)
-    sweetness = models.ManyToManyField("Sweetness")
-    tastes = models.ManyToManyField("Taste")
-    pairs_with = models.ManyToManyField("DishCategory")
-    year = models.IntegerField()
-    percent_of_alcohol = models.FloatField(
-        validators=[MinValueValidator(0.0), MaxValueValidator(100.0)], default=0.0
+    wine_type = models.CharField(
+        choices=WINE_TYPES, max_length=5, null=True, blank=True
     )
+    country = models.ForeignKey(
+        "Country", on_delete=models.CASCADE, null=True, blank=True
+    )
+    sweetness = models.CharField(
+        max_length=10, choices=WINE_SWEETNESS, null=True, blank=True
+    )
+    tastes = models.CharField(max_length=512, null=True, blank=True)
+    pairs_with = models.CharField(max_length=512, null=True, blank=True)
+    percent_of_alcohol = models.FloatField(
+        validators=[MinValueValidator(0.0), MaxValueValidator(100.0)],
+        default=0.0,
+        null=True,
+        blank=True,
+    )
+    image_url = models.URLField(max_length=255)
 
     def __str__(self) -> str:
-        return f"{self.name} ({self.year})"
+        return f"{self.name}"
 
 
 class Brand(models.Model):
@@ -46,29 +62,11 @@ class Brand(models.Model):
         return self.name
 
 
-class Sweetness(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class Taste(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self) -> str:
-        return self.name
-
-
-class DishCategory(models.Model):
-    name = models.CharField(max_length=255)
-
-    def __str__(self) -> str:
-        return self.name
-
-
 class Country(models.Model):
     name = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Countries"
 
     def __str__(self) -> str:
         return self.name
@@ -91,6 +89,9 @@ class WineAdditionalInfo(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField(MinValueValidator(0.0))
     url = models.URLField(max_length=255)
+
+    class Meta:
+        verbose_name_plural = "Wine additional info"
 
     def __str__(self) -> str:
         return f"{self.name} for {self.wine}"
