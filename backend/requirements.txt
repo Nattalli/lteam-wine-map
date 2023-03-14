@@ -14,3 +14,4 @@ psycopg2-binary==2.9.5
 pytest==6.2.5
 python-dotenv==0.21.0
 virtualenv==20.17.1
+djoser==2.0.1
