@@ -1,6 +1,4 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin
-
 from .models import (
     User,
     Wine,
@@ -9,16 +7,10 @@ from .models import (
     Comment,
     WineAdditionalInfo,
 )
-from .resources import WineResource
-
-
-@admin.register(Wine)
-class ProductUserAdmin(ImportExportModelAdmin):
-    resource_class = WineResource
-
 
 admin.site.register(User)
 admin.site.register(Brand)
+admin.site.register(Wine)
 admin.site.register(Country)
 admin.site.register(Comment)
 admin.site.register(WineAdditionalInfo)
