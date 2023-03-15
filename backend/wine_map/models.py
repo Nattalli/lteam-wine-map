@@ -33,22 +33,23 @@ class Wine(models.Model):
     name = models.CharField(max_length=255)
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE, related_name="brand")
     wine_type = models.CharField(
-        choices=WINE_TYPES, max_length=5, null=True, blank=True
+        choices=WINE_TYPES, max_length=127, null=True, blank=True
     )
     country = models.ForeignKey(
         "Country", on_delete=models.CASCADE, null=True, blank=True
     )
     sweetness = models.CharField(
-        max_length=10, choices=WINE_SWEETNESS, null=True, blank=True
+        max_length=127, choices=WINE_SWEETNESS, null=True, blank=True
     )
-    tastes = models.CharField(max_length=512, null=True, blank=True)
-    pairs_with = models.CharField(max_length=512, null=True, blank=True)
+    tastes = models.CharField(max_length=1027, null=True, blank=True)
+    pairs_with = models.CharField(max_length=1027, null=True, blank=True)
     percent_of_alcohol = models.FloatField(
         validators=[MinValueValidator(0.0), MaxValueValidator(100.0)],
         default=0.0,
         null=True,
         blank=True,
     )
+    region = models.CharField(max_length=255, null=True, blank=True)
     image_url = models.URLField(max_length=255)
 
     def __str__(self) -> str:
