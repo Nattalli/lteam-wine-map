@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
-import { type Rule } from 'antd/es/form';
+import { Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
 import { useState } from 'react';
 
@@ -30,13 +30,12 @@ export default function Registration() {
   const signUp = async (values: object) => {
     try {
       const { data } = await postRequest('/auth/sign-up/', values);
-  
+
       navigate('/login', { replace: true });
-    } catch (error: any) {
+    } catch (error) {
       setError(error.response.data.detail);
     }
   };
-
 
   return (
     <Row className="content">
@@ -77,7 +76,7 @@ export default function Registration() {
             </Button>
           </Form.Item>
         </Form>
-        { error && <Alert message={error} type="error" showIcon/> }
+        {error && <Alert message={error} type="error" showIcon />}
       </Col>
     </Row>
   );

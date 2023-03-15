@@ -6,7 +6,7 @@ import messageImg from '../../assets/img/message.svg';
 import heartImg from '../../assets/img/heart.svg';
 import squares from '../../assets/img/squares.svg';
 import emailIcon from '../../assets/img/email.svg';
-import { type Rule } from 'antd/es/form';
+import { Rule } from 'antd/es/form';
 import { postRequest, getRequest } from '../../api';
 
 const TextRules: Rule[] = [
@@ -49,7 +49,7 @@ export default function Login() {
 
   const logIn = async (credentials: any) => {
     try {
-      const {data} = await postRequest('/auth/log-in/', credentials);
+      const { data } = await postRequest('/auth/log-in/', credentials);
 
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
@@ -58,15 +58,15 @@ export default function Login() {
       setUser(user);
 
       navigate('/', { replace: true });
-    } catch (error: any) {
+    } catch (error) {
       setLoginError(error.response.data.detail);
     }
   };
 
   const fetchUser = async () => {
-    const {data} = await getRequest('/api/users/me');
+    const { data } = await getRequest('/api/users/me');
     return data;
-  }
+  };
 
   const sendResetLink = async (param: any) => {
     try {
@@ -75,11 +75,10 @@ export default function Login() {
 
       setResetModalOpen(false);
       setSuccessModalOpen(true);
-    } catch (error: any) {
-      console.log(error.response.data.email)
+    } catch (error) {
       setEmailError(error.response.data.email[0]);
     }
-  }
+  };
 
   return (
     <Row className="content">
@@ -107,7 +106,7 @@ export default function Login() {
         <div onClick={showModal} className="forgot-password">
           Забув(ла) пароль
         </div>
-        { loginError && <Alert message={loginError} type="error" showIcon/> }
+        {loginError && <Alert message={loginError} type="error" showIcon />}
         <Modal
           title="Я забув(ла) пароль"
           open={isResetModalOpen}
@@ -132,7 +131,7 @@ export default function Login() {
               </Button>
             </Form.Item>
           </Form>
-          { emailError && <Alert message={emailError} type="error" showIcon/> }
+          {emailError && <Alert message={emailError} type="error" showIcon />}
         </Modal>
         <Modal
           title="Я забув(ла) пароль"
@@ -141,10 +140,11 @@ export default function Login() {
           footer={null}
           onCancel={() => setSuccessModalOpen(false)}
         >
-          <div className='success-sent'>
-            <img src={emailIcon} alt="email"/>
+          <div className="success-sent">
+            <img src={emailIcon} alt="email" />
             <span>
-              If you have an account linked to {resetEmail}, you will receive an email with a password reset link.
+              If you have an account linked to {resetEmail}, you will receive an
+              email with a password reset link.
             </span>
           </div>
         </Modal>

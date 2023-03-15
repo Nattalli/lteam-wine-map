@@ -1,5 +1,5 @@
 import { Layout, Button, Space, Typography, Row, Col, Dropdown } from 'antd';
-import type { MenuProps } from 'antd';
+import { MenuProps } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import userIcon from '../../assets/img/user.svg';
 
@@ -9,12 +9,11 @@ import { getRequest } from '../../api';
 interface HeaderProps {
   user: {
     first_name: string;
-  },
+  };
   setUser: Function;
 }
 
-
-export default function Header({ user, setUser}: HeaderProps) {
+export default function Header({ user, setUser }: HeaderProps) {
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -24,14 +23,12 @@ export default function Header({ user, setUser}: HeaderProps) {
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
     navigate('/login', { replace: true });
-  }
+  };
 
   const menuItems: MenuProps['items'] = [
     {
       key: '1',
-      label: (
-        <div onClick={logout}>Вийти</div>
-      ),
+      label: <div onClick={logout}>Вийти</div>,
     },
   ];
   return (
