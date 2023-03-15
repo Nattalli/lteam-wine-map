@@ -107,6 +107,7 @@ DJOSER = {
         "user": "authentication.serializers.UserSerializer",
         "current_user": "authentication.serializers.UserSerializer",
     },
+    "PASSWORD_RESET_CONFIRM_URL": "reset-password/?uid={uid}&token={token}",
 }
 
 # Password validation
