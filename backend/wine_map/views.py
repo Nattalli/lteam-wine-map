@@ -6,7 +6,7 @@ from .serializers import WineSerializer
 
 
 class WinePagination(LimitOffsetPagination):
-    default_limit = 10
+    default_limit = 12
     max_limit = 100
 
 
