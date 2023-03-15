@@ -26,5 +26,13 @@ class WineResource(resources.ModelResource):
         )
 
     def before_import_row(self, row: OrderedDict, **kwargs: dict) -> None:
-        row["country"] = Country.objects.get_or_create(name=row["country"])[0].id if row["country"] else None
-        row["brand"] = Brand.objects.get_or_create(name=row["brand"])[0].id if row["country"] else None
+        row["country"] = (
+            Country.objects.get_or_create(name=row["country"])[0].id
+            if row["country"]
+            else None
+        )
+        row["brand"] = (
+            Brand.objects.get_or_create(name=row["brand"])[0].id
+            if row["country"]
+            else None
+        )
