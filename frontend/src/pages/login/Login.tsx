@@ -70,7 +70,7 @@ export default function Login() {
 
   const sendResetLink = async (param: any) => {
     try {
-      await postRequest('/auth/password-reset/', param);
+      await postRequest('/api/users/reset_password/', param);
       setResetEmail(param.email);
 
       setResetModalOpen(false);
