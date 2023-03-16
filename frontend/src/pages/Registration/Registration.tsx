@@ -21,6 +21,15 @@ const EmailRules: Rule[] = [
   ...TextRules,
 ];
 
+interface Error {
+  response: {
+    data: {
+      detail: string;
+      email: string[];
+    };
+  };
+}
+
 export default function Registration() {
   const [error, setError] = useState('');
 
@@ -29,11 +38,12 @@ export default function Registration() {
 
   const signUp = async (values: object) => {
     try {
-      const { data } = await postRequest('/auth/sign-up/', values);
+      await postRequest('/auth/sign-up/', values);
 
       navigate('/login', { replace: true });
     } catch (error) {
-      setError(error.response.data.detail);
+      const err = error as Error;
+      setError(err.response.data.detail);
     }
   };
 

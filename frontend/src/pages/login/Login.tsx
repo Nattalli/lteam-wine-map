@@ -28,6 +28,15 @@ interface TokenContext {
   setUser: Function;
 }
 
+interface Error {
+  response: {
+    data: {
+      detail: string;
+      email: string[];
+    };
+  };
+}
+
 export default function Login() {
   const [loginError, setLoginError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -59,7 +68,8 @@ export default function Login() {
 
       navigate('/', { replace: true });
     } catch (error) {
-      setLoginError(error.response.data.detail);
+      const err = error as Error;
+      setLoginError(err.response.data.detail);
     }
   };
 
@@ -76,7 +86,8 @@ export default function Login() {
       setResetModalOpen(false);
       setSuccessModalOpen(true);
     } catch (error) {
-      setEmailError(error.response.data.email[0]);
+      const err = error as Error;
+      setEmailError(err.response.data.email[0]);
     }
   };
 
