@@ -32,7 +32,7 @@ urlpatterns = [
 
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/doc/swagger/", 
-         SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
+        SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
 ]
 
 if settings.DEBUG:
