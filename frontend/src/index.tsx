@@ -12,6 +12,7 @@ import {
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Registration from './pages/registration/Registration';
+import NewPassword from './pages/newPassword/NewPassword';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,13 +20,14 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Registration />} />
+      <Route path="reset-password" element={<NewPassword />} />
     </Route>
   )
 );
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById(
+  'root'
+) as HTMLElement);
 root.render(
   <React.StrictMode>
     <AntdConfigProvider>
