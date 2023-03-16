@@ -15,6 +15,8 @@ function App() {
   };
 
   useEffect(() => {
+    if (!localStorage.getItem('acccess')) return;
+
     fetchUser();
   }, []);
 
