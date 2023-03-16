@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_simplejwt",
     "djoser",
+    "drf_spectacular",
     "import_export",
     "wine_map",
 ]
@@ -65,7 +66,8 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 ROOT_URLCONF = "config.urls"
@@ -157,6 +159,13 @@ DEFAULT_FROM_EMAIL = os.getenv("SENDGRID_EMAIL")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "LWine API",
+    "DESCRIPTION": "Best-ever-created wine map",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.sendgrid.net"

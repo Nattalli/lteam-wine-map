@@ -6,16 +6,17 @@ const axiosClient = axios.create({
 
 axiosClient.defaults.headers['Content-Type'] = 'application/json';
 axiosClient.defaults.headers.Accept = 'application/json';
-axios.defaults.headers.post['Authorization'] = `Bearer ${localStorage.getItem(
-  'access_token'
-)}`;
 
 axiosClient.defaults.timeout = 2000;
 
-axiosClient.defaults.withCredentials = true;
-
 const getRequest = async (URL: string) => {
-  return axiosClient.get(`/${URL}`).then((response) => response);
+  return axiosClient
+    .get(URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    })
+    .then((response) => response);
 };
 
 const postRequest = async (URL: string, payload: Object) => {
@@ -23,11 +24,11 @@ const postRequest = async (URL: string, payload: Object) => {
 };
 
 const patchRequest = async (URL: string, payload: Object) => {
-  return axiosClient.patch(`/${URL}`, payload).then((response) => response);
+  return axiosClient.patch(URL, payload).then((response) => response);
 };
 
 const deleteRequest = async (URL: string) => {
-  return axiosClient.delete(`/${URL}`).then((response) => response);
+  return axiosClient.delete(URL).then((response) => response);
 };
 
 export { getRequest, postRequest, patchRequest, deleteRequest };

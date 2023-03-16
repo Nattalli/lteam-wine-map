@@ -23,4 +23,12 @@
   .get-started-btn {
     padding: 3px 10px;
   }
+
+  .user-header {
+    color: $primary;
+
+    span {
+      margin-right: 8px;
+    }
+  }
 }

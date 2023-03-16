@@ -1,9 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Col, Row, Button, Form, Input } from 'antd';
+import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
-import { type Rule } from 'antd/es/form';
+import { Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
+import { useState } from 'react';
+import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
   {
@@ -20,15 +22,32 @@ const EmailRules: Rule[] = [
   ...TextRules,
 ];
 
+interface Error {
+  response: {
+    data: {
+      detail: string;
+      email: string[];
+    };
+  };
+}
+
 export default function Registration() {
+  const [error, setError] = useState('');
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
-  const onFinish = async (values: object) => {
-    const { data } = await postRequest('/auth/sign-up/', values);
-    if (!data) return;
+  const signUp = async (values: object) => {
+    try {
+      await postRequest('/auth/sign-up/', values);
 
-    navigate('/login', { replace: true });
+      navigate('/login', { replace: true });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        setError(err.response ? err.response.data.detail : '');
+      }
+    }
   };
 
   return (
@@ -48,7 +67,7 @@ export default function Registration() {
           layout={'vertical'}
           form={form}
           initialValues={{ layout: 'vertical' }}
-          onFinish={onFinish}
+          onFinish={signUp}
         >
           <Form.Item name="email" rules={EmailRules}>
             <Input placeholder="Електронна пошта" />
@@ -70,6 +89,7 @@ export default function Registration() {
             </Button>
           </Form.Item>
         </Form>
+        {error && <Alert message={error} type="error" showIcon />}
       </Col>
     </Row>
   );

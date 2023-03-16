@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 api = [
     path("wine/", include("wine_map.urls")),
@@ -28,6 +29,13 @@ urlpatterns = [
     path("api/", include(api)),
     path("auth/", include("django.contrib.auth.urls")),
     path("auth/", include("authentication.urls")),
+
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "api/doc/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ]
 
 if settings.DEBUG:
