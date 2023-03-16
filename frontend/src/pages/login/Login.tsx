@@ -87,7 +87,7 @@ export default function Login() {
       setSuccessModalOpen(true);
     } catch (error) {
       const err = error as Error;
-      setEmailError(err.response.data.email[0]);
+      setEmailError(err.response && err.response.data.email[0]);
     }
   };
 
