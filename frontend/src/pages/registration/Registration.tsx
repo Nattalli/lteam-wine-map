@@ -5,6 +5,7 @@ import squares from '../../assets/img/squares.svg';
 import { Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
 import { useState } from 'react';
+import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
   {
@@ -42,8 +43,10 @@ export default function Registration() {
 
       navigate('/login', { replace: true });
     } catch (error) {
-      const err = error as Error;
-      setError(err.response.data.detail);
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        setError(err.response ? err.response.data.detail : '');
+      }
     }
   };
 

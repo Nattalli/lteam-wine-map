@@ -8,6 +8,7 @@ import squares from '../../assets/img/squares.svg';
 import emailIcon from '../../assets/img/email.svg';
 import { Rule } from 'antd/es/form';
 import { postRequest, getRequest } from '../../api';
+import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
   {
@@ -26,15 +27,6 @@ const EmailRules: Rule[] = [
 
 interface TokenContext {
   setUser: Function;
-}
-
-interface Error {
-  response: {
-    data: {
-      detail: string;
-      email: string[];
-    };
-  };
 }
 
 export default function Login() {
@@ -68,8 +60,10 @@ export default function Login() {
 
       navigate('/', { replace: true });
     } catch (error) {
-      const err = error as Error;
-      setLoginError(err.response.data.detail);
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        setLoginError(err.response ? err.response.data.detail: '');
+      }
     }
   };
 
@@ -86,8 +80,10 @@ export default function Login() {
       setResetModalOpen(false);
       setSuccessModalOpen(true);
     } catch (error) {
-      const err = error as Error;
-      setEmailError(err.response && err.response.data.email[0]);
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ email: string[] }>;
+        setEmailError(err.response ? err.response.data.email[0] : '');
+      }
     }
   };
 

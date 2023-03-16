@@ -4,6 +4,7 @@ import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import { Rule } from 'antd/es/form';
 import { postRequest } from '../../api';
 import './NewPassword.scoped.scss';
+import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
   {
@@ -11,14 +12,6 @@ const TextRules: Rule[] = [
     message: 'Це поле обовʼязкове',
   },
 ];
-
-interface Error {
-  response: {
-    data: {
-      new_password: string;
-    };
-  };
-}
 
 export default function NewPassword() {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -39,8 +32,10 @@ export default function NewPassword() {
     try {
       await postRequest('/api/users/reset_password_confirm/', requstBody);
     } catch (error) {
-      const err = error as Error;
-      setErrorMessage(err.response.data.new_password);
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ new_password: string }>;
+        setErrorMessage(err.response ? err.response.data.new_password : '');
+      }
     }
 
     setIsAlertVisible(true);
