@@ -23,4 +23,4 @@ urlpatterns = [
     path("<int:wine_id>/comments/", include(comments)),
 ]
 
-app_name = "webhooks"
+app_name = "wines"
