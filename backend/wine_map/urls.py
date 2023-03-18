@@ -7,4 +7,4 @@ urlpatterns = [
     path("<int:id>/", WineDetailView.as_view(), name="wine-detail"),
 ]
 
-app_name = "webhooks"
+app_name = "wines"
