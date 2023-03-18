@@ -180,44 +180,21 @@ DOMAIN = "localhost:3000"
 
 # JAZZMIN
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Lteam wine map Admin",
-
     "show_ui_builder": False,
-
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Wine map",
-
-
-    # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
-
-    # Welcome text on the login screen
     "welcome_sign": "Welcome to the Lteam admin panel!",
-
-    # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "wine_map.wine",
-
-    # Links to put along the top menu
     "topmenu_links": [
-
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
-
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
         {"model": "wine_map.wine"},
-
-        {"model": "wine_map.user"}
+        {"model": "wine_map.user"},
     ],
-
-    # Whether to display the side menu
     "show_sidebar": True,
-
-    # Whether to aut expand the menu
     "navigation_expanded": True,
-
     "changeform_format": "collapsible",
-
-    "copyright": "Lteam admin-panel. Made by <a target='_blank'>Lteam</a>"
+    "copyright": "Lteam admin-panel. Made by <a target='_blank'>Lteam</a>",
 }
 
 
@@ -249,7 +226,7 @@ JAZZMIN_UI_TWEAKS = {
         "info": "btn-outline-info",
         "warning": "btn-outline-warning",
         "danger": "btn-outline-danger",
-        "success": "btn-outline-success"
+        "success": "btn-outline-success",
     },
-    "actions_sticky_top": False
+    "actions_sticky_top": False,
 }

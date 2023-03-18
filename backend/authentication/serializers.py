@@ -14,7 +14,9 @@ class SignUpSerializer(serializers.ModelSerializer):
             "last_name": {"required": True},
         }
 
-    def update(self, instance, validated_data):
+    def update(
+        self, instance: get_user_model(), validated_data: dict
+    ) -> get_user_model():
         """Update a user, set the password correctly and return it"""
         password = validated_data.pop("password", None)
         user = super().update(instance, validated_data)
