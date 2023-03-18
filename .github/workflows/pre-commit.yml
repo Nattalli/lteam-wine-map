@@ -30,3 +30,13 @@ jobs:
       - name: Run tests
         timeout-minutes: 5
         run: python backend/manage.py test
+    env:
+      DEBUG: 0
+      SECRET_KEY: TEST
+      CONFIGURATION: testing
+      USE_HTTPS: 0
+      POSTGRES_DB: None
+      POSTGRES_USER: None
+      POSTGRES_PASSWORD: None
+      POSTGRES_HOST: None
+      POSTGRES_PORT: None
