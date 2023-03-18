@@ -13,6 +13,16 @@ class UserTest(TestCase):
         self.assertTrue(isinstance(self.user, get_user_model()))
         self.assertEqual(str(self.user), self.user.username)
 
+<<<<<<< HEAD
+=======
+    def test_email_cannot_be_changed_to_empty(self) -> None:
+        email = self.user.email
+        self.user.email = None
+        self.user.refresh_from_db()
+
+        self.assertEqual(self.user.email, email)
+
+>>>>>>> c24de22 (added tests)
     def test_empty_email_asserts_an_error(self) -> None:
         with self.assertRaises(ValueError):
             sample_user(email="", username="")
