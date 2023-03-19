@@ -22,3 +22,8 @@ class WineSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wine
         fields = "__all__"
+
+
+class CategoriesSerializer(serializers.Serializer):
+    countries = CountrySerializer(many=True)
+    brands = BrandSerializer(many=True)
