@@ -29,7 +29,6 @@ urlpatterns = [
     path("api/", include(api)),
     path("auth/", include("django.contrib.auth.urls")),
     path("auth/", include("authentication.urls")),
-
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/doc/swagger/",

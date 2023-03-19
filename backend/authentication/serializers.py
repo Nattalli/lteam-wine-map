@@ -9,10 +9,22 @@ class SignUpSerializer(serializers.ModelSerializer):
         fields = ("email", "password", "first_name", "last_name")
         extra_kwargs = {
             "email": {"required": True},
-            "password": {"required": True},
+            "password": {"required": True, "write_only": True, "min_length": 8},
             "first_name": {"required": True},
             "last_name": {"required": True},
         }
+
+    def update(
+        self, instance: get_user_model(), validated_data: dict
+    ) -> get_user_model():
+        """Update a user, set the password correctly and return it"""
+        password = validated_data.pop("password", None)
+        user = super().update(instance, validated_data)
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
 
     def create(self, validated_data: dict) -> get_user_model():
         user = User.objects.create(
