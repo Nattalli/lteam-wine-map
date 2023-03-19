@@ -7,6 +7,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from .filters import WineFilter
 from .models import Wine, Country, Brand
 from .serializers import WineSerializer, CategoriesSerializer
 
@@ -20,6 +21,7 @@ class WineListView(generics.ListAPIView):
     queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     pagination_class = WinePagination
+    filterset_class = WineFilter
 
 
 class WineDetailView(generics.RetrieveAPIView):
