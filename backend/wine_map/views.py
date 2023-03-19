@@ -33,6 +33,8 @@ class CategoriesView(APIView):
     class Categories:
         countries: list[Country]
         brands: list[Brand]
+        wine_types: list[str]
+        sweetness: list[str]
 
     @extend_schema(request=None, responses=CategoriesSerializer)
     def get(self, request: Request) -> Response:
@@ -44,4 +46,6 @@ class CategoriesView(APIView):
     def get_categories(self) -> Categories:
         countries = Country.objects.all()
         brands = Brand.objects.all()
-        return self.Categories(countries, brands)
+        wine_types = [wine_type for _, wine_type in Wine.WINE_TYPES]
+        sweetness = [sweetness for _, sweetness in Wine.WINE_SWEETNESS]
+        return self.Categories(countries, brands, wine_types, sweetness)

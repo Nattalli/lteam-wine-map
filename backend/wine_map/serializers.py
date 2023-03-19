@@ -27,3 +27,5 @@ class WineSerializer(serializers.ModelSerializer):
 class CategoriesSerializer(serializers.Serializer):
     countries = CountrySerializer(many=True)
     brands = BrandSerializer(many=True)
+    wine_types = serializers.ListField(child=serializers.CharField(max_length=127))
+    sweetness = serializers.ListField(child=serializers.CharField(max_length=127))
