@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -176,4 +177,58 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "apikey"
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 
+# password reset
 DOMAIN = "localhost:3000"
+
+# JAZZMIN
+JAZZMIN_SETTINGS = {
+    "site_title": "Lteam wine map Admin",
+    "show_ui_builder": False,
+    "site_header": "Wine map",
+    "site_logo_classes": "img-circle",
+    "welcome_sign": "Welcome to the Lteam admin panel!",
+    "search_model": "wine_map.wine",
+    "topmenu_links": [
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "wine_map.wine"},
+        {"model": "wine_map.user"},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "changeform_format": "collapsible",
+    "copyright": "Lteam admin-panel. Made by <a target='_blank'>Lteam</a>",
+}
+
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": True,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": True,
+    "brand_colour": "navbar-danger",
+    "accent": "accent-lightblue",
+    "navbar": "navbar-danger navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-danger",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": True,
+    "sidebar_nav_flat_style": False,
+    "theme": "pulse",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success",
+    },
+    "actions_sticky_top": False,
+}
