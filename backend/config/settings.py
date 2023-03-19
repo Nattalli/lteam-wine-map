@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "import_export",
     "wine_map",
+    "django_filters",
 ]
 
 SIMPLE_JWT = {"ACCESS_TOKEN_LIFETIME": timedelta(hours=6)}
@@ -68,6 +69,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 ROOT_URLCONF = "config.urls"
