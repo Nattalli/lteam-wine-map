@@ -3,6 +3,7 @@ from django.urls import path, include
 from .views import (
     WineListView,
     WineDetailView,
+    CategoriesView,
     CommentCreateView,
     CommentListView,
     CommentDeleteView,
@@ -18,6 +19,7 @@ comments = [
 urlpatterns = [
     path("", WineListView.as_view(), name="wine-list"),
     path("<int:id>/", WineDetailView.as_view(), name="wine-detail"),
+    path("categories/", CategoriesView.as_view(), name="categories"),
     path("<int:wine_id>/comments/", include(comments)),
 ]
 
