@@ -13,3 +13,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.ant-image {
+  position: static;
+}
+
+.ant-image-mask {
+  border-radius: 44px !important;
+}
