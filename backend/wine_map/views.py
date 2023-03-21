@@ -23,6 +23,7 @@ class WineListView(generics.ListAPIView):
     queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     pagination_class = WinePagination
+    permission_classes = [AllowAny]
     filterset_class = WineFilter
 
 
