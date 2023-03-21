@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -29,6 +29,7 @@ class WineListView(generics.ListAPIView):
 class WineDetailView(generics.RetrieveAPIView):
     queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
+    permission_classes = [AllowAny]
     lookup_field = "id"
 
 
