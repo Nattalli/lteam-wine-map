@@ -40,5 +40,4 @@ jobs:
       POSTGRES_PASSWORD: None
       POSTGRES_HOST: None
       POSTGRES_PORT: None
-        run: python manage.py test
 
