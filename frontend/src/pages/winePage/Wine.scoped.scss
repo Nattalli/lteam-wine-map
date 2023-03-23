@@ -1,60 +1,88 @@
 @import '../../assets/scss/variables';
+$secondary-font: #848484;
 
 .content {
-  padding: 100px 40px 200px 40px;
-  justify-content: space-around;
+  padding: 100px 80px 200px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
 
-  .wine-img {
-    border: 1px solid #ebebeb;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 44px;
-    padding: 20px 0;
-    position: relative;
+  .wine-section {
+    gap: 80px;
 
-    img {
-      object-fit: contain;
-      width: 100%;
+    .wine-img {
+      border: 1px solid #ebebeb;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 44px;
+      padding: 20px 0;
+      position: relative;
+      height: 540px;
+
+      img {
+        object-fit: contain;
+        position: absolute !important;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .main-info-section {
+      .name {
+        font-size: 26px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        margin-bottom: 30px;
+      }
+
+      .property {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 30px;
+        margin-bottom: 8px;
+
+        span:first-of-type {
+          color: $primary;
+        }
+
+        span:last-of-type {
+          text-transform: capitalize;
+          color: $secondary-font;
+        }
+
+        > * {
+          font-size: 18px;
+        }
+      }
+    }
+
+    .shop-availability {
+      margin-top: 60px;
+      display: grid;
+
+      span {
+        color: $secondary-font;
+        font-size: 26px;
+        justify-self: center;
+      }
     }
   }
 
-  .main-info-section {
-    .name {
-      font-size: 26px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      display: inline-block;
-      margin-bottom: 30px;
+  .comments-section {
+    .comments-length {
+      font-size: 22px;
+      color: $secondary-font;
+      margin-bottom: 20px;
     }
 
-    .property {
-      display: grid;
-      grid-template-columns: 100px 1fr;
-      gap: 30px;
-      margin-bottom: 8px;
+    .comments-length ~ div {
+      font-size: 18px;
+      color: $secondary-font;
 
-      span:first-of-type {
+      .login-link {
         color: $primary;
       }
-
-      span:last-of-type {
-        text-transform: capitalize;
-        color: #848484;
-      }
-
-      > * {
-        font-size: 18px;
-      }
-    }
-  }
-
-  .shop-availability {
-    margin-top: 60px;
-    display: grid;
-
-    span {
-      color: #848484;
-      font-size: 26px;
-      justify-self: center;
     }
   }
 }
