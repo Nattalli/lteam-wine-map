@@ -29,7 +29,6 @@ jobs:
         run: black backend
       - name: Run tests
         timeout-minutes: 5
-<<<<<<< HEAD
         run: python backend/manage.py test
     env:
       DEBUG: 0
@@ -41,6 +40,5 @@ jobs:
       POSTGRES_PASSWORD: None
       POSTGRES_HOST: None
       POSTGRES_PORT: None
-=======
         run: python manage.py test
->>>>>>> c24de22 (added tests)
+
