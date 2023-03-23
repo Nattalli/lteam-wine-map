@@ -25,7 +25,7 @@ function App() {
       <Layout className="layout">
         <Header user={user} setUser={setUser} />
         <Layout.Content className="main-section">
-          <Outlet context={{ setUser }} />
+          <Outlet context={{ setUser, user }} />
         </Layout.Content>
         <Footer />
       </Layout>
