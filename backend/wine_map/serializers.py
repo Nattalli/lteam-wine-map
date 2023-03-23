@@ -34,7 +34,6 @@ class CategoriesSerializer(serializers.Serializer):
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.StringRelatedField()
     wine = serializers.StringRelatedField()
-    created_at = serializers.DateTimeField()
 
     class Meta:
         model = Comment
