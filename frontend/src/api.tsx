@@ -19,6 +19,10 @@ const getRequest = async (URL: string) => {
     .then((response) => response);
 };
 
+const getRequestWithoutAuthorization = async (URL: string) => {
+  return axiosClient.get(URL).then((response) => response);
+};
+
 const postRequest = async (URL: string, payload: Object) => {
   return axiosClient.post(URL, payload).then((response) => response);
 };
@@ -31,4 +35,10 @@ const deleteRequest = async (URL: string) => {
   return axiosClient.delete(URL).then((response) => response);
 };
 
-export { getRequest, postRequest, patchRequest, deleteRequest };
+export {
+  getRequest,
+  getRequestWithoutAuthorization,
+  postRequest,
+  patchRequest,
+  deleteRequest,
+};
