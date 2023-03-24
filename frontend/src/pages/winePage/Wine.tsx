@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { Alert, Row, Col, Image } from 'antd';
-import { getRequest } from '../../api';
+import { getRequestWithoutAuthorization } from '../../api';
 import './Wine.scoped.scss';
 
 interface Wine {
@@ -45,7 +45,7 @@ export default function WinePage() {
 
   const fetchWine = async () => {
     try {
-      const result = await getRequest(`/api/wine/${id}/`);
+      const result = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
       setWine(result.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -57,7 +57,9 @@ export default function WinePage() {
 
   const fetchComments = async () => {
     try {
-      const result = await getRequest(`/api/wine/${id}/comments/`);
+      const result = await getRequestWithoutAuthorization(
+        `/api/wine/${id}/comments/`
+      );
       setComments(result.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
