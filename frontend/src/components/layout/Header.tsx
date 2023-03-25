@@ -3,7 +3,7 @@ import { MenuProps } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import userIcon from '../../assets/img/user.svg';
 
-import './Header.scoped.scss';
+import './Header.scss';
 import { getRequest } from '../../api';
 
 interface HeaderProps {
