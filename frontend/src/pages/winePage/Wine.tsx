@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import { Alert, Row, Col, Image } from 'antd';
-import { getRequestWithoutAuthorization } from '../../api';
+import { Alert, Row, Col, Image, Input, Form, Button } from 'antd';
+import { getRequestWithoutAuthorization, postRequest } from '../../api';
+import CommentCard from '../../components/layout/CommentCard';
 import './Wine.scoped.scss';
 
 interface Wine {
+  id: number;
   image_url: string;
   name: string;
   wine_type: string;
@@ -24,7 +26,7 @@ interface Wine {
 interface Comment {
   id: number;
   author: string;
-  created_at: string;
+  timestamp: string;
   content: string;
 }
 
@@ -34,14 +36,19 @@ interface UserContext {
   };
 }
 
+const { TextArea } = Input;
+
 export default function WinePage() {
   let params = useParams();
   const { user }: UserContext = useOutletContext();
 
   const [id, setId] = useState<String>();
-  const [error, setError] = useState<String>();
+  const [wineError, setWineError] = useState<String>();
+  const [commentError, setCommentError] = useState<String>();
+  const [commentCreateError, setCommentCreateError] = useState<String>();
   const [wine, setWine] = useState<Wine>();
   const [comments, setComments] = useState<Comment[]>();
+  const [form] = Form.useForm();
 
   const fetchWine = async () => {
     try {
@@ -50,7 +57,7 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
+        setWineError(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -64,7 +71,7 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
+        setCommentError(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -80,13 +87,27 @@ export default function WinePage() {
     fetchComments();
   }, [id]);
 
+  const postComment = async ({ content }: any) => {
+    try {
+      await postRequest(`/api/wine/${wine && wine.id}/comments/create/`, {
+        content,
+      });
+      await fetchComments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ email: string[] }>;
+        setCommentCreateError(err.response ? err.response.data.email[0] : '');
+      }
+    }
+  };
+
   return (
     <div className="content">
       <Row className="wine-section">
-        {error && <Alert message="Error" type="error" showIcon />}
+        {wineError && <Alert message="Error" type="error" showIcon />}
         {wine && (
           <>
-            <Col span={8} className="wine-img">
+            <Col span={10} className="wine-img">
               <Image src={wine.image_url} />
             </Col>
             <Col span={12}>
@@ -128,25 +149,59 @@ export default function WinePage() {
           </>
         )}
       </Row>
-      <Row className="comments-section">
-        {comments && (
-          <div>
-            <div className="comments-length">{comments.length} коментарів</div>
-            {comments.length === 0 && (
-              <div>
-                <span>У цього продукту коментарі відсутні. </span>
-                {user.first_name && (
-                  <span>
-                    <Link to="/login" className="login-link">
-                      Увійдіть,
-                    </Link>
-                    &nbsp; щоб залишити свій коментар.
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        )}
+      <Row className="comment-section">
+        <Col span={10}>
+          {commentError && <Alert message="Error" type="error" showIcon />}
+          {comments && (
+            <div>
+              <div className="comment-length">{comments.length} коментарів</div>
+              {comments.length === 0 && (
+                <div className="no-comments">
+                  <span>У цього продукту коментарі відсутні. </span>
+                  {!user.first_name && (
+                    <span>
+                      <Link to="/login" className="login-link">
+                        Увійдіть,
+                      </Link>
+                      &nbsp; щоб залишити свій коментар.
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+          {user.first_name && (
+            <div className="input-section">
+              {commentCreateError && (
+                <Alert message="Error" type="error" showIcon />
+              )}
+              <span>Залиште свій коментар</span>
+              <Form
+                layout={'vertical'}
+                form={form}
+                initialValues={{ layout: 'vertical' }}
+                onInput={() => setCommentCreateError('')}
+                onFinish={postComment}
+              >
+                <Form.Item name="content">
+                  <TextArea rows={4} />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" size="large" block htmlType="submit">
+                    Додати коментар
+                  </Button>
+                </Form.Item>
+              </Form>
+            </div>
+          )}
+          {comments && (
+            <div className="comment-list">
+              {comments.map((comment) => (
+                <CommentCard comment={comment} key={comment.id} />
+              ))}
+            </div>
+          )}
+        </Col>
       </Row>
     </div>
   );
