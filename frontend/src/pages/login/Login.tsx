@@ -7,7 +7,7 @@ import heartImg from '../../assets/img/heart.svg';
 import squares from '../../assets/img/squares.svg';
 import emailIcon from '../../assets/img/email.svg';
 import { Rule } from 'antd/es/form';
-import { postRequest, getRequest } from '../../api';
+import { postRequestWithoutAthorization, getRequest } from '../../api';
 import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
@@ -50,7 +50,10 @@ export default function Login() {
 
   const logIn = async (credentials: any) => {
     try {
-      const { data } = await postRequest('/auth/log-in/', credentials);
+      const { data } = await postRequestWithoutAthorization(
+        '/auth/log-in/',
+        credentials
+      );
 
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
@@ -62,7 +65,7 @@ export default function Login() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setLoginError(err.response ? err.response.data.detail: '');
+        setLoginError(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -74,7 +77,7 @@ export default function Login() {
 
   const sendResetLink = async (param: any) => {
     try {
-      await postRequest('/api/users/reset_password/', param);
+      await postRequestWithoutAthorization('/api/users/reset_password/', param);
       setResetEmail(param.email);
 
       setResetModalOpen(false);

@@ -24,6 +24,16 @@ const getRequestWithoutAuthorization = async (URL: string) => {
 };
 
 const postRequest = async (URL: string, payload: Object) => {
+  return axiosClient
+    .post(URL, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    })
+    .then((response) => response);
+};
+
+const postRequestWithoutAthorization = async (URL: string, payload: Object) => {
   return axiosClient.post(URL, payload).then((response) => response);
 };
 
@@ -39,6 +49,7 @@ export {
   getRequest,
   getRequestWithoutAuthorization,
   postRequest,
+  postRequestWithoutAthorization,
   patchRequest,
   deleteRequest,
 };
