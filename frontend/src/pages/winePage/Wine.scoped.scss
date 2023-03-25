@@ -1,5 +1,4 @@
 @import '../../assets/scss/variables';
-$secondary-font: #848484;
 
 .content {
   padding: 100px 80px 200px 80px;
@@ -69,19 +68,43 @@ $secondary-font: #848484;
     }
   }
 
-  .comments-section {
-    .comments-length {
+  .comment-section {
+    .comment-length {
       font-size: 22px;
       color: $secondary-font;
       margin-bottom: 20px;
     }
 
-    .comments-length ~ div {
+    .comment-length ~ div {
       font-size: 18px;
       color: $secondary-font;
 
       .login-link {
         color: $primary;
+      }
+    }
+
+    .no-comments {
+      margin-bottom: 20px;
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .input-section {
+      span {
+        display: inline-block;
+        font-size: 18px;
+        color: $secondary-font;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      textarea {
+        font-size: 16px;
       }
     }
   }
