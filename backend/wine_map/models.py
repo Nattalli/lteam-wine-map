@@ -1,19 +1,6 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-
-
-class User(AbstractUser):
-    favourite_wines = models.ManyToManyField("Wine")
-    groups = models.ManyToManyField("auth.Group", related_name="wine_map_users")
-    user_permissions = models.ManyToManyField(
-        "auth.Permission",
-        related_name="wine_map_users",
-        blank=True,
-    )
-
-    def __str__(self) -> str:
-        return self.username
 
 
 class Wine(models.Model):
@@ -51,6 +38,8 @@ class Wine(models.Model):
     )
     region = models.CharField(max_length=255, null=True, blank=True)
     image_url = models.URLField(max_length=255)
+    in_favourites_of = models.ManyToManyField(get_user_model(),
+                                              related_name="favourite_wines")
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -77,7 +66,7 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     wine = models.ForeignKey("Wine", on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(
-        "User", on_delete=models.CASCADE, related_name="comments"
+        get_user_model(), on_delete=models.CASCADE, related_name="comments"
     )
     content = models.TextField()
 
