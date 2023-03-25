@@ -73,7 +73,7 @@ class CommentListView(generics.ListAPIView):
 
     def get_queryset(self):
         wine_id = self.kwargs["wine_id"]
-        return Comment.objects.filter(wine_id=wine_id)
+        return Comment.objects.filter(wine_id=wine_id).order_by("-timestamp")
 
 
 class CommentDeleteView(generics.DestroyAPIView):

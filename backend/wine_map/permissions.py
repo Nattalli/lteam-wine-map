@@ -7,6 +7,6 @@ from .models import Comment
 
 class IsCommentAuthor(BasePermission):
     def has_object_permission(
-            self, request: Request, view: ViewSet, obj: Comment
+        self, request: Request, view: ViewSet, obj: Comment
     ) -> bool:
         return obj.author == request.user
