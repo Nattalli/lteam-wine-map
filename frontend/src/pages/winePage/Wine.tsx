@@ -156,17 +156,17 @@ export default function WinePage() {
             <div>
               <div className="comment-length">{comments.length} коментарів</div>
               {comments.length === 0 && (
-                <div className="no-comments">
+                <div>
                   <span>У цього продукту коментарі відсутні. </span>
-                  {!user.first_name && (
-                    <span>
-                      <Link to="/login" className="login-link">
-                        Увійдіть,
-                      </Link>
-                      &nbsp; щоб залишити свій коментар.
-                    </span>
-                  )}
                 </div>
+              )}
+              {!user.first_name && (
+                <span className="login-to-leave-comment">
+                  <Link to="/login" className="login-link">
+                    Увійдіть,
+                  </Link>
+                  &nbsp; щоб залишити свій коментар.
+                </span>
               )}
             </div>
           )}

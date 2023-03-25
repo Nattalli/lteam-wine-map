@@ -78,14 +78,18 @@
     .comment-length ~ div {
       font-size: 18px;
       color: $secondary-font;
+      margin-bottom: 20px;
+    }
+
+    .login-to-leave-comment {
+      display: inline-block;
+      font-size: 18px;
+      color: $secondary-font;
+      margin-bottom: 20px;
 
       .login-link {
         color: $primary;
       }
-    }
-
-    .no-comments {
-      margin-bottom: 20px;
     }
 
     .comment-list {
