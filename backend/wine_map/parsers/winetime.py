@@ -18,7 +18,7 @@ def parse_winetime(wine_name: str) -> Optional[WineInShop]:
 
 def fetch_page_content(wine_name: str) -> str:
     headers = build_request_headers()
-    params = {'q': wine_name}
+    params = {"q": wine_name}
     try:
         response = requests.get(SEARCH_RESULT_URL, params=params, headers=headers)
         response.raise_for_status()
