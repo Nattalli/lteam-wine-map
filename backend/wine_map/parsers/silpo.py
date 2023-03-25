@@ -8,7 +8,7 @@ from . import errors
 from .wineinfo import WineInShop
 
 API_ENDPOINT_URL = "https://api.catalog.ecom.silpo.ua/api/2.0/exec/EcomCatalogGlobal"
-REQUEST_TIMEOUT = 1
+REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://shop.silpo.ua/search/all"
 
 
@@ -61,7 +61,7 @@ def build_request_body(wine_name: str) -> dict[str, typing.Any]:
             "deliveryType": 2,
             "filialId": 2043,
             "From": 1,
-            "To": 100,
+            "To": 10,
             "sortBy": "default"
         }
     }
