@@ -1,5 +1,6 @@
 import json
 import typing
+from typing import Optional
 from urllib.parse import urlencode, quote
 
 import requests
@@ -12,7 +13,7 @@ REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://shop.silpo.ua/search/all"
 
 
-def parse_silpo(wine_name: str) -> WineInShop:
+def parse_silpo(wine_name: str) -> Optional[WineInShop]:
     data = fetch_data(wine_name)
     return parse_data(wine_name, data)
 
@@ -30,8 +31,10 @@ def fetch_data(wine_name: str) -> dict[str, typing.Any]:
     return data
 
 
-def parse_data(wine_name: str, data: dict[str, typing.Any]) -> WineInShop:
-    items = data.get("items", [])
+def parse_data(wine_name: str, data: dict[str, typing.Any]) -> Optional[WineInShop]:
+    items = data.get("items")
+    if not items:
+        return None
     prices = [item["price"] for item in items if "price" in item]
     url = build_search_result_url(wine_name)
     return WineInShop(min(prices), max(prices), url)
