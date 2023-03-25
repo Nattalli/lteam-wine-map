@@ -38,8 +38,9 @@ class Wine(models.Model):
     )
     region = models.CharField(max_length=255, null=True, blank=True)
     image_url = models.URLField(max_length=255)
-    in_favourites_of = models.ManyToManyField(get_user_model(),
-                                              related_name="favourite_wines")
+    in_favourites_of = models.ManyToManyField(
+        get_user_model(), related_name="favourite_wines"
+    )
 
     def __str__(self) -> str:
         return f"{self.name}"
