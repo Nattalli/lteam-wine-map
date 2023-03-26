@@ -127,6 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -203,7 +206,6 @@ JAZZMIN_SETTINGS = {
     "changeform_format": "collapsible",
     "copyright": "Lteam admin-panel. Made by <a target='_blank'>Lteam</a>",
 }
-
 
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": True,

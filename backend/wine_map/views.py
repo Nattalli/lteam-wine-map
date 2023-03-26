@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import AccessToken
 
 from .filters import WineFilter
 from .models import Country, Brand, Wine, Comment
@@ -86,3 +87,49 @@ class CommentUpdateView(generics.UpdateAPIView):
     serializer_class = CommentSerializer
     lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
+
+
+class FavouriteWinesAddView(generics.UpdateAPIView):
+    def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        wine = Wine.objects.get(pk=self.kwargs["wine_id"])
+        user_id = retrieveUserId(request)
+        wine.in_favourites_of.add(user_id)
+        serializer = WineSerializer(wine)
+
+        return Response(serializer.data)
+
+
+class FavouriteWinesRemoveView(generics.UpdateAPIView):
+
+    def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        wine = Wine.objects.get(pk=self.kwargs["wine_id"])
+        user_id = retrieveUserId(request)
+        wine.in_favourites_of.filter(id=user_id).delete()
+        serializer = WineSerializer(wine)
+
+        return Response(serializer.data)
+
+
+class FavouriteWinesClearView(generics.UpdateAPIView):
+    def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        user_id = retrieveUserId(request)
+        for wine in Wine.objects.filter(in_favourites_of__id=user_id):
+            wine.in_favourites_of.remove(user_id)
+
+        return Response()
+
+
+class FavouriteWines(generics.RetrieveAPIView):
+
+    def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        user_id = retrieveUserId(request)
+        wines = Wine.objects.filter(in_favourites_of__id=user_id)
+        serializer = WineSerializer(wines, many=True)
+
+        return Response(serializer.data)
+
+
+def retrieveUserId(request: Request) -> int:
+    token = request.headers["Authorization"]
+    token_str = token.split("Bearer ")[1]
+    return AccessToken(token_str)["user_id"]
