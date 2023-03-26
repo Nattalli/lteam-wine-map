@@ -26,7 +26,7 @@ class WineResource(resources.ModelResource):
         )
         use_bulk = True
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.processed = set()
 
@@ -35,7 +35,7 @@ class WineResource(resources.ModelResource):
         self.ensure_brand_created(row)
 
     def after_import_row(self, row: OrderedDict, row_result: RowResult,
-                         row_number=None, **kwargs):
+                         row_number: int = None, **kwargs) -> None:
         self.processed.add((row["name"], row["brand"]))
 
     def skip_row(self, instance: Wine, original: Wine, row: OrderedDict,
