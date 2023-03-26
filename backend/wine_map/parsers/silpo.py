@@ -33,10 +33,10 @@ def fetch_data(wine_name: str) -> dict[str, typing.Any]:
 
 
 def parse_data(wine_name: str, data: dict[str, typing.Any]) -> Optional[WineInShop]:
-    items = data.get("items")
-    if not items:
+    wines = data.get("items")
+    if not wines:
         return None
-    prices = [item["price"] for item in items if "price" in item]
+    prices = [wine["price"] for wine in wines if "price" in wine]
     url = build_search_result_url(wine_name)
     return WineInShop(SHOP_NAME, min(prices), max(prices), url)
 
