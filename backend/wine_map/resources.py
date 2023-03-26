@@ -1,26 +1,29 @@
 from typing import OrderedDict
 
-from import_export import resources
+from import_export import fields, resources
 from import_export.results import RowResult
 
 from .models import Wine, Brand, Country
 
 
 class WineResource(resources.ModelResource):
+    brand_id = fields.Field(column_name="brand", attribute="brand_id")
+    country_id = fields.Field(column_name="country", attribute="country_id")
+
     class Meta:
         model = Wine
         skip_unchanged = True
         report_skipped = False
-        import_id_fields = ("name", "brand")
+        import_id_fields = ("name", "brand_id")
         fields = (
             "name",
             "image_url",
             "wine_type",
-            "country",
+            "country_id",
             "sweetness",
             "tastes",
             "pairs_with",
-            "brand",
+            "brand_id",
             "percent_of_alcohol",
             "region",
         )
