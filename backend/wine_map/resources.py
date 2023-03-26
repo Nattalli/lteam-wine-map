@@ -29,6 +29,8 @@ class WineResource(resources.ModelResource):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.processed = set()
+        self.country_cache = {}
+        self.brand_cache = {}
 
     def before_import_row(self, row: OrderedDict, **kwargs: dict) -> None:
         self.ensure_country_created(row)
@@ -46,22 +48,22 @@ class WineResource(resources.ModelResource):
             return True
         return super().skip_row(instance, original, row, import_validation_errors)
 
-    @staticmethod
-    def ensure_country_created(row: OrderedDict) -> None:
+    def ensure_country_created(self, row: OrderedDict) -> None:
         country_name = row["country"].strip()
         if not country_name:
-            country = None
-        else:
+            row["country"] = None
+            return
+        if country_name not in self.country_cache:
             country, _ = Country.objects.get_or_create(name=country_name)
-            country = country.id
-        row["country"] = country
+            self.country_cache[country_name] = country.id
+        row["country"] = self.country_cache[country_name]
 
-    @staticmethod
-    def ensure_brand_created(row: OrderedDict) -> None:
+    def ensure_brand_created(self, row: OrderedDict) -> None:
         brand_name = row["brand"].strip()
         if not brand_name:
-            brand = None
-        else:
+            row["brand"] = None
+            return
+        if brand_name not in self.brand_cache:
             brand, _ = Brand.objects.get_or_create(name=brand_name)
-            brand = brand.id
-        row["brand"] = brand
+            self.brand_cache[brand_name] = brand.id
+        row["brand"] = self.brand_cache[brand_name]
