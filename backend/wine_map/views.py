@@ -21,7 +21,8 @@ class WinePagination(LimitOffsetPagination):
 
 
 class WineListView(generics.ListAPIView):
-    queryset = Wine.objects.select_related("country", "brand")
+    queryset = Wine.objects.select_related("country",
+                                           "brand")
     serializer_class = WineSerializer
     pagination_class = WinePagination
     permission_classes = [AllowAny]
@@ -29,7 +30,8 @@ class WineListView(generics.ListAPIView):
 
 
 class WineDetailView(generics.RetrieveAPIView):
-    queryset = Wine.objects.select_related("country", "brand")
+    queryset = Wine.objects.select_related("country",
+                                           "brand")
     serializer_class = WineSerializer
     permission_classes = [AllowAny]
     lookup_field = "id"
@@ -129,7 +131,7 @@ class FavouriteWines(generics.RetrieveAPIView):
         return Response(serializer.data)
 
 
-def retrieveUserId(request: Request) -> int:
+def retrieve_user_id(request: Request) -> int:
     token = request.headers["Authorization"]
     token_str = token.split("Bearer ")[1]
     return AccessToken(token_str)["user_id"]
