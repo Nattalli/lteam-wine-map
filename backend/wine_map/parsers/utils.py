@@ -16,8 +16,7 @@ def parse_all(wine_name: str) -> list[WineInShop]:
         results = [_get_future_result_or_none(silpo_future),
                    _get_future_result_or_none(vinoua_future),
                    _get_future_result_or_none(winetime_future)]
-        results = [result for result in results if result]
-        return results
+        return [result for result in results if result]
 
 
 def _get_future_result_or_none(future: concurrent.futures.Future) -> typing.Any:
