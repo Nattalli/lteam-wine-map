@@ -45,7 +45,8 @@ class WineResource(resources.ModelResource):
 
     def skip_row(self, instance: Wine, original: Wine, row: OrderedDict,
                  import_validation_errors: bool = None) -> bool:
-        if not instance.name.strip() and (instance.name, instance.brand_id) in self.processed:
+        if not instance.name.strip() or (instance.name,
+                                         instance.brand_id) in self.processed:
             return True
         return super().skip_row(instance, original, row, import_validation_errors)
 
