@@ -12,8 +12,8 @@ from . import parsers
 from .filters import WineFilter
 from .models import Country, Brand, Wine, Comment
 from .permissions import IsCommentAuthor
-from .serializers import CategoriesSerializer, WineSerializer, CommentSerializer, \
-    WineInShopSerializer
+from .serializers import (CategoriesSerializer, WineSerializer, CommentSerializer,
+                          WineInShopSerializer)
 
 
 class WinePagination(LimitOffsetPagination):
