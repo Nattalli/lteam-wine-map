@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
-from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics
+from rest_framework import generics, exceptions, status
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
@@ -94,9 +93,15 @@ class CommentUpdateView(generics.UpdateAPIView):
 class WineInShopsView(APIView):
     permission_classes = [AllowAny]
 
-    @extend_schema(responses=WineInShopSerializer(many=True))
+    @extend_schema(responses={
+        status.HTTP_200_OK: WineInShopSerializer(many=True),
+        status.HTTP_404_NOT_FOUND: None
+    })
     def get(self, request: Request, wine_id: int) -> Response:
-        wine = get_object_or_404(Wine, pk=wine_id)
+        try:
+            wine = Wine.objects.get(pk=wine_id)
+        except Wine.DoesNotExist:
+            raise exceptions.NotFound(detail="Wine dose not exist")
         parsed_shops = parsers.parse_all(wine.name)
         serializer = WineInShopSerializer(parsed_shops, many=True)
         return Response(serializer.data)
