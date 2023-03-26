@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.pagination import LimitOffsetPagination
@@ -8,10 +9,12 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from . import parsers
 from .filters import WineFilter
 from .models import Country, Brand, Wine, Comment
 from .permissions import IsCommentAuthor
-from .serializers import CategoriesSerializer, WineSerializer, CommentSerializer
+from .serializers import CategoriesSerializer, WineSerializer, CommentSerializer, \
+    WineInShopSerializer
 
 
 class WinePagination(LimitOffsetPagination):
@@ -86,3 +89,14 @@ class CommentUpdateView(generics.UpdateAPIView):
     serializer_class = CommentSerializer
     lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
+
+
+class WineInShopsView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(responses=WineInShopSerializer(many=True))
+    def get(self, request: Request, wine_id: int) -> Response:
+        wine = get_object_or_404(Wine, pk=wine_id)
+        parsed_shops = parsers.parse_all(wine.name)
+        serializer = WineInShopSerializer(parsed_shops, many=True)
+        return Response(serializer.data)

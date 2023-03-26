@@ -38,3 +38,10 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
+
+
+class WineInShopSerializer(serializers.Serializer):
+    shop_name = serializers.CharField()
+    min_price = serializers.FloatField()
+    max_price = serializers.FloatField()
+    url = serializers.URLField()

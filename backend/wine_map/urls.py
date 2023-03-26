@@ -8,6 +8,7 @@ from .views import (
     CommentListView,
     CommentDeleteView,
     CommentUpdateView,
+    WineInShopsView,
 )
 
 comments = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path("<int:id>/", WineDetailView.as_view(), name="wine-detail"),
     path("categories/", CategoriesView.as_view(), name="categories"),
     path("<int:wine_id>/comments/", include(comments)),
+    path("<int:wine_id>/prices/", WineInShopsView.as_view(), name="wine-prices")
 ]
 
 app_name = "wines"
