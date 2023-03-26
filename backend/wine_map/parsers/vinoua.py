@@ -5,7 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from . import errors
-from .wineinfo import WineInShop
+from .wineinshop import WineInShop
 
 REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://vino.ua/katalog/search/"

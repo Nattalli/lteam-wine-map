@@ -6,7 +6,7 @@ from urllib.parse import urlencode, quote
 import requests
 
 from . import errors
-from .wineinfo import WineInShop
+from .wineinshop import WineInShop
 
 API_ENDPOINT_URL = "https://api.catalog.ecom.silpo.ua/api/2.0/exec/EcomCatalogGlobal"
 REQUEST_TIMEOUT = 2

@@ -3,7 +3,7 @@ import typing
 
 from wine_map.parsers.silpo import parse_silpo
 from wine_map.parsers.vinoua import parse_vinoua
-from wine_map.parsers.wineinfo import WineInShop
+from wine_map.parsers.wineinshop import WineInShop
 from wine_map.parsers.winetime import parse_winetime
 
 
