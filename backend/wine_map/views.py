@@ -21,8 +21,7 @@ class WinePagination(LimitOffsetPagination):
 
 
 class WineListView(generics.ListAPIView):
-    queryset = Wine.objects.select_related("country",
-                                           "brand")
+    queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     pagination_class = WinePagination
     permission_classes = [AllowAny]
@@ -30,8 +29,7 @@ class WineListView(generics.ListAPIView):
 
 
 class WineDetailView(generics.RetrieveAPIView):
-    queryset = Wine.objects.select_related("country",
-                                           "brand")
+    queryset = Wine.objects.select_related("country", "brand")
     serializer_class = WineSerializer
     permission_classes = [AllowAny]
     lookup_field = "id"
@@ -94,7 +92,7 @@ class CommentUpdateView(generics.UpdateAPIView):
 class FavouriteWinesAddView(generics.UpdateAPIView):
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         wine = Wine.objects.get(pk=self.kwargs["wine_id"])
-        user_id = retrieveUserId(request)
+        user_id = retrieve_user_id(request)
         wine.in_favourites_of.add(user_id)
         serializer = WineSerializer(wine)
 
@@ -105,7 +103,7 @@ class FavouriteWinesRemoveView(generics.UpdateAPIView):
 
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         wine = Wine.objects.get(pk=self.kwargs["wine_id"])
-        user_id = retrieveUserId(request)
+        user_id = retrieve_user_id(request)
         wine.in_favourites_of.filter(id=user_id).delete()
         serializer = WineSerializer(wine)
 
@@ -114,7 +112,7 @@ class FavouriteWinesRemoveView(generics.UpdateAPIView):
 
 class FavouriteWinesClearView(generics.UpdateAPIView):
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        user_id = retrieveUserId(request)
+        user_id = retrieve_user_id(request)
         for wine in Wine.objects.filter(in_favourites_of__id=user_id):
             wine.in_favourites_of.remove(user_id)
 
@@ -124,7 +122,7 @@ class FavouriteWinesClearView(generics.UpdateAPIView):
 class FavouriteWines(generics.RetrieveAPIView):
 
     def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        user_id = retrieveUserId(request)
+        user_id = retrieve_user_id(request)
         wines = Wine.objects.filter(in_favourites_of__id=user_id)
         serializer = WineSerializer(wines, many=True)
 

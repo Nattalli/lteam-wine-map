@@ -21,8 +21,10 @@ comments = [
     path("update/<int:id>/", CommentUpdateView.as_view(), name="comment-update"),
 ]
 favourites = [
-    path("<int:wine_id>/add/", FavouriteWinesAddView.as_view(), name="add_to_favourites"),
-    path("<int:wine_id>/remove/", FavouriteWinesRemoveView.as_view(), name="remove_from_favourites"),
+    path("<int:wine_id>/add/", FavouriteWinesAddView.as_view(),
+         name="add_to_favourites"),
+    path("<int:wine_id>/remove/", FavouriteWinesRemoveView.as_view(),
+         name="remove_from_favourites"),
     path("clear/", FavouriteWinesClearView.as_view(), name="clear_favourites"),
     path("", FavouriteWines.as_view(), name="retrieve_wines")
 ]
