@@ -21,8 +21,8 @@ def parse_all(wine_name: str) -> dict[str, WineInShop]:
         }
 
 
-def _get_future_result_or_none(f: concurrent.futures.Future) -> typing.Any:
+def _get_future_result_or_none(future: concurrent.futures.Future) -> typing.Any:
     try:
-        return f.result()
+        return future.result()
     except Exception:
         return None
