@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from . import errors
 from .wineinshop import WineInShop
 
+SHOP_NAME = "winetime"
 REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://winetime.com.ua/search"
 
@@ -38,7 +39,7 @@ def parse_page_content(wine_name: str, page_content: str) -> Optional[WineInShop
 
     prices = [int(price.text.replace("грн", "").strip()) for price in prices]
     url = build_search_url(wine_name)
-    return WineInShop(min(prices), max(prices), url)
+    return WineInShop(SHOP_NAME, min(prices), max(prices), url)
 
 
 def build_request_headers() -> dict[str, str]:

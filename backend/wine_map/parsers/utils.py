@@ -7,18 +7,17 @@ from wine_map.parsers.wineinshop import WineInShop
 from wine_map.parsers.winetime import parse_winetime
 
 
-def parse_all(wine_name: str) -> dict[str, WineInShop]:
+def parse_all(wine_name: str) -> list[WineInShop]:
     with concurrent.futures.ThreadPoolExecutor() as executor:
         silpo_future = executor.submit(parse_silpo, wine_name)
         vinoua_future = executor.submit(parse_vinoua, wine_name)
         winetime_future = executor.submit(parse_winetime, wine_name)
 
-        concurrent.futures.wait([silpo_future, vinoua_future, winetime_future])
-        return {
-            "silpo": _get_future_result_or_none(silpo_future),
-            "vinoua": _get_future_result_or_none(vinoua_future),
-            "winetime": _get_future_result_or_none(winetime_future)
-        }
+        results = [_get_future_result_or_none(silpo_future),
+                   _get_future_result_or_none(vinoua_future),
+                   _get_future_result_or_none(winetime_future)]
+        results = [result for result in results if result]
+        return results
 
 
 def _get_future_result_or_none(future: concurrent.futures.Future) -> typing.Any:

@@ -8,6 +8,7 @@ import requests
 from . import errors
 from .wineinshop import WineInShop
 
+SHOP_NAME = "silpo"
 API_ENDPOINT_URL = "https://api.catalog.ecom.silpo.ua/api/2.0/exec/EcomCatalogGlobal"
 REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://shop.silpo.ua/search/all"
@@ -37,7 +38,7 @@ def parse_data(wine_name: str, data: dict[str, typing.Any]) -> Optional[WineInSh
         return None
     prices = [item["price"] for item in items if "price" in item]
     url = build_search_result_url(wine_name)
-    return WineInShop(min(prices), max(prices), url)
+    return WineInShop(SHOP_NAME, min(prices), max(prices), url)
 
 
 def build_request_headers() -> dict[str, str]:
