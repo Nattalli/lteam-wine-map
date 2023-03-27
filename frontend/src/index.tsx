@@ -13,6 +13,7 @@ import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import Registration from './pages/registration/Registration';
 import NewPassword from './pages/newPassword/NewPassword';
+import WinePage from './pages/winePage/Wine';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Registration />} />
       <Route path="reset-password" element={<NewPassword />} />
+      <Route path="wine/:id" element={<WinePage />} />
     </Route>
   )
 );

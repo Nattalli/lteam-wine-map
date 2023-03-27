@@ -3,7 +3,7 @@ import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
 import { Rule } from 'antd/es/form';
-import { postRequest } from '../../api';
+import { postRequestWithoutAthorization } from '../../api';
 import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
@@ -39,7 +39,7 @@ export default function Registration() {
 
   const signUp = async (values: object) => {
     try {
-      await postRequest('/auth/sign-up/', values);
+      await postRequestWithoutAthorization('/auth/sign-up/', values);
 
       navigate('/login', { replace: true });
     } catch (error) {

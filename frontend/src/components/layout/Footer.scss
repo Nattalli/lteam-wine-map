@@ -1,4 +1,4 @@
-@import "../../assets/scss/variables";
+@import '../../assets/scss/variables';
 
 .footer {
   background-color: $primary;
@@ -20,6 +20,14 @@
       font-size: 18px;
       font-weight: 400;
       padding: 0px 80px;
+
+      a {
+        color: white;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
 
       .footer-link-title {
         margin-bottom: 5px;
