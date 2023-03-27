@@ -88,28 +88,24 @@ class CommentUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated, IsCommentAuthor]
 
 
-class FavouriteWinesAddView(generics.UpdateAPIView):
-    def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        wine = Wine.objects.get(pk=self.kwargs["wine_id"])
-        user_id = request.user.id
-        wine.in_favourites_of.add(user_id)
-        serializer = WineSerializer(wine)
-
-        return Response(serializer.data)
-
-
-class FavouriteWinesRemoveView(generics.UpdateAPIView):
+class FavouriteWinesUpdateView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]
 
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         wine = Wine.objects.get(pk=self.kwargs["wine_id"])
         user_id = request.user.id
-        wine.in_favourites_of.filter(id=user_id).delete()
+        if user_id in wine.in_favourites_of.values_list("id", flat=True):
+            wine.in_favourites_of.remove(user_id)
+        else:
+            wine.in_favourites_of.add(user_id)
         serializer = WineSerializer(wine)
 
         return Response(serializer.data)
 
 
 class FavouriteWinesClearView(generics.UpdateAPIView):
+    permission_classes = [AllowAny]
+
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         user_id = request.user.id
         for wine in Wine.objects.filter(in_favourites_of__id=user_id):
@@ -119,6 +115,7 @@ class FavouriteWinesClearView(generics.UpdateAPIView):
 
 
 class FavouriteWines(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
 
     def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         user_id = request.user.id
