@@ -1,17 +1,19 @@
 from dataclasses import dataclass
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics
+from rest_framework import generics, exceptions, status
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from . import parsers
 from .filters import WineFilter
 from .models import Country, Brand, Wine, Comment
 from .permissions import IsCommentAuthor
-from .serializers import CategoriesSerializer, WineSerializer, CommentSerializer
+from .serializers import (CategoriesSerializer, WineSerializer, CommentSerializer,
+                          WineInShopSerializer)
 
 
 class WinePagination(LimitOffsetPagination):
@@ -86,3 +88,20 @@ class CommentUpdateView(generics.UpdateAPIView):
     serializer_class = CommentSerializer
     lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
+
+
+class WineInShopsView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(responses={
+        status.HTTP_200_OK: WineInShopSerializer(many=True),
+        status.HTTP_404_NOT_FOUND: None
+    })
+    def get(self, request: Request, wine_id: int) -> Response:
+        try:
+            wine = Wine.objects.get(pk=wine_id)
+        except Wine.DoesNotExist:
+            raise exceptions.NotFound(detail="Wine dose not exist")
+        parsed_shops = parsers.parse_all(wine.name)
+        serializer = WineInShopSerializer(parsed_shops, many=True)
+        return Response(serializer.data)
