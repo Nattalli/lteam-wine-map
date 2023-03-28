@@ -1,0 +1,36 @@
+@import '../../assets/scss/variables';
+
+.comment {
+  border: 1px solid $secondary-font;
+  border-radius: 29px;
+  display: flex;
+  flex-direction: column;
+  padding: 17px 20px;
+  width: 100%;
+
+  .comment-header {
+    border-bottom: 1px solid $secondary-font;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 8px;
+
+    span:first-of-type {
+      color: $primary;
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    span:not(:first-of-type) {
+      color: $secondary-font;
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+
+  .content {
+    color: $secondary-font;
+    font-size: 18px;
+    padding-top: 10px;
+  }
+}

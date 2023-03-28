@@ -11,6 +11,7 @@ from .views import (
     FavouriteWinesUpdateView,
     FavouriteWinesClearView,
     FavouriteWines,
+    WineInShopsView,
 )
 
 comments = [
@@ -31,6 +32,7 @@ urlpatterns = [
     path("favourites/", include(favourites)),
     path("categories/", CategoriesView.as_view(), name="categories"),
     path("<int:wine_id>/comments/", include(comments)),
+    path("<int:wine_id>/prices/", WineInShopsView.as_view(), name="wine-prices")
 ]
 
 app_name = "wines"

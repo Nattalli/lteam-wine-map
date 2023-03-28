@@ -1,0 +1,108 @@
+@import '../../assets/scss/variables';
+
+.content {
+  padding: 100px 80px 100px 80px;
+  row-gap: 40px;
+  column-gap: 80px;
+
+  .wine-img {
+    border: 1px solid #ebebeb;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 44px;
+    padding: 20px 0;
+    position: relative;
+    height: 540px;
+
+    img {
+      object-fit: contain;
+      position: absolute !important;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .main-info-section {
+    .name {
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .property {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 30px;
+      margin-bottom: 8px;
+
+      span:first-of-type {
+        color: $primary;
+      }
+
+      span:last-of-type {
+        text-transform: capitalize;
+        color: $secondary-font;
+      }
+
+      > * {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .shop-availability {
+    margin-top: 60px;
+    display: grid;
+
+    span {
+      color: $secondary-font;
+      font-size: 26px;
+      justify-self: center;
+    }
+  }
+}
+
+.comment-length {
+  font-size: 22px;
+  color: $secondary-font;
+  margin-bottom: 20px;
+}
+
+.comment-length ~ div {
+  font-size: 18px;
+  color: $secondary-font;
+  margin-bottom: 20px;
+}
+
+.login-to-leave-comment {
+  display: inline-block;
+  font-size: 18px;
+  color: $secondary-font;
+  margin-bottom: 20px;
+
+  .login-link {
+    color: $primary;
+  }
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-section {
+  span {
+    display: inline-block;
+    font-size: 18px;
+    color: $secondary-font;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+
+  textarea {
+    font-size: 16px;
+  }
+}

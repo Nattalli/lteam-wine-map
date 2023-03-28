@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Col, Row, Button, Form, Input, Alert } from 'antd';
 import { Rule } from 'antd/es/form';
-import { postRequest } from '../../api';
+import { postRequestWithoutAthorization } from '../../api';
 import './NewPassword.scoped.scss';
 import axios, { AxiosError } from 'axios';
 
@@ -30,7 +30,10 @@ export default function NewPassword() {
     };
 
     try {
-      await postRequest('/api/users/reset_password_confirm/', requstBody);
+      await postRequestWithoutAthorization(
+        '/api/users/reset_password_confirm/',
+        requstBody
+      );
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ new_password: string }>;

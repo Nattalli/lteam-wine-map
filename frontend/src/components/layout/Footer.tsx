@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Col, Layout, Row, Typography } from 'antd';
 
 import './Footer.scss';
@@ -15,8 +16,8 @@ export default function Footer() {
               <div className="footer-link-title">
                 <span className="footer-link-title-text">Посилання</span>
               </div>
-              <div>Реєстрація</div>
-              <div>Авторизація</div>
+              <Link to="/register">Реєстрація</Link>
+              <Link to="/login">Авторизація</Link>
               <div>Обране</div>
             </div>
             <Col className="footer-link-section">
