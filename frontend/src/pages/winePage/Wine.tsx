@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import { Alert, Row, Col, Image, Input, Form, Button } from 'antd';
+import { Row, Col, Image, Input, Form, Button, notification } from 'antd';
 import { getRequestWithoutAuthorization, postRequest } from '../../api';
 import CommentCard from '../../components/layout/CommentCard';
 import './Wine.scoped.scss';
@@ -23,6 +23,13 @@ interface Wine {
   pairs_with: string;
 }
 
+interface Price {
+  shop_name: string;
+  min_price: number;
+  max_price: number;
+  url: string;
+}
+
 interface Comment {
   id: number;
   author: string;
@@ -41,13 +48,16 @@ const { TextArea } = Input;
 export default function WinePage() {
   let params = useParams();
   const { user }: UserContext = useOutletContext();
+  const [api, contextHolder] = notification.useNotification();
 
   const [id, setId] = useState<String>();
-  const [wineError, setWineError] = useState<String>();
-  const [commentError, setCommentError] = useState<String>();
-  const [commentCreateError, setCommentCreateError] = useState<String>();
+
+  const [error, setError] = useState<String>();
+
   const [wine, setWine] = useState<Wine>();
+  const [prices, setPrices] = useState<Price[]>();
   const [comments, setComments] = useState<Comment[]>();
+
   const [form] = Form.useForm();
 
   const fetchWine = async () => {
@@ -57,7 +67,22 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setWineError(err.response ? err.response.data.detail : '');
+        setError(err.response ? err.response.data.detail : '');
+      }
+      openNotification();
+    }
+  };
+
+  const fetchWinePrices = async () => {
+    try {
+      const result = await getRequestWithoutAuthorization(
+        `/api/wine/${id}/prices/`
+      );
+      setPrices(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        setError(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -71,7 +96,7 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setCommentError(err.response ? err.response.data.detail : '');
+        setError(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -84,6 +109,7 @@ export default function WinePage() {
     if (!id) return;
 
     fetchWine();
+    fetchWinePrices();
     fetchComments();
   }, [id]);
 
@@ -96,14 +122,22 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ email: string[] }>;
-        setCommentCreateError(err.response ? err.response.data.email[0] : '');
+        setError(err.response ? err.response.data.email[0] : '');
       }
     }
   };
 
+  const openNotification = () => {
+    api.error({
+      message: 'Помилка',
+      description: error,
+      placement: 'top',
+    });
+  };
+
   return (
     <Row className="content">
-      {wineError && <Alert message="Error" type="error" showIcon />}
+      {contextHolder}
       {wine && (
         <>
           <Col span={10} className="wine-img">
@@ -126,7 +160,7 @@ export default function WinePage() {
               </div>
               <div className="property">
                 <span>Бренд</span>
-                <span>{wine.brand.name}</span>
+                <span>{wine.brand && wine.brand.name}</span>
               </div>
               <div className="property">
                 <span>Смаки</span>
@@ -143,10 +177,30 @@ export default function WinePage() {
             </div>
             <div className="shop-availability">
               <span className="name">Наявність в магазинах</span>
+              {prices && prices.length === 0 && (
+                <div>
+                  На жаль, даного товару зараз немає в наявності в магазинах,
+                  які ми використовуємо для порівняння
+                </div>
+              )}
+              {prices &&
+                prices.map((priceItem) => (
+                  <div className="price-item">
+                    <span>{priceItem.shop_name}</span>
+                    <a href={priceItem.url} target="_blank" rel="noreferrer">
+                      {priceItem.min_price === priceItem.max_price ? (
+                        <span> {priceItem.max_price} грн</span>
+                      ) : (
+                        <span>
+                          {priceItem.min_price} - {priceItem.max_price} грн
+                        </span>
+                      )}
+                    </a>
+                  </div>
+                ))}
             </div>
           </Col>
           <Col span={10}>
-            {commentError && <Alert message="Error" type="error" showIcon />}
             {comments && (
               <div>
                 <div className="comment-length">
@@ -169,15 +223,11 @@ export default function WinePage() {
             )}
             {user.first_name && (
               <div className="input-section">
-                {commentCreateError && (
-                  <Alert message="Error" type="error" showIcon />
-                )}
                 <span>Залиште свій коментар</span>
                 <Form
                   layout={'vertical'}
                   form={form}
                   initialValues={{ layout: 'vertical' }}
-                  onInput={() => setCommentCreateError('')}
                   onFinish={postComment}
                 >
                   <Form.Item name="content">

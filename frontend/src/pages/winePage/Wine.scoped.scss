@@ -58,8 +58,30 @@
 
     span {
       color: $secondary-font;
+    }
+
+    .name {
       font-size: 26px;
       justify-self: center;
+    }
+
+    .price-item {
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      > span:first-of-type {
+        text-transform: capitalize;
+        color: $primary;
+      }
+    }
+
+    .price-item:first-of-type {
+      margin-top: 20px;
     }
   }
 }
