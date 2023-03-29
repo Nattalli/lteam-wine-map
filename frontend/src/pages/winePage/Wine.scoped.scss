@@ -60,6 +60,11 @@
       color: $secondary-font;
     }
 
+    span {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
     .name {
       font-size: 26px;
       justify-self: center;
@@ -69,14 +74,16 @@
       display: flex;
       justify-content: space-between;
 
-      span {
-        font-size: 18px;
-        margin-bottom: 10px;
-      }
-
       > span:first-of-type {
         text-transform: capitalize;
         color: $primary;
+      }
+
+      a:hover {
+        span {
+          color: $primary;
+          text-decoration: underline;
+        }
       }
     }
 

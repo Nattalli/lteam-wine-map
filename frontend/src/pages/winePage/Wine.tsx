@@ -178,10 +178,10 @@ export default function WinePage() {
             <div className="shop-availability">
               <span className="name">Наявність в магазинах</span>
               {prices && prices.length === 0 && (
-                <div>
+                <span className="not-available">
                   На жаль, даного товару зараз немає в наявності в магазинах,
                   які ми використовуємо для порівняння
-                </div>
+                </span>
               )}
               {prices &&
                 prices.map((priceItem) => (
