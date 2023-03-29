@@ -14,6 +14,7 @@ import Login from './pages/login/Login';
 import Registration from './pages/registration/Registration';
 import NewPassword from './pages/newPassword/NewPassword';
 import WinePage from './pages/winePage/Wine';
+import UserProfile from './pages/userProfile/UserProfile';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +23,7 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Registration />} />
       <Route path="reset-password" element={<NewPassword />} />
+      <Route path="user-profile" element={<UserProfile />} />
       <Route path="wine/:id" element={<WinePage />} />
     </Route>
   )
