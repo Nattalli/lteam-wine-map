@@ -25,9 +25,17 @@ export default function Header({ user, setUser }: HeaderProps) {
     navigate('/login', { replace: true });
   };
 
+  const redirectToProfilePage = () => {
+    navigate('/user-profile', { replace: true });
+  };
+
   const menuItems: MenuProps['items'] = [
     {
       key: '1',
+      label: <div onClick={redirectToProfilePage}>Особистий кабінет</div>,
+    },
+    {
+      key: '2',
       label: <div onClick={logout}>Вийти</div>,
     },
   ];
