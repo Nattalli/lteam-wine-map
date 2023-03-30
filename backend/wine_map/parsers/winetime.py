@@ -25,8 +25,9 @@ def fetch_page_content(wine_name: str) -> str:
         response.raise_for_status()
         content = response.text
     except requests.RequestException as e:
-        raise errors.NetworkError(f"Could not fetch page content"
-                                  f" for wine {wine_name}") from e
+        raise errors.NetworkError(
+            f"Could not fetch page content" f" for wine {wine_name}"
+        ) from e
     return content
 
 
@@ -47,7 +48,7 @@ def build_request_headers() -> dict[str, str]:
         "DNT": "1",
         "sec-ch-ua-mobile": "?0",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+        "(KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
         "sec-ch-ua-platform": '"Linux"',
         "Sec-Fetch-Site": "same-site",
         "Sec-Fetch-Mode": "cors",

@@ -12,8 +12,12 @@ from . import parsers
 from .filters import WineFilter
 from .models import Country, Brand, Wine, Comment
 from .permissions import IsCommentAuthor
-from .serializers import (CategoriesSerializer, WineSerializer, CommentSerializer,
-                          WineInShopSerializer)
+from .serializers import (
+    CategoriesSerializer,
+    WineSerializer,
+    CommentSerializer,
+    WineInShopSerializer,
+)
 
 
 class WinePagination(LimitOffsetPagination):
@@ -80,6 +84,7 @@ class CommentListView(generics.ListAPIView):
 
 class CommentDeleteView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
+    lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
 
 
@@ -93,10 +98,12 @@ class CommentUpdateView(generics.UpdateAPIView):
 class WineInShopsView(APIView):
     permission_classes = [AllowAny]
 
-    @extend_schema(responses={
-        status.HTTP_200_OK: WineInShopSerializer(many=True),
-        status.HTTP_404_NOT_FOUND: None
-    })
+    @extend_schema(
+        responses={
+            status.HTTP_200_OK: WineInShopSerializer(many=True),
+            status.HTTP_404_NOT_FOUND: None,
+        }
+    )
     def get(self, request: Request, wine_id: int) -> Response:
         try:
             wine = Wine.objects.get(pk=wine_id)

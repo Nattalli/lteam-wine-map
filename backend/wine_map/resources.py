@@ -39,14 +39,22 @@ class WineResource(resources.ModelResource):
         self.ensure_country_created(row)
         self.ensure_brand_created(row)
 
-    def after_import_row(self, row: OrderedDict, row_result: RowResult,
-                         row_number: int = None, **kwargs) -> None:
+    def after_import_row(
+        self, row: OrderedDict, row_result: RowResult, row_number: int = None, **kwargs
+    ) -> None:
         self.processed.add((row["name"], row["brand"]))
 
-    def skip_row(self, instance: Wine, original: Wine, row: OrderedDict,
-                 import_validation_errors: bool = None) -> bool:
-        if not instance.name.strip() or (instance.name,
-                                         instance.brand_id) in self.processed:
+    def skip_row(
+        self,
+        instance: Wine,
+        original: Wine,
+        row: OrderedDict,
+        import_validation_errors: bool = None,
+    ) -> bool:
+        if (
+            not instance.name.strip()
+            or (instance.name, instance.brand_id) in self.processed
+        ):
             return True
         return super().skip_row(instance, original, row, import_validation_errors)
 
