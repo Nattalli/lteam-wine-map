@@ -99,7 +99,6 @@ Twisted==22.10.0
 typing_extensions==4.5.0
 uritemplate==4.1.1
 urllib3==1.26.15
-v==3.4.0
 virtualenv==20.17.1
 w3lib==2.1.1
 xlrd==2.0.1
