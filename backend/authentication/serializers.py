@@ -14,18 +14,6 @@ class SignUpSerializer(serializers.ModelSerializer):
             "last_name": {"required": True},
         }
 
-    def update(
-        self, instance: get_user_model(), validated_data: dict
-    ) -> get_user_model():
-        """Update a user, set the password correctly and return it"""
-        password = validated_data.pop("password", None)
-        user = super().update(instance, validated_data)
-        if password:
-            user.set_password(password)
-            user.save()
-
-        return user
-
     def create(self, validated_data: dict) -> get_user_model():
         user = User.objects.create(
             username=validated_data["email"],
@@ -42,3 +30,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
         fields = ("email", "first_name", "last_name")
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    first_password = serializers.CharField(required=True, min_length=8)
+    second_password = serializers.CharField(required=True, min_length=8)
