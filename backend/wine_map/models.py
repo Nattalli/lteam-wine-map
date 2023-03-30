@@ -18,8 +18,9 @@ class Wine(models.Model):
     ]
 
     name = models.CharField(max_length=255)
-    brand = models.ForeignKey("Brand", on_delete=models.CASCADE, related_name="brand",
-                              null=True, blank=True)
+    brand = models.ForeignKey(
+        "Brand", on_delete=models.CASCADE, related_name="brand", null=True, blank=True
+    )
     wine_type = models.CharField(
         choices=WINE_TYPES, max_length=127, null=True, blank=True
     )
