@@ -11,6 +11,7 @@ interface CommentProps {
     content: string;
     timestamp: string;
   };
+  editable: boolean;
   editableId: number;
   setEditableId: Function;
   editComment: Function;
@@ -21,6 +22,7 @@ const { TextArea } = Input;
 
 export default function CommentCard({
   comment,
+  editable,
   editableId,
   setEditableId,
   editComment,
@@ -41,16 +43,20 @@ export default function CommentCard({
       <div className="comment-header">
         <span>{comment.author}</span>
         <span>{new Date(comment.timestamp).toLocaleString('uk-UA')}</span>
-        <img
-          src={editIcon}
-          alt="editComment"
-          onClick={() => setEditableId(!editableId ? comment.id : 0)}
-        />
-        <img
-          src={deleteIcon}
-          alt="deleteComment"
-          onClick={() => requestDeleteComment(comment.id)}
-        />
+        {editable && (
+          <>
+            <img
+              src={editIcon}
+              alt="editComment"
+              onClick={() => setEditableId(!editableId ? comment.id : 0)}
+            />
+            <img
+              src={deleteIcon}
+              alt="deleteComment"
+              onClick={() => requestDeleteComment(comment.id)}
+            />
+          </>
+        )}
       </div>
       {editableId !== comment.id ? (
         <div className="content">{comment.content}</div>

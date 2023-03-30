@@ -54,6 +54,7 @@ interface Comment {
 interface UserContext {
   user: {
     first_name: string;
+    username: string;
   };
 }
 
@@ -310,6 +311,7 @@ export default function WinePage() {
                   <CommentCard
                     comment={comment}
                     key={comment.id}
+                    editable={user.username === comment.author}
                     editComment={editComment}
                     requestDeleteComment={requestDeleteComment}
                     setEditableId={setEditableId}
