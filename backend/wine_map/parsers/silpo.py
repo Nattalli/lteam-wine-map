@@ -23,8 +23,9 @@ def fetch_data(wine_name: str) -> dict[str, typing.Any]:
     headers = build_request_headers()
     body = build_request_body(wine_name)
     try:
-        response = requests.post(API_ENDPOINT_URL, headers=headers, json=body,
-                                 timeout=REQUEST_TIMEOUT)
+        response = requests.post(
+            API_ENDPOINT_URL, headers=headers, json=body, timeout=REQUEST_TIMEOUT
+        )
         response.raise_for_status()
         data = response.json()
     except (requests.RequestException, json.JSONDecodeError) as e:
@@ -46,7 +47,7 @@ def build_request_headers() -> dict[str, str]:
         "DNT": "1",
         "sec-ch-ua-mobile": "?0",
         "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-                      "(KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+        "(KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
         "sec-ch-ua-platform": '"Linux"',
         "Sec-Fetch-Site": "same-site",
         "Sec-Fetch-Mode": "cors",
@@ -66,8 +67,8 @@ def build_request_body(wine_name: str) -> dict[str, typing.Any]:
             "filialId": 2043,
             "From": 1,
             "To": 10,
-            "sortBy": "default"
-        }
+            "sortBy": "default",
+        },
     }
     return body
 

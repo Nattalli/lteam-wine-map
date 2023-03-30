@@ -13,9 +13,11 @@ def parse_all(wine_name: str) -> list[WineInShop]:
         vinoua_future = executor.submit(parse_vinoua, wine_name)
         winetime_future = executor.submit(parse_winetime, wine_name)
 
-        results = [_get_future_result_or_none(silpo_future),
-                   _get_future_result_or_none(vinoua_future),
-                   _get_future_result_or_none(winetime_future)]
+        results = [
+            _get_future_result_or_none(silpo_future),
+            _get_future_result_or_none(vinoua_future),
+            _get_future_result_or_none(winetime_future),
+        ]
         return [result for result in results if result]
 
 
