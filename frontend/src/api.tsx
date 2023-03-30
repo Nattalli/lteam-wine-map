@@ -37,12 +37,28 @@ const postRequestWithoutAthorization = async (URL: string, payload: Object) => {
   return axiosClient.post(URL, payload).then((response) => response);
 };
 
+const putRequest = async (URL: string, payload: Object) => {
+  return axiosClient
+    .put(URL, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    })
+    .then((response) => response);
+};
+
 const patchRequest = async (URL: string, payload: Object) => {
   return axiosClient.patch(URL, payload).then((response) => response);
 };
 
 const deleteRequest = async (URL: string) => {
-  return axiosClient.delete(URL).then((response) => response);
+  return axiosClient
+    .delete(URL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    })
+    .then((response) => response);
 };
 
 export {
@@ -50,6 +66,7 @@ export {
   getRequestWithoutAuthorization,
   postRequest,
   postRequestWithoutAthorization,
+  putRequest,
   patchRequest,
   deleteRequest,
 };

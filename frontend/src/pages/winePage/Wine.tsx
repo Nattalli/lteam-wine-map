@@ -1,8 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import { Row, Col, Image, Input, Form, Button, notification } from 'antd';
-import { getRequestWithoutAuthorization, postRequest } from '../../api';
+import {
+  Row,
+  Col,
+  Image,
+  Input,
+  Form,
+  Button,
+  Modal,
+  notification,
+} from 'antd';
+import {
+  deleteRequest,
+  getRequestWithoutAuthorization,
+  postRequest,
+  putRequest,
+} from '../../api';
 import CommentCard from '../../components/layout/CommentCard';
 import './Wine.scoped.scss';
 
@@ -52,54 +66,14 @@ export default function WinePage() {
 
   const [id, setId] = useState<String>();
 
-  const [error, setError] = useState<String>();
-
   const [wine, setWine] = useState<Wine>();
   const [prices, setPrices] = useState<Price[]>();
   const [comments, setComments] = useState<Comment[]>();
+  const [editableId, setEditableId] = useState<number>(0);
+  const [idToDelete, setIdToDelete] = useState<number>(0);
 
   const [form] = Form.useForm();
-
-  const fetchWine = async () => {
-    try {
-      const result = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
-      setWine(result.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
-      }
-      openNotification();
-    }
-  };
-
-  const fetchWinePrices = async () => {
-    try {
-      const result = await getRequestWithoutAuthorization(
-        `/api/wine/${id}/prices/`
-      );
-      setPrices(result.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
-      }
-    }
-  };
-
-  const fetchComments = async () => {
-    try {
-      const result = await getRequestWithoutAuthorization(
-        `/api/wine/${id}/comments/`
-      );
-      setComments(result.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
-      }
-    }
-  };
+  const [modalOpened, setModalOpened] = useState<boolean>(false);
 
   useEffect(() => {
     setId(params.id);
@@ -113,24 +87,113 @@ export default function WinePage() {
     fetchComments();
   }, [id]);
 
+  const fetchWine = async () => {
+    try {
+      const result = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
+      setWine(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const fetchWinePrices = async () => {
+    try {
+      const result = await getRequestWithoutAuthorization(
+        `/api/wine/${id}/prices/`
+      );
+      setPrices(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const result = await getRequestWithoutAuthorization(
+        `/api/wine/${id}/comments/`
+      );
+      setComments(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
   const postComment = async ({ content }: any) => {
     try {
       await postRequest(`/api/wine/${wine && wine.id}/comments/create/`, {
         content,
       });
+      form.resetFields();
+      openSuccessNotification('Коментар успішно додано');
       await fetchComments();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const err = error as AxiosError<{ email: string[] }>;
-        setError(err.response ? err.response.data.email[0] : '');
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
 
-  const openNotification = () => {
+  const editComment = async (content: string) => {
+    try {
+      await putRequest(
+        `/api/wine/${wine && wine.id}/comments/update/${editableId}/`,
+        {
+          content,
+        }
+      );
+      setEditableId(0);
+      openSuccessNotification('Коментар успішно змінено');
+      await fetchComments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const requestDeleteComment = (commentId: number) => {
+    setIdToDelete(commentId);
+    setModalOpened(true);
+  };
+
+  const deleteComment = async () => {
+    try {
+      await deleteRequest(
+        `/api/wine/${wine && wine.id}/comments/delete/${idToDelete}/`
+      );
+      setModalOpened(false);
+      setIdToDelete(0);
+      openSuccessNotification('Коментар успішно видалено');
+      await fetchComments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const openSuccessNotification = (msg: string) => {
+    api.success({
+      message: msg,
+      placement: 'top',
+    });
+  };
+
+  const openErrorNotification = (msg: string) => {
     api.error({
-      message: 'Помилка',
-      description: error,
+      message: msg || 'Помилка',
       placement: 'top',
     });
   };
@@ -244,13 +307,29 @@ export default function WinePage() {
             {comments && (
               <div className="comment-list">
                 {comments.map((comment) => (
-                  <CommentCard comment={comment} key={comment.id} />
+                  <CommentCard
+                    comment={comment}
+                    key={comment.id}
+                    editComment={editComment}
+                    requestDeleteComment={requestDeleteComment}
+                    setEditableId={setEditableId}
+                    editableId={editableId}
+                  />
                 ))}
               </div>
             )}
           </Col>
         </>
       )}
+      <Modal
+        title="Ви впевнені, що хочете видалити коментар?"
+        centered
+        okText="Так, я хочу видалити цей коментар"
+        cancelText="Ні, повернутись до сторінки"
+        open={modalOpened}
+        onOk={deleteComment}
+        onCancel={() => setModalOpened(false)}
+      />
     </Row>
   );
 }

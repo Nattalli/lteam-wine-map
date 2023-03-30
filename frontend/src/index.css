@@ -34,7 +34,18 @@ input {
   padding: 9px 11px !important;
 }
 
-button {
+button:not(.ant-modal-close) {
   height: fit-content !important;
   padding: 9px 11px !important;
+}
+
+.ant-modal-footer {
+  display: flex;
+}
+
+.ant-modal-content {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
