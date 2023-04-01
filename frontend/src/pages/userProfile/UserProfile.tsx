@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
 import { Col, Row, Button, Form, Input, notification } from 'antd';
@@ -37,38 +37,39 @@ export default function UserProfile() {
   const { user }: UserContext = useOutletContext();
   const [api, contextHolder] = notification.useNotification();
 
-  const [error, setError] = useState<String>();
-
   const changePersonalInfo = async ({ username, email }: any) => {
     if (username === user.first_name && email === user.email) return;
     try {
-      const result = await patchRequest(`/api/users/me/`, {
+      await patchRequest(`/api/users/me/`, {
         first_name: username,
         email,
       });
-      console.log(result);
+      openSuccessNotification('Особисту інформацію успішно змінено');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
-        openNotification();
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
 
   const changePassword = async ({ newPassword, repeatNewPassword }: any) => {
+    if (newPassword !== repeatNewPassword) {
+      openInfoNotification('Паролі мають співпадати');
+      return;
+    }
+
     try {
       console.log(newPassword, repeatNewPassword);
-      // const result = await patchRequest(`/api/users/set_password/`, {
-      //   first_name: username,
-      //   email,
-      // });
-      // console.log(result);
+      await patchRequest(`/auth/change-password/`, {
+        first_password: newPassword,
+        second_password: repeatNewPassword,
+      });
+      openSuccessNotification('Пароль успішно змінено');
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
-        openNotification();
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -82,10 +83,23 @@ export default function UserProfile() {
     });
   }, [user]);
 
-  const openNotification = () => {
+  const openSuccessNotification = (msg: string) => {
+    api.success({
+      message: msg,
+      placement: 'top',
+    });
+  };
+
+  const openErrorNotification = (msg: string) => {
     api.error({
-      message: 'Помилка',
-      description: error,
+      message: msg || 'Помилка',
+      placement: 'top',
+    });
+  };
+
+  const openInfoNotification = (msg: string) => {
+    api.info({
+      message: msg,
       placement: 'top',
     });
   };
@@ -125,10 +139,13 @@ export default function UserProfile() {
             onFinish={changePassword}
           >
             <Form.Item name="newPassword">
-              <Input.Password placeholder="Новий пароль" />
+              <Input.Password placeholder="Новий пароль" minLength={8} />
             </Form.Item>
-            <Form.Item name="repeatNew">
-              <Input.Password placeholder="Повторити новий пароль" />
+            <Form.Item name="repeatNewPassword">
+              <Input.Password
+                placeholder="Повторити новий пароль"
+                minLength={8}
+              />
             </Form.Item>
             <Form.Item>
               <Button type="primary" size="large" block htmlType="submit">
