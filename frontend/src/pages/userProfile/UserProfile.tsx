@@ -66,6 +66,11 @@ export default function UserProfile() {
         second_password: repeatNewPassword,
       });
       openSuccessNotification('Пароль успішно змінено');
+
+      changePasswordForm.setFieldsValue({
+        newPassword: '',
+        repeatNewPassword: '',
+      });
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
