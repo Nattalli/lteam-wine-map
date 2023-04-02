@@ -7,6 +7,8 @@ from .models import (
     Country,
     Comment,
     WineAdditionalInfo,
+    QuizQuestion,
+    QuizAnswer,
 )
 from .resources import WineResource
 
@@ -20,3 +22,5 @@ admin.site.register(Brand)
 admin.site.register(Country)
 admin.site.register(Comment)
 admin.site.register(WineAdditionalInfo)
+admin.site.register(QuizQuestion)
+admin.site.register(QuizAnswer)

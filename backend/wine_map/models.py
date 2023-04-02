@@ -88,3 +88,23 @@ class WineAdditionalInfo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} for {self.wine}"
+
+
+class QuizQuestion(models.Model):
+    text = models.TextField(null=False, blank=False)
+
+    def __str__(self):
+        return self.text
+
+
+class QuizAnswer(models.Model):
+    text = models.TextField(null=False, blank=False)
+    for_question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE,
+                                     null=False, blank=True, related_name="answers")
+    next_question = models.ForeignKey(QuizQuestion, on_delete=models.SET_NULL,
+                                      related_name="parent_answers", null=True,
+                                      blank=True)
+    results = models.ManyToManyField(Wine)
+
+    def __str__(self):
+        return f'"{self.text}" for {self.for_question}'
