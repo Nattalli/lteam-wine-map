@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -104,7 +103,7 @@ class QuizQuestion(models.Model):
             ),
         ]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.text
 
 
@@ -117,5 +116,5 @@ class QuizAnswer(models.Model):
                                       blank=True)
     results = models.ManyToManyField(Wine, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'"{self.text}" for "{self.for_question}"'
