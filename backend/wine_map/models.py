@@ -93,7 +93,7 @@ class WineAdditionalInfo(models.Model):
 
 class QuizQuestion(models.Model):
     text = models.TextField(null=False, blank=False)
-    first = models.BooleanField(default=True)
+    first = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
