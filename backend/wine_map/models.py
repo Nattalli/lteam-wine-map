@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -92,6 +93,16 @@ class WineAdditionalInfo(models.Model):
 
 class QuizQuestion(models.Model):
     text = models.TextField(null=False, blank=False)
+    first = models.BooleanField(default=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["first"],
+                condition=models.Q(first=True),
+                name="unique_first_question"
+            ),
+        ]
 
     def __str__(self):
         return self.text
@@ -104,7 +115,13 @@ class QuizAnswer(models.Model):
     next_question = models.ForeignKey(QuizQuestion, on_delete=models.SET_NULL,
                                       related_name="parent_answers", null=True,
                                       blank=True)
-    results = models.ManyToManyField(Wine)
+    results = models.ManyToManyField(Wine, blank=True)
 
     def __str__(self):
-        return f'"{self.text}" for {self.for_question}'
+        return f'"{self.text}" for "{self.for_question}"'
+
+    def clean(self):
+        super().clean()
+        if self.results and self.next_question:
+            raise ValidationError("Answers with non-empty results and next question "
+                                  "are not allowed.")
