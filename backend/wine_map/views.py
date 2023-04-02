@@ -91,33 +91,31 @@ class CommentUpdateView(generics.UpdateAPIView):
 
 
 class FavouriteWinesUpdateView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         wine = Wine.objects.get(pk=self.kwargs["wine_id"])
-        user_id = request.user.id
-        if user_id in wine.in_favourites_of.values_list("id", flat=True):
-            wine.in_favourites_of.remove(user_id)
+        user = request.user
+        if user.favourite_wines.contains(wine):
+            user.favourite_wines.remove(wine)
         else:
-            wine.in_favourites_of.add(user_id)
+            user.favourite_wines.add(wine)
         serializer = WineSerializer(wine)
 
         return Response(serializer.data)
 
 
 class FavouriteWinesClearView(generics.UpdateAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        user_id = request.user.id
-        for wine in Wine.objects.filter(in_favourites_of__id=user_id):
-            wine.in_favourites_of.remove(user_id)
+        request.user.favourite_wines.clear()
 
         return Response()
 
 
 class FavouriteWines(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         user_id = request.user.id
