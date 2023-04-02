@@ -10,13 +10,14 @@ from rest_framework.views import APIView
 
 from . import parsers
 from .filters import WineFilter
-from .models import Country, Brand, Wine, Comment
+from .models import Country, Brand, Wine, Comment, QuizQuestion
 from .permissions import IsCommentAuthor
 from .serializers import (
     CategoriesSerializer,
     WineSerializer,
     CommentSerializer,
     WineInShopSerializer,
+    QuizQuestionSerializer,
 )
 
 
@@ -84,7 +85,6 @@ class CommentListView(generics.ListAPIView):
 
 class CommentDeleteView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
-    lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
 
 
@@ -112,3 +112,23 @@ class WineInShopsView(APIView):
         parsed_shops = parsers.parse_all(wine.name)
         serializer = WineInShopSerializer(parsed_shops, many=True)
         return Response(serializer.data)
+
+
+class QuizStartView(generics.RetrieveAPIView):
+    queryset = QuizQuestion.objects.prefetch_related("answers")
+    serializer_class = QuizQuestionSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        try:
+            question = queryset.filter(first=True).get()
+        except QuizQuestion.DoesNotExist:
+            raise exceptions.NotFound
+        return question
+
+
+class QuizQuestionView(generics.RetrieveAPIView):
+    queryset = QuizQuestion.objects.prefetch_related("answers")
+    serializer_class = QuizQuestionSerializer
+    permission_classes = [AllowAny]
