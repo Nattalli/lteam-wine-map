@@ -86,6 +86,7 @@ class CommentListView(generics.ListAPIView):
 
 class CommentDeleteView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
+    lookup_field = "id"
     permission_classes = [IsAuthenticated, IsCommentAuthor]
 
 
