@@ -88,3 +88,13 @@ class WineAdditionalInfo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} for {self.wine}"
+
+
+class WineOfTheDay(models.Model):
+    wine = models.ForeignKey("Wine", on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name_plural = "Wine of the day"
+
+    def __str__(self) -> str:
+        return f"{self.wine.name}"

@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 
 from . import parsers
 from .filters import WineFilter
-from .models import Country, Brand, Wine, Comment
+from .models import Country, Brand, Wine, Comment, WineOfTheDay
 from .permissions import IsCommentAuthor
 from .serializers import (
     CategoriesSerializer,
@@ -147,4 +147,13 @@ class WineInShopsView(APIView):
             raise exceptions.NotFound(detail="Wine dose not exist")
         parsed_shops = parsers.parse_all(wine.name)
         serializer = WineInShopSerializer(parsed_shops, many=True)
+        return Response(serializer.data)
+
+
+class WineOfTheDayView(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        wine_of_the_day = WineOfTheDay.objects.all()[0]
+        serializer = WineSerializer(wine_of_the_day.wine)
         return Response(serializer.data)
