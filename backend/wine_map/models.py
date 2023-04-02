@@ -119,9 +119,3 @@ class QuizAnswer(models.Model):
 
     def __str__(self):
         return f'"{self.text}" for "{self.for_question}"'
-
-    def clean(self):
-        super().clean()
-        if self.results and self.next_question:
-            raise ValidationError("Answers with non-empty results and next question "
-                                  "are not allowed.")
