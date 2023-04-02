@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from wine_map.models import Wine, Country, Brand
+from wine_map.models import Wine, Country, Brand, Comment
 
 
 def sample_user(**params) -> get_user_model():
@@ -40,3 +40,10 @@ def sample_brand(**params) -> Brand:
     defaults.update(params)
 
     return Brand.objects.create(**defaults)
+
+
+def sample_comment(wine: Wine, author: get_user_model(), **params) -> Comment:
+    defaults = {"content": "Test comment"}
+    defaults.update(params)
+
+    return Comment.objects.create(wine=wine, author=author, **defaults)
