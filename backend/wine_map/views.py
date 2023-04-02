@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 from . import parsers
 from .filters import WineFilter
@@ -94,7 +95,7 @@ class FavouriteWinesUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def update(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        wine = Wine.objects.get(pk=self.kwargs["wine_id"])
+        wine = get_object_or_404(Wine, pk=self.kwargs["wine_id"])
         user = request.user
         if user.favourite_wines.contains(wine):
             user.favourite_wines.remove(wine)
