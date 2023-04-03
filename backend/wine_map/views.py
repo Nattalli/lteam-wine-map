@@ -33,8 +33,8 @@ class WineListView(generics.ListAPIView):
     permission_classes = [AllowAny]
     filterset_class = WineFilter
     filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    search_fields = ['name', ]
-    ordering_fields = ['name', 'percent_of_alcohol', 'id', ]
+    search_fields = ["name", ]
+    ordering_fields = ["name", "percent_of_alcohol", "id", ]
 
 
 class WineDetailView(generics.RetrieveAPIView):
