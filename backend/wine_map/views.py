@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, exceptions, status
+from rest_framework import generics, exceptions, status, filters
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
@@ -32,6 +32,9 @@ class WineListView(generics.ListAPIView):
     pagination_class = WinePagination
     permission_classes = [AllowAny]
     filterset_class = WineFilter
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ['name', ]
+    ordering_fields = ['name', 'percent_of_alcohol', 'id', ]
 
 
 class WineDetailView(generics.RetrieveAPIView):
