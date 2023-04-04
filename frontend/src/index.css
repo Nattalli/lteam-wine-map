@@ -38,3 +38,7 @@ button {
   height: fit-content !important;
   padding: 9px 11px !important;
 }
+
+.ant-dropdown-menu-title-content {
+  font-size: 16px;
+}

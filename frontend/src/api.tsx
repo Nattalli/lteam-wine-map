@@ -38,7 +38,13 @@ const postRequestWithoutAthorization = async (URL: string, payload: Object) => {
 };
 
 const patchRequest = async (URL: string, payload: Object) => {
-  return axiosClient.patch(URL, payload).then((response) => response);
+  return axiosClient
+    .patch(URL, payload, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    })
+    .then((response) => response);
 };
 
 const deleteRequest = async (URL: string) => {
