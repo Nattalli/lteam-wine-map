@@ -10,8 +10,8 @@ class SignUpSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "email": {"required": True},
             "password": {"required": True, "write_only": True, "min_length": 8},
-            "first_name": {"required": True},
-            "last_name": {"required": True},
+            "first_name": {"required": True, "min_length": 3},
+            "last_name": {"required": True, "min_length": 3},
         }
 
     def create(self, validated_data: dict) -> get_user_model():
