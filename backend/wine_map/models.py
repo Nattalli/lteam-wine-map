@@ -91,7 +91,7 @@ class WineAdditionalInfo(models.Model):
 
 
 class QuizQuestion(models.Model):
-    text = models.TextField(null=False, blank=False)
+    text = models.TextField()
     first = models.BooleanField(default=False)
 
     class Meta:
@@ -108,9 +108,9 @@ class QuizQuestion(models.Model):
 
 
 class QuizAnswer(models.Model):
-    text = models.TextField(null=False, blank=False)
+    text = models.TextField()
     for_question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE,
-                                     null=False, blank=True, related_name="answers")
+                                     related_name="answers")
     next_question = models.ForeignKey(QuizQuestion, on_delete=models.SET_NULL,
                                       related_name="parent_answers", null=True,
                                       blank=True)

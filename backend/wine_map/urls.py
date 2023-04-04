@@ -25,7 +25,7 @@ comments = [
 
 quiz = [
     path("start/", QuizStartView.as_view(), name="quiz-start"),
-    path("questions/<int:pk>", QuizQuestionView.as_view(), name="quiz-question")
+    path("questions/<int:pk>/", QuizQuestionView.as_view(), name="quiz-question")
 ]
 
 favourites = [

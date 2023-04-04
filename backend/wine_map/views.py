@@ -156,10 +156,9 @@ class QuizStartView(generics.RetrieveAPIView):
     serializer_class = QuizQuestionSerializer
     permission_classes = [AllowAny]
 
-    def get_object(self):
-        queryset = self.get_queryset()
+    def get_object(self) -> QuizQuestion:
         try:
-            question = queryset.filter(first=True).get()
+            question = self.get_queryset().get(first=True)
         except QuizQuestion.DoesNotExist:
             raise exceptions.NotFound
         return question
