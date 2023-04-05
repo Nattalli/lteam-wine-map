@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, exceptions, status, filters
 from rest_framework.pagination import LimitOffsetPagination
@@ -32,10 +33,20 @@ class WineListView(generics.ListAPIView):
     serializer_class = WineSerializer
     pagination_class = WinePagination
     permission_classes = [AllowAny]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
     filterset_class = WineFilter
-    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
-    search_fields = ["name", ]
-    ordering_fields = ["name", "percent_of_alcohol", "id", ]
+    search_fields = [
+        "name",
+    ]
+    ordering_fields = [
+        "name",
+        "percent_of_alcohol",
+        "id",
+    ]
 
 
 class WineDetailView(generics.RetrieveAPIView):
