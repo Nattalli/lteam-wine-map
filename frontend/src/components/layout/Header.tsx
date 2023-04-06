@@ -53,6 +53,12 @@ export default function Header({ user, setUser }: HeaderProps) {
             <Space size={[35, 5]} className="header-tabs">
               <Typography.Link>Каталог</Typography.Link>
               <Typography.Link>Тест</Typography.Link>
+              {user.first_name && (
+                <Link to={'favourites'} className="fav-section">
+                  <img src={heartIcon} alt="fav" className="header-fav" />
+                  <span>Обране</span>
+                </Link>
+              )}
               {!user.first_name ? (
                 <Button type="primary" className="get-started-btn">
                   <Link to={'login'}>Увійти</Link>
@@ -64,12 +70,6 @@ export default function Header({ user, setUser }: HeaderProps) {
                     <img src={userIcon} alt="user" />
                   </Typography.Link>
                 </Dropdown>
-              )}
-              {user.first_name && (
-                <Link to={'favourites'} className="fav-section">
-                  <img src={heartIcon} alt="fav" className="header-fav" />
-                  <span>Обране</span>
-                </Link>
               )}
             </Space>
           </Row>
