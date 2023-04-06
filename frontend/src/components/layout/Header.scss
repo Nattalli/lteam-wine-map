@@ -15,6 +15,10 @@
     font-weight: bold;
   }
 
+  .header-tabs > * {
+    display: flex;
+  }
+
   .header-tabs a {
     font-size: 20px;
     line-height: 0px;
@@ -26,5 +30,21 @@
     span {
       margin-right: 8px;
     }
+  }
+
+  .fav-section {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+
+    > span {
+      color: $primary;
+    }
+  }
+
+  .header-fav {
+    width: 22px;
+    height: 20px;
+    cursor: pointer;
   }
 }
