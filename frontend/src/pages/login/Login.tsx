@@ -3,7 +3,7 @@ import { Link, useOutletContext, useNavigate } from 'react-router-dom';
 import { Col, Row, Button, Form, Input, Modal, Alert } from 'antd';
 import './Login.scoped.scss';
 import messageImg from '../../assets/img/message.svg';
-import heartImg from '../../assets/img/heart.svg';
+import heartImg from '../../assets/img/heart_26.svg';
 import squares from '../../assets/img/squares.svg';
 import emailIcon from '../../assets/img/email.svg';
 import { Rule } from 'antd/es/form';
