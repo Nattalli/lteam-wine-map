@@ -11,7 +11,7 @@ from telegram.ext import (
     MessageHandler,
     CallbackContext,
 )
-from models import GameState
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -80,49 +80,44 @@ def game(update: Update, context: CallbackContext, user_id: int = None):
         (wine_data[1],),
     )
     country_data = cur.fetchone()
-    game_state, created = GameState.objects.get_or_create(user_id=user_id)
-    if created:
-        questions = []
-        if wine_data.country:
-            questions.append(
-                {
-                    "question": "Вгадайте країну виробника вина? (Наприклад: Італія)",
-                    "answer": wine_data.country.name,
-                }
-            )
-        if wine_data.sweetness:
-            questions.append(
-                {
-                    "question": "Вгадайте солодкість вина? (Наприклад: напівсухе)",
-                    "answer": wine_data.sweetness,
-                }
-            )
-        if wine_data.percent_of_alcohol:
-            questions.append(
-                {
-                    "question": "Вгадайте відсоток алкоголю у вині? (Наприклад: 12.0)",
-                    "answer": wine_data.percent_of_alcohol,
-                }
-            )
-        if wine_data.wine_type:
-            questions.append(
-                {
-                    "question": "Вгадайте тип вина? (Наприклад: червоне)",
-                    "answer": wine_data.wine_type,
-                }
-            )
-        random.shuffle(questions)
-        game_state.questions = questions
-        game_state.total_questions = len(questions)
-        game_state.save()
+    questions = []
+    if wine_data[1] is not None:
+        questions.append(
+            {
+                "question": "Вгадайте країну виробника вина? (Наприклад: Італія)",
+                "answer": country_data[1],
+            }
+        )
+    if wine_data[2] is not None:
+        questions.append(
+            {
+                "question": "Вгадайте солодкість вина? (Наприклад: напівсухе)",
+                "answer": wine_data[2],
+            }
+        )
+    if wine_data[3] is not None:
+        questions.append(
+            {
+                "question": "Вгадайте відсоток алкоголю у вині? (Наприклад: 12.0)",
+                "answer": wine_data[3],
+            }
+        )
+    if wine_data[4] is not None:
+        questions.append(
+            {
+                "question": "Вгадайте тип вина? (Наприклад: червоне)",
+                "answer": wine_data[4],
+            }
+        )
 
+    random.shuffle(questions)
     context.user_data[user_id] = {
         "answers": [],
-        "questions": game_state.questions,
-        "total_questions": game_state.total_questions,
+        "questions": questions,
+        "total_questions": len(questions),
         "points": 0,
         "wine_data": wine_data,
-        "help_used": game_state.help_used,
+        "help_used": False,
     }
 
     return ask_question(update, context, user_id)
