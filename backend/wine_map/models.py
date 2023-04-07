@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.postgres.fields import ArrayField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
@@ -118,3 +119,13 @@ class QuizAnswer(models.Model):
 
     def __str__(self) -> str:
         return f'"{self.text}" for "{self.for_question}"'
+
+
+class GameState(models.Model):
+    user_id = models.BigIntegerField(unique=True)
+    answers = ArrayField(models.CharField(max_length=200), default=list)
+    questions = ArrayField(models.JSONField(), default=list)
+    total_questions = models.IntegerField(default=0)
+    points = models.IntegerField(default=0)
+    help_used = models.BooleanField(default=False)
+
