@@ -1,6 +1,8 @@
 import os
 import random
+
 import psycopg2
+from dotenv import load_dotenv
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Updater,
@@ -11,8 +13,10 @@ from telegram.ext import (
     MessageHandler,
     CallbackContext,
 )
-from models import GameState
-from dotenv import load_dotenv
+
+import init_django_orm  # noqa: F401
+
+from backend.wine_map.models import GameState
 
 load_dotenv()
 

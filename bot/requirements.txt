@@ -1,4 +1,4 @@
 python-telegram-bot==13.7
 telegram==0.0.1
 Django==4.1.4
-psycopg2==2.9.5
+psycopg2-binary==2.9.5

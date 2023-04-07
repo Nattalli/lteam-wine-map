@@ -4,7 +4,7 @@ from pathlib import Path
 
 import django
 
-sys.path.append(str(Path(".").resolve() / "api"))
+sys.path.append(str(Path(".").resolve() / "backend"))
 
 sys.dont_write_bytecode = True
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")

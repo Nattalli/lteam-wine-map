@@ -2,23 +2,13 @@ import os
 
 
 INSTALLED_APPS = [
-    "jazzmin",
-    "django.contrib.admin",
+    "wine_map.apps.WineMapConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
     "corsheaders",
     "django_rest_passwordreset",
     "rest_framework",
     "rest_framework_simplejwt",
-    "djoser",
-    "drf_spectacular",
-    "import_export",
-    "wine_map",
-    "django_filters",
-    "bot"
 ]
 
 DATABASES = {
@@ -31,3 +21,5 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
+
+SECRET_KEY="dlkswjlmJNDHBSK"
