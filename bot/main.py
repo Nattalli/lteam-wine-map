@@ -9,7 +9,9 @@ from telegram.ext import (
     ConversationHandler,
     Filters,
     MessageHandler,
+    CallbackContext,
 )
+from models import GameState
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -17,34 +19,41 @@ load_dotenv()
 QUESTION, ANSWERING = range(2)
 
 
-def start(update: Update, context):
+def start(update: Update, context: CallbackContext):
     update.message.reply_text(
-        "Привіт! Тебе вітає Lwine bot. "
+        "Привіт!\U0001F44B \nТебе вітає Lwine bot. "
         "Це бот-гра, якщо написати команду /game "
         "можна зіграти у гру вгадай параметри вина по назві. "
         "Ви завжди можете переглянути правила за допомогою команди /help"
     )
 
 
-def site(update: Update, context):
+def site(update: Update, context: CallbackContext):
     site_url = "http://127.0.0.1:8000/"
     update.message.reply_text(
         f"Ви можете побачити наш сайт натиснувши на посилання: {site_url}"
     )
 
 
-def help(update: Update, context):
+def help(update: Update, context: CallbackContext):
     update.message.reply_text(
-        "Lwine - це бот-гра. Вам треба відповісти на питання, які задає бот. "
-        "Також ви маєте підказку у вигляді фотографії вина. \nФормати відповіді: "
-        "\n1)Солодкість: сухе, напівсухе, напівсолодке, солодке, брют "
-        "\n2)Тип вина: червоне, біле, рожеве "
-        "\n3)Країна: Треба написати назву країни з якої вино, на вашу думку "
-        "\n4)Відсоток алкоголю: Треба написати відсоток алкоголю вина з похибкою 0.4 "
+        "Lwine - це бот-гра. "
+        "Вам треба відповісти на питання, які задає бот. \U0001F4DD\n"
+        "Sуть цієї гри — по назві вина вгадати його характеристики "
+        "(тип вина, солодкість, країна походження та відсоток алкоголю). \U0001F377\n"
+        "Також ви маєте підказку у вигляді фотографії вина.\U0001F607 "
+        "\nВаріанти відповіді: "
+        "1) Солодкість: сухе, напівсухе, напівсолодке, солодке, брют\n"
+        "2) Тип вина: червоне, біле, рожеве\n"
+        "3) Країна: Треба написати назву країни з якої вино, на вашу думку\n"
+        "4) Відсоток алкоголю: Треба написати відсоток алкоголю вина з похибкою 0.4\n\n"
+        "Успіхів! \U0001F64C \U0001F60A"
     )
 
 
-def game(update: Update, context):
+def game(update: Update, context: CallbackContext, user_id: int = None):
+    if user_id is None:
+        user_id = update.effective_user.id
     conn = psycopg2.connect(
         host=os.getenv("DB_HOST"),
         database=os.getenv("DB_NAME"),
@@ -71,56 +80,62 @@ def game(update: Update, context):
         (wine_data[1],),
     )
     country_data = cur.fetchone()
-    questions = []
-    if wine_data[1] is not None:
-        questions.append(
-            {
-                "question": "Вгадайте країну виробника вина? (Наприклад: Італія)",
-                "answer": country_data[1],
-            }
-        )
-    if wine_data[2] is not None:
-        questions.append(
-            {
-                "question": "Вгадайте солодкість вина? (Наприклад: напівсухе)",
-                "answer": wine_data[2],
-            }
-        )
-    if wine_data[3] is not None:
-        questions.append(
-            {
-                "question": "Вгадайте відсоток алкоголю у вині? (Наприклад: 12.0)",
-                "answer": wine_data[3],
-            }
-        )
-    if wine_data[4] is not None:
-        questions.append(
-            {
-                "question": "Вгадайте тип вина? (Наприклад: червоне)",
-                "answer": wine_data[4],
-            }
-        )
+    game_state, created = GameState.objects.get_or_create(user_id=user_id)
+    if created:
+        questions = []
+        if wine_data.country:
+            questions.append(
+                {
+                    "question": "Вгадайте країну виробника вина? (Наприклад: Італія)",
+                    "answer": wine_data.country.name,
+                }
+            )
+        if wine_data.sweetness:
+            questions.append(
+                {
+                    "question": "Вгадайте солодкість вина? (Наприклад: напівсухе)",
+                    "answer": wine_data.sweetness,
+                }
+            )
+        if wine_data.percent_of_alcohol:
+            questions.append(
+                {
+                    "question": "Вгадайте відсоток алкоголю у вині? (Наприклад: 12.0)",
+                    "answer": wine_data.percent_of_alcohol,
+                }
+            )
+        if wine_data.wine_type:
+            questions.append(
+                {
+                    "question": "Вгадайте тип вина? (Наприклад: червоне)",
+                    "answer": wine_data.wine_type,
+                }
+            )
+        random.shuffle(questions)
+        game_state.questions = questions
+        game_state.total_questions = len(questions)
+        game_state.save()
 
-    random.shuffle(questions)
-    context.user_data["answers"] = []
-    context.user_data["questions"] = questions
-    context.user_data["total_questions"] = len(context.user_data["questions"])
-    context.user_data["points"] = 0
-    context.user_data["wine_data"] = wine_data
-    context.user_data["help_used"] = False
+    context.user_data[user_id] = {
+        "answers": [],
+        "questions": game_state.questions,
+        "total_questions": game_state.total_questions,
+        "points": 0,
+        "wine_data": wine_data,
+        "help_used": game_state.help_used,
+    }
 
-    return ask_question(update, context)
+    return ask_question(update, context, user_id)
 
+def ask_question(update: Update, context: CallbackContext, user_id: int):
+    if not context.user_data[user_id]["questions"]:
+        return game_over(update, context, user_id)
 
-def ask_question(update, context):
-    if not context.user_data["questions"]:
-        return game_over(update, context)
+    question = context.user_data[user_id]["questions"].pop(0)
 
-    question = context.user_data["questions"].pop(0)
-
-    context.user_data["current_question"] = question
-    context.user_data["answers"].append(str(question["answer"]))
-    wine_name = context.user_data["wine_data"][0]
+    context.user_data[user_id]["current_question"] = question
+    context.user_data[user_id]["answers"].append(str(question["answer"]))
+    wine_name = context.user_data[user_id]["wine_data"][0]
     question_text = question["question"]
 
     message = f"Назва вина: {wine_name}\n\n{question_text}"
@@ -129,7 +144,7 @@ def ask_question(update, context):
         InlineKeyboardButton("Пропустити питання", callback_data="skip"),
     ]
 
-    if context.user_data["help_used"] is False:
+    if context.user_data[user_id]["help_used"] is False:
         buttons.append(InlineKeyboardButton("Взяти підказку", callback_data="help"))
 
     if update.callback_query:
@@ -146,7 +161,8 @@ def ask_question(update, context):
     return ANSWERING
 
 
-def answer_question(update: Update, context):
+def answer_question(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
     if update.callback_query:
         query = update.callback_query
         query.answer()
@@ -154,73 +170,102 @@ def answer_question(update: Update, context):
     else:
         response = update.message.text.lower()
 
-    question = context.user_data["current_question"]
+    question = context.user_data[user_id]["current_question"]
 
     if question == "Вгадайте відсоток алкоголю у вині? (Наприклад: 12.0)":
         try:
             response_float = float(response)
             if abs(response_float - question["answer"]) < 0.4:
-                context.user_data["points"] += 1
+                context.user_data[user_id]["points"] += 1
         except ValueError:
             pass
     elif response == str(question["answer"]).lower():
-        context.user_data["points"] += 1
+        context.user_data[user_id]["points"] += 1
 
-    return ask_question(update, context)
+    return ask_question(update, context, user_id)
 
 
-def help_question(update: Update, context):
+def help_question(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
     query = update.callback_query
     query.answer()
 
-    if context.user_data["help_used"]:
-        message = (
-            "Ви вже скористалися підказкою! "
-            "Будь ласка, продовжуйте відповідати на питання."
-        )
-        query.edit_message_text(text=message)
-    else:
-        image_url = context.user_data["wine_data"][5]
-        context.bot.send_photo(
-            chat_id=query.message.chat_id,
-            photo=image_url,
-            caption="Ось вам фото вина!"
-        )
-        context.user_data["help_used"] = True
-        message = query.message.text
-        buttons = [
-            InlineKeyboardButton("Пропустити питання", callback_data="skip")
-        ]
-        if context.user_data["help_used"] is False:
-            buttons.append(InlineKeyboardButton("Взяти підказку", callback_data="help"))
-        query.edit_message_text(
-            text=message,
-            reply_markup=InlineKeyboardMarkup.from_column(buttons)
-        )
+    
+    image_url = context.user_data[user_id]["wine_data"][5]
+    context.bot.send_photo(
+        chat_id=query.message.chat_id,
+        photo=image_url,
+        caption="Ось вам фото вина!"
+    )
+    context.user_data[user_id]["help_used"] = True
+    message = query.message.text
+    buttons = [
+        InlineKeyboardButton("Пропустити питання", callback_data="skip")
+    ]
+    if context.user_data[user_id]["help_used"] is False:
+        buttons.append(InlineKeyboardButton("Взяти підказку", callback_data="help"))
+    query.edit_message_text(
+        text=message,
+        reply_markup=InlineKeyboardMarkup.from_column(buttons)
+    )
+    
 
     return ANSWERING
 
 
-def skip_question(update: Update, context):
+def skip_question(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
     query = update.callback_query
     query.answer()
 
-    return ask_question(update, context)
+    return ask_question(update, context, user_id)
 
 
-def game_over(update: Update, context):
-    points = context.user_data["points"]
-    total_questions = context.user_data["total_questions"]
-    answers = ", ".join(context.user_data["answers"])
-    message = f"Ви заробили {points}/{total_questions} балів. Бажаєте зіграти ще раз?" \
-        f"\nПравильні відповіді: {answers}"
-    image_url = context.user_data["wine_data"][5]
+def game_over(update: Update, context: CallbackContext, user_id: int):
+    points = context.user_data[user_id]["points"]
+    total_questions = context.user_data[user_id]["total_questions"]
+    answers = ", ".join(context.user_data[user_id]["answers"])
+    if points == 0:
+        result_text = (
+            "Хм, мабуть Ви зовсім не знаєте це вино. "
+            "Пропоную ознайомитись з ним, а можливо, навіть i спробувати його😏🍷 "
+            "Можете перейти за посиланням та подивитись у кого з наших партнерів його можна придбати: "
+            "http://127.0.0.1:8000/"
+        )
+    elif 1 <= points <= 2:
+        result_text = (
+            "Видно, щось-таки про це вино Ви знаєте, а можливо просто вгадали🙈 "
+            "Можливо Вам захочеться ознайомитись з цим вином краще 😏 "
+            "Можете перейти за посиланням та подивитись у кого з наших партнерів його можна придбати: "
+            "http://127.0.0.1:8000/"
+        )
+    elif points == 3:
+        result_text = (
+            "Непогано, ще трішки, і станете знавцем цієї галузі. "
+            "За такий гарний результат пропонуємо Вам ознайомитись з наявністю даного вина "
+            "у наших партнерів за посиланням: http://127.0.0.1:8000/😉 "
+            "А ще, даємо Вам особисту знижку 10% на це вино. Ось Ваш промокод: PSIJD 🤫"  
+        )
+    elif points == 4:
+        result_text = (
+            "А Ви майстер своєї справи😱 За такі приголомшливі результати "
+            "хочемо подарувати Вам знижку на це вино у розмірі 20% від стандартної ціни. "
+            "Використати знижку Ви можете за допомогою промокоду: PKDOS, який діє у всіх магазинах-партнерах. "
+            "Щоб дізнатись, в яких магазинах є це вино, перейдіть за посиланням : "
+            "http://127.0.0.1:8000/🍷🔥"
+        )
+    message = (
+        f"Ви заробили {points}/{total_questions} балів.\U0001F44C \n\n{result_text}\n\n"
+        f"Правильні відповіді: {answers}\n\n"
+        f"Бажаєте зіграти ще раз?\U0001F60E"
+    )
+    image_url = context.user_data[user_id]["wine_data"][5]
 
     if update.callback_query:
         chat_id = update.callback_query.message.chat_id
     else:
         chat_id = update.message.chat_id
-
+    chat_id = update.message.chat_id
     buttons = [
         InlineKeyboardButton("Так", callback_data="play_again"),
         InlineKeyboardButton("Ні", callback_data="quit")
@@ -244,14 +289,15 @@ def game_over(update: Update, context):
     return QUESTION
 
 
-def play_again(update: Update, context):
+def play_again(update: Update, context: CallbackContext):
+    user_id = update.effective_user.id
     query = update.callback_query
     query.answer()
 
-    return game(update, context)
+    return game(update, context, user_id)
 
 
-def quit_game(update: Update, context):
+def quit_game(update: Update, context: CallbackContext):
     query = update.callback_query
     query.answer()
 
@@ -266,7 +312,12 @@ def main():
     dp = updater.dispatcher
 
     conv_handler = ConversationHandler(
-        entry_points=[CommandHandler("game", game)],
+        entry_points=[
+            CommandHandler(
+                "game",
+                lambda update, context: game(update, context, update.effective_user.id)
+            )
+        ],
         states={
             QUESTION: [
                 CallbackQueryHandler(play_again, pattern="^play_again$"),
@@ -278,7 +329,12 @@ def main():
                 CallbackQueryHandler(skip_question, pattern="^skip$"),
             ],
         },
-        fallbacks=[CommandHandler("game", game)],
+        fallbacks=[
+            CommandHandler(
+                "game",
+                lambda update, context: game(update, context, update.effective_user.id)
+            )
+        ]
     )
 
     dp.add_handler(CommandHandler("start", start))

@@ -1,3 +1,4 @@
 python-telegram-bot==13.7
-pyTelegramBotAPI==4.10.0
 telegram==0.0.1
+Django==4.1.4
+psycopg2==2.9.5
