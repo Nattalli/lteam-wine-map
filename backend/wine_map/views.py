@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from datetime import date
 
 from . import parsers
 from .filters import WineFilter
@@ -154,6 +155,12 @@ class WineOfTheDayView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 
     def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
-        wine_of_the_day = WineOfTheDay.objects.all()[0]
-        serializer = WineSerializer(wine_of_the_day.wine)
+        today = date.today()
+        try:
+            wine_of_the_day = WineOfTheDay.objects.get(date=today)
+            serializer = WineSerializer(wine_of_the_day.wine)
+        except WineOfTheDay.DoesNotExist:
+            wine = Wine.objects.order_by("?").first()
+            WineOfTheDay.objects.create(wine=wine, date=today)
+            serializer = WineSerializer(wine)
         return Response(serializer.data)
