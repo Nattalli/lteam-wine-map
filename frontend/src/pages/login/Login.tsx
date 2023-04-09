@@ -71,7 +71,7 @@ export default function Login() {
   };
 
   const fetchUser = async () => {
-    const { data } = await getRequest('/api/users/me');
+    const { data } = await getRequest('/api/users/me/');
     return data;
   };
 

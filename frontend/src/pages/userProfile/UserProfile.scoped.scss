@@ -1,0 +1,37 @@
+@import '../../assets/scss/variables';
+@import '../../assets/scss/variables';
+
+.user-profile {
+  border: 1px solid $primary;
+  padding: 60px 60px 160px;
+  background-image: url('../../assets/img/dots.svg');
+  background-size: 150px;
+  background-repeat: no-repeat;
+  background-position: 0 10%;
+  position: relative;
+
+  .title {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 1.2px;
+  }
+
+  .personal-info,
+  .change-password {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 26px;
+
+    div:first-of-type {
+      font-size: 22px;
+    }
+  }
+
+  .squares-img {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+  }
+}

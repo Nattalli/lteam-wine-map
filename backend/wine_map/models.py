@@ -100,3 +100,33 @@ class WineOfTheDay(models.Model):
 
     def __str__(self) -> str:
         return f"{self.wine.name}"
+
+
+class QuizQuestion(models.Model):
+    text = models.TextField()
+    first = models.BooleanField(default=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["first"],
+                condition=models.Q(first=True),
+                name="unique_first_question"
+            ),
+        ]
+
+    def __str__(self) -> str:
+        return self.text
+
+
+class QuizAnswer(models.Model):
+    text = models.TextField()
+    for_question = models.ForeignKey(QuizQuestion, on_delete=models.CASCADE,
+                                     related_name="answers")
+    next_question = models.ForeignKey(QuizQuestion, on_delete=models.SET_NULL,
+                                      related_name="parent_answers", null=True,
+                                      blank=True)
+    results = models.ManyToManyField(Wine, blank=True)
+
+    def __str__(self) -> str:
+        return f'"{self.text}" for "{self.for_question}"'

@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, exceptions, status
+from rest_framework import generics, exceptions, status, filters
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
@@ -12,13 +13,14 @@ from datetime import date
 
 from . import parsers
 from .filters import WineFilter
-from .models import Country, Brand, Wine, Comment, WineOfTheDay
+from .models import Country, Brand, Wine, Comment, WineOfTheDay, QuizQuestion
 from .permissions import IsCommentAuthor
 from .serializers import (
     CategoriesSerializer,
     WineSerializer,
     CommentSerializer,
     WineInShopSerializer,
+    QuizQuestionSerializer,
 )
 
 
@@ -32,7 +34,20 @@ class WineListView(generics.ListAPIView):
     serializer_class = WineSerializer
     pagination_class = WinePagination
     permission_classes = [AllowAny]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.OrderingFilter,
+        filters.SearchFilter,
+    ]
     filterset_class = WineFilter
+    search_fields = [
+        "name",
+    ]
+    ordering_fields = [
+        "name",
+        "percent_of_alcohol",
+        "id",
+    ]
 
 
 class WineDetailView(generics.RetrieveAPIView):
@@ -164,3 +179,22 @@ class WineOfTheDayView(generics.RetrieveAPIView):
             WineOfTheDay.objects.create(wine=wine, date=today)
             serializer = WineSerializer(wine)
         return Response(serializer.data)
+
+
+class QuizStartView(generics.RetrieveAPIView):
+    queryset = QuizQuestion.objects.prefetch_related("answers")
+    serializer_class = QuizQuestionSerializer
+    permission_classes = [AllowAny]
+
+    def get_object(self) -> QuizQuestion:
+        try:
+            question = self.get_queryset().get(first=True)
+        except QuizQuestion.DoesNotExist:
+            raise exceptions.NotFound
+        return question
+
+
+class QuizQuestionView(generics.RetrieveAPIView):
+    queryset = QuizQuestion.objects.prefetch_related("answers")
+    serializer_class = QuizQuestionSerializer
+    permission_classes = [AllowAny]

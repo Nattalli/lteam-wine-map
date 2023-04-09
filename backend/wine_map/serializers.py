@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Wine, Brand, Country, Comment
+from .models import Wine, Brand, Country, Comment, QuizQuestion, QuizAnswer
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -45,3 +45,17 @@ class WineInShopSerializer(serializers.Serializer):
     min_price = serializers.FloatField()
     max_price = serializers.FloatField()
     url = serializers.URLField()
+
+
+class QuizAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = QuizAnswer
+        fields = ["id", "text", "next_question", "results"]
+
+
+class QuizQuestionSerializer(serializers.ModelSerializer):
+    answers = QuizAnswerSerializer(many=True)
+
+    class Meta:
+        model = QuizQuestion
+        fields = ["id", "text", "answers"]

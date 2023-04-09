@@ -1,8 +1,22 @@
 import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
 import axios, { AxiosError } from 'axios';
-import { Alert, Row, Col, Image, Input, Form, Button } from 'antd';
-import { getRequestWithoutAuthorization, postRequest } from '../../api';
+import {
+  Row,
+  Col,
+  Image,
+  Input,
+  Form,
+  Button,
+  Modal,
+  notification,
+} from 'antd';
+import {
+  deleteRequest,
+  getRequestWithoutAuthorization,
+  postRequest,
+  putRequest,
+} from '../../api';
 import CommentCard from '../../components/layout/CommentCard';
 import './Wine.scoped.scss';
 
@@ -23,6 +37,13 @@ interface Wine {
   pairs_with: string;
 }
 
+interface Price {
+  shop_name: string;
+  min_price: number;
+  max_price: number;
+  url: string;
+}
+
 interface Comment {
   id: number;
   author: string;
@@ -33,6 +54,7 @@ interface Comment {
 interface UserContext {
   user: {
     first_name: string;
+    username: string;
   };
 }
 
@@ -41,14 +63,30 @@ const { TextArea } = Input;
 export default function WinePage() {
   let params = useParams();
   const { user }: UserContext = useOutletContext();
+  const [api, contextHolder] = notification.useNotification();
 
   const [id, setId] = useState<String>();
-  const [wineError, setWineError] = useState<String>();
-  const [commentError, setCommentError] = useState<String>();
-  const [commentCreateError, setCommentCreateError] = useState<String>();
+
   const [wine, setWine] = useState<Wine>();
+  const [prices, setPrices] = useState<Price[]>();
   const [comments, setComments] = useState<Comment[]>();
+  const [editableId, setEditableId] = useState<number>(0);
+  const [idToDelete, setIdToDelete] = useState<number>(0);
+
   const [form] = Form.useForm();
+  const [modalOpened, setModalOpened] = useState<boolean>(false);
+
+  useEffect(() => {
+    setId(params.id);
+  }, []);
+
+  useEffect(() => {
+    if (!id) return;
+
+    fetchWine();
+    fetchWinePrices();
+    fetchComments();
+  }, [id]);
 
   const fetchWine = async () => {
     try {
@@ -57,7 +95,21 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setWineError(err.response ? err.response.data.detail : '');
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const fetchWinePrices = async () => {
+    try {
+      const result = await getRequestWithoutAuthorization(
+        `/api/wine/${id}/prices/`
+      );
+      setPrices(result.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -71,39 +123,85 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setCommentError(err.response ? err.response.data.detail : '');
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
-
-  useEffect(() => {
-    setId(params.id);
-  }, []);
-
-  useEffect(() => {
-    if (!id) return;
-
-    fetchWine();
-    fetchComments();
-  }, [id]);
 
   const postComment = async ({ content }: any) => {
     try {
       await postRequest(`/api/wine/${wine && wine.id}/comments/create/`, {
         content,
       });
+      form.resetFields();
+      openSuccessNotification('Коментар успішно додано');
       await fetchComments();
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const err = error as AxiosError<{ email: string[] }>;
-        setCommentCreateError(err.response ? err.response.data.email[0] : '');
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
 
+  const editComment = async (content: string) => {
+    try {
+      await putRequest(
+        `/api/wine/${wine && wine.id}/comments/update/${editableId}/`,
+        {
+          content,
+        }
+      );
+      setEditableId(0);
+      openSuccessNotification('Коментар успішно змінено');
+      await fetchComments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const requestDeleteComment = (commentId: number) => {
+    setIdToDelete(commentId);
+    setModalOpened(true);
+  };
+
+  const deleteComment = async () => {
+    try {
+      await deleteRequest(
+        `/api/wine/${wine && wine.id}/comments/delete/${idToDelete}/`
+      );
+      setModalOpened(false);
+      setIdToDelete(0);
+      openSuccessNotification('Коментар успішно видалено');
+      await fetchComments();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
+  const openSuccessNotification = (msg: string) => {
+    api.success({
+      message: msg,
+      placement: 'top',
+    });
+  };
+
+  const openErrorNotification = (msg: string) => {
+    api.error({
+      message: msg || 'Помилка',
+      placement: 'top',
+    });
+  };
+
   return (
     <Row className="content">
-      {wineError && <Alert message="Error" type="error" showIcon />}
+      {contextHolder}
       {wine && (
         <>
           <Col span={10} className="wine-img">
@@ -126,7 +224,7 @@ export default function WinePage() {
               </div>
               <div className="property">
                 <span>Бренд</span>
-                <span>{wine.brand.name}</span>
+                <span>{wine.brand && wine.brand.name}</span>
               </div>
               <div className="property">
                 <span>Смаки</span>
@@ -143,10 +241,30 @@ export default function WinePage() {
             </div>
             <div className="shop-availability">
               <span className="name">Наявність в магазинах</span>
+              {prices && prices.length === 0 && (
+                <span className="not-available">
+                  На жаль, даного товару зараз немає в наявності в магазинах,
+                  які ми використовуємо для порівняння
+                </span>
+              )}
+              {prices &&
+                prices.map((priceItem) => (
+                  <div className="price-item">
+                    <span>{priceItem.shop_name}</span>
+                    <a href={priceItem.url} target="_blank" rel="noreferrer">
+                      {priceItem.min_price === priceItem.max_price ? (
+                        <span> {priceItem.max_price} грн</span>
+                      ) : (
+                        <span>
+                          {priceItem.min_price} - {priceItem.max_price} грн
+                        </span>
+                      )}
+                    </a>
+                  </div>
+                ))}
             </div>
           </Col>
           <Col span={10}>
-            {commentError && <Alert message="Error" type="error" showIcon />}
             {comments && (
               <div>
                 <div className="comment-length">
@@ -169,15 +287,11 @@ export default function WinePage() {
             )}
             {user.first_name && (
               <div className="input-section">
-                {commentCreateError && (
-                  <Alert message="Error" type="error" showIcon />
-                )}
                 <span>Залиште свій коментар</span>
                 <Form
                   layout={'vertical'}
                   form={form}
                   initialValues={{ layout: 'vertical' }}
-                  onInput={() => setCommentCreateError('')}
                   onFinish={postComment}
                 >
                   <Form.Item name="content">
@@ -194,13 +308,30 @@ export default function WinePage() {
             {comments && (
               <div className="comment-list">
                 {comments.map((comment) => (
-                  <CommentCard comment={comment} key={comment.id} />
+                  <CommentCard
+                    comment={comment}
+                    key={comment.id}
+                    editable={user.username === comment.author}
+                    editComment={editComment}
+                    requestDeleteComment={requestDeleteComment}
+                    setEditableId={setEditableId}
+                    editableId={editableId}
+                  />
                 ))}
               </div>
             )}
           </Col>
         </>
       )}
+      <Modal
+        title="Ви впевнені, що хочете видалити коментар?"
+        centered
+        okText="Так, я хочу видалити цей коментар"
+        cancelText="Ні, повернутись до сторінки"
+        open={modalOpened}
+        onOk={deleteComment}
+        onCancel={() => setModalOpened(false)}
+      />
     </Row>
   );
 }
