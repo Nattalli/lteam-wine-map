@@ -12,6 +12,7 @@ from .views import (
     FavouriteWinesClearView,
     FavouriteWines,
     WineInShopsView,
+    WineOfTheDayView,
     QuizQuestionView,
     QuizStartView,
 )
@@ -38,6 +39,7 @@ favourites = [
 urlpatterns = [
     path("", WineListView.as_view(), name="wine-list"),
     path("<int:id>/", WineDetailView.as_view(), name="wine-detail"),
+    path("wine-of-the-day/", WineOfTheDayView.as_view(), name="wine-of-the-day"),
     path("favourites/", include(favourites)),
     path("categories/", CategoriesView.as_view(), name="categories"),
     path("<int:wine_id>/comments/", include(comments)),

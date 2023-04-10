@@ -9,10 +9,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from datetime import date
 
 from . import parsers
 from .filters import WineFilter
-from .models import Country, Brand, Wine, Comment, QuizQuestion
+from .models import Country, Brand, Wine, Comment, WineOfTheDay, QuizQuestion
 from .permissions import IsCommentAuthor
 from .serializers import (
     CategoriesSerializer,
@@ -162,6 +163,20 @@ class WineInShopsView(APIView):
             raise exceptions.NotFound(detail="Wine dose not exist")
         parsed_shops = parsers.parse_all(wine.name)
         serializer = WineInShopSerializer(parsed_shops, many=True)
+        return Response(serializer.data)
+
+
+class WineOfTheDayView(generics.RetrieveAPIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
+        today = date.today()
+        try:
+            wine = WineOfTheDay.objects.get(date=today).wine
+        except WineOfTheDay.DoesNotExist:
+            wine = Wine.objects.order_by("?").first()
+            WineOfTheDay.objects.create(wine=wine, date=today)
+        serializer = WineSerializer(wine)
         return Response(serializer.data)
 
 

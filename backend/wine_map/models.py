@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from datetime import date
 
 
 class Wine(models.Model):
@@ -88,6 +89,17 @@ class WineAdditionalInfo(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} for {self.wine}"
+
+
+class WineOfTheDay(models.Model):
+    wine = models.ForeignKey("Wine", on_delete=models.PROTECT)
+    date = models.DateField(default=date.today())
+
+    class Meta:
+        verbose_name_plural = "Wine of the day"
+
+    def __str__(self) -> str:
+        return self.wine.name
 
 
 class QuizQuestion(models.Model):
