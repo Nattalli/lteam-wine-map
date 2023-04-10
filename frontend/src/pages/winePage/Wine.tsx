@@ -245,7 +245,7 @@ export default function WinePage() {
               )}
               {prices &&
                 prices.map((priceItem) => (
-                  <div className="price-item">
+                  <div className="price-item" key={priceItem.shop_name}>
                     <span>{priceItem.shop_name}</span>
                     <a href={priceItem.url} target="_blank" rel="noreferrer">
                       {priceItem.min_price === priceItem.max_price ? (

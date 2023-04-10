@@ -23,13 +23,13 @@ export const CatalogFilterProvider = ({ children }: React.PropsWithChildren) => 
     <CatalogFilterContext.Provider value={{ filter, setFilter }}>
       {children}
     </CatalogFilterContext.Provider>
-  ) 
+  );
 }
 
 export const useCatalogFilter = () => {
   const context = useContext(CatalogFilterContext);
 
-  if(!context) {
+  if (!context) {
     throw new Error('useFilter must be within CatalogFilterProvider');
   }
 
