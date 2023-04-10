@@ -7,9 +7,6 @@ mounts = []
 primary_region = "ams"
 processes = []
 
-[deploy]
-  release_command = "python manage.py migrate"
-
 [env]
   PORT = "8000"
 
@@ -30,3 +27,7 @@ processes = []
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
+
+[[statics]]
+  guest_path = "/code/static"
+  url_prefix = "/static/"
