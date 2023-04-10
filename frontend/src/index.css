@@ -23,7 +23,7 @@ code {
 }
 
 .ant-image-img {
-  width: fit-content !important;
+  width: 100% !important;
   position: absolute;
   top: 50%;
   left: 50%;

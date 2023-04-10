@@ -2,6 +2,7 @@ import { Layout, Button, Space, Typography, Row, Col, Dropdown } from 'antd';
 import { MenuProps } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import userIcon from '../../assets/img/user.svg';
+import heartIcon from '../../assets/img/heart_26.svg';
 
 import './Header.scss';
 import { getRequest } from '../../api';
@@ -52,6 +53,12 @@ export default function Header({ user, setUser }: HeaderProps) {
             <Space size={[35, 5]} className="header-tabs">
               <Typography.Link>Каталог</Typography.Link>
               <Typography.Link>Тест</Typography.Link>
+              {user.first_name && (
+                <Link to={'favourites'} className="fav-section">
+                  <img src={heartIcon} alt="fav" className="header-fav" />
+                  <span>Обране</span>
+                </Link>
+              )}
               {!user.first_name ? (
                 <Button type="primary" className="get-started-btn">
                   <Link to={'login'}>Увійти</Link>
