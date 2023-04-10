@@ -35,7 +35,7 @@ function MultiFilter({ filterName, filterProp, data, placeholder }: MultiFilterP
         mode="multiple"
         allowClear
         placeholder={placeholder}
-        style={{ width: '150px' }}
+        style={{ minWidth: '160px' }}
         onChange={handleChange}
         options={options}
         maxTagCount="responsive"

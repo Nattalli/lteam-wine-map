@@ -71,17 +71,11 @@ export default function Catalog() {
       {contextHolder}
       <div className="catalog-page">
         <Categories wineTypes={filterValues?.wine_types || []} />
-        <Row className="wine-list">
-          <Col span={24}>
-            <SearchBar favouritesCount={favourites.length} />
-          </Col>
-          <Col span={24}>
-            <Filters filterValues={filterValues} />
-          </Col>
-          <Col span={24}>
-            <WineList favourites={favourites} getFavourites={getFavourites} />
-          </Col>
-        </Row>
+        <div className="wine-list">
+          <SearchBar favouritesCount={favourites.length} />
+          <Filters filterValues={filterValues} />
+          <WineList favourites={favourites} getFavourites={getFavourites} />
+        </div>
       </div>
     </CatalogFilterProvider>
   );

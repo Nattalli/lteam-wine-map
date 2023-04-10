@@ -3,7 +3,7 @@
 .search-bar-wrapper {
   display: flex;
   gap: 40px;
-  padding-bottom: 30px;
+  position: relative;
 
   .search-bar {
     width: 100%;

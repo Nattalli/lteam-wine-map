@@ -11,7 +11,7 @@ interface FiltersProps {
 
 export default function Filters({ filterValues }: FiltersProps) {
   return (
-    <Row align="middle" justify="space-between" className="wine-filters">
+    <Row align="middle" className="wine-filters">
       <SortFilter />
       <MultiFilter 
         filterProp="country" 

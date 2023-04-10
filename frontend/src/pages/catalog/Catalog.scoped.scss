@@ -1,9 +1,12 @@
 .catalog-page {
   display: flex;
-  gap: 60px;
+  gap: 30px;
   padding: 60px 100px;
 
   .wine-list {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    gap: 30px;
   }
 }
