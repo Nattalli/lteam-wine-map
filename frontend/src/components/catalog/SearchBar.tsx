@@ -1,5 +1,6 @@
 import { Row } from 'antd';
 import { Link, useOutletContext } from 'react-router-dom';
+import { useDebouncedCallback } from 'use-debounce';
 import { UserContext } from '../../App';
 import { useCatalogFilter } from '../../contexts/catalogFilterContext';
 
@@ -16,12 +17,15 @@ export default function SearchBar({ favouritesCount }: SearchBarProps) {
   const { filter, setFilter } = useCatalogFilter();
   const { user }: UserContext = useOutletContext();
 
-  const onSearchChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    setFilter({
-      ...filter,
-      search: target.value,
-    });
-  };
+  const debouncedOnSearchChange = useDebouncedCallback(
+    ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+      setFilter({
+        ...filter,
+        search: target.value,
+      });
+    },
+    700
+  );
 
   return (
     <div className="search-bar-wrapper">
@@ -30,7 +34,7 @@ export default function SearchBar({ favouritesCount }: SearchBarProps) {
           <img src={SearchIcon} alt="Пошук" />
         </div>
         <input
-          onChange={onSearchChange}
+          onChange={debouncedOnSearchChange}
           className="search-input"
           type="text"
           placeholder="Пошук..."
