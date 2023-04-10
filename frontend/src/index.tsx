@@ -13,6 +13,7 @@ import Login from './pages/login/Login';
 import Registration from './pages/registration/Registration';
 import NewPassword from './pages/newPassword/NewPassword';
 import WinePage from './pages/winePage/Wine';
+import FavouritesPage from './pages/favouritesPage/Favourites';
 import UserProfile from './pages/userProfile/UserProfile';
 import Catalog from './pages/catalog/Catalog';
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter(
       <Route path="reset-password" element={<NewPassword />} />
       <Route path="user-profile" element={<UserProfile />} />
       <Route path="wines/:id" element={<WinePage />} />
+      <Route path="favourites" element={<FavouritesPage />} />
       <Route path="wines" element={<Catalog />} />
     </Route>
   )

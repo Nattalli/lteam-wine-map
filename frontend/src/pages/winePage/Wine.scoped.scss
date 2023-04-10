@@ -13,12 +13,21 @@
     position: relative;
     height: 540px;
 
-    img {
+    .main-img {
       object-fit: contain;
       position: absolute !important;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    .fav {
+      position: absolute !important;
+      top: 20px;
+      right: 40px;
+      width: 40px;
+      height: 36px;
+      cursor: pointer;
     }
   }
 

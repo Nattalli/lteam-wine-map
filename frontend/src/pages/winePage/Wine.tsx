@@ -20,6 +20,8 @@ import {
 import CommentCard from '../../components/layout/CommentCard';
 import { UserContext } from '../../App';
 
+import heartImg from '../../assets/img/heart_59.svg';
+import heartImgFilled from '../../assets/img/heart_filled_59.svg';
 import './Wine.scoped.scss';
 
 
@@ -64,6 +66,7 @@ export default function WinePage() {
   const [id, setId] = useState<String>();
 
   const [wine, setWine] = useState<Wine>();
+  const [isFavourite, setIsFavourite] = useState<boolean>(false);
   const [prices, setPrices] = useState<Price[]>();
   const [comments, setComments] = useState<Comment[]>();
   const [editableId, setEditableId] = useState<number>(0);
@@ -86,8 +89,9 @@ export default function WinePage() {
 
   const fetchWine = async () => {
     try {
-      const result = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
-      setWine(result.data);
+      const { data } = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
+      setWine(data);
+      setIsFavourite(data.in_favourites_of.includes(user?.id));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
@@ -181,6 +185,23 @@ export default function WinePage() {
     }
   };
 
+  const updateFavourites = async () => {
+    try {
+      await putRequest(`/api/wine/favourites/${wine && wine.id}/`, {});
+      const ntfMessage = isFavourite
+        ? 'Вино вилучено з обраних'
+        : 'Вино додано до обраних';
+      openSuccessNotification(ntfMessage);
+      setIsFavourite(!isFavourite);
+      await fetchWine();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        openErrorNotification(err.response ? err.response.data.detail : '');
+      }
+    }
+  };
+
   const openSuccessNotification = (msg: string) => {
     api.success({
       message: msg,
@@ -201,7 +222,22 @@ export default function WinePage() {
       {wine && (
         <>
           <Col span={10} className="wine-img">
-            <Image src={wine.image_url} />
+            <Image src={wine.image_url} className="main-img" />
+            {isFavourite ? (
+              <img
+                src={heartImgFilled}
+                alt="fav"
+                className="fav"
+                onClick={updateFavourites}
+              />
+            ) : (
+              <img
+                src={heartImg}
+                alt="fav"
+                className="fav"
+                onClick={updateFavourites}
+              />
+            )}
           </Col>
           <Col span={12} style={{ position: 'sticky', top: 60 }}>
             <div className="main-info-section">
@@ -244,8 +280,8 @@ export default function WinePage() {
                 </span>
               )}
               {prices &&
-                prices.map((priceItem) => (
-                  <div className="price-item" key={priceItem.shop_name}>
+                prices.map((priceItem, index) => (
+                  <div className="price-item" key={index}>
                     <span>{priceItem.shop_name}</span>
                     <a href={priceItem.url} target="_blank" rel="noreferrer">
                       {priceItem.min_price === priceItem.max_price ? (

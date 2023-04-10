@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { User } from '../../App';
 import { getRequest } from '../../api';
 import userIcon from '../../assets/img/user.svg';
+import heartIcon from '../../assets/img/heart_26.svg';
 
 import './Header.scss';
 
