@@ -172,12 +172,11 @@ class WineOfTheDayView(generics.RetrieveAPIView):
     def get(self, request: Request, *args: tuple, **kwargs: dict) -> Response:
         today = date.today()
         try:
-            wine_of_the_day = WineOfTheDay.objects.get(date=today)
-            serializer = WineSerializer(wine_of_the_day.wine)
+            wine = WineOfTheDay.objects.get(date=today).wine
         except WineOfTheDay.DoesNotExist:
             wine = Wine.objects.order_by("?").first()
             WineOfTheDay.objects.create(wine=wine, date=today)
-            serializer = WineSerializer(wine)
+        serializer = WineSerializer(wine)
         return Response(serializer.data)
 
 

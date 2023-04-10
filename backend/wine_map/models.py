@@ -99,7 +99,7 @@ class WineOfTheDay(models.Model):
         verbose_name_plural = "Wine of the day"
 
     def __str__(self) -> str:
-        return f"{self.wine.name}"
+        return self.wine.name
 
 
 class QuizQuestion(models.Model):
