@@ -1,23 +1,30 @@
-FROM debian:bullseye as builder
+# Fetching the latest node image on apline linux
+FROM node:alpine AS builder
 
-ENV PATH=/usr/local/node/bin:$PATH
-ARG NODE_VERSION=18.15.0
+# Declaring env
+ENV NODE_ENV production
 
-RUN apt-get update; apt install -y curl python-is-python3 pkg-config build-essential && \
-    curl -sL https://github.com/nodenv/node-build/archive/master.tar.gz | tar xz -C /tmp/ && \
-    /tmp/node-build-master/bin/node-build "${NODE_VERSION}" /usr/local/node && \
-rm -rf /tmp/node-build-master
-
-RUN mkdir /app
+# Setting up the work directory
 WORKDIR /app
 
+# Installing dependencies
+COPY ./package.json ./
+COPY ./package-lock.json ./
+COPY ./tsconfig.json ./
+
+RUN npm install
+
+# Copying all the files in our project
 COPY . .
 
-RUN npm install && npm run build
+# Building our application
+RUN npm run build
 
+# Fetching the latest nginx image
+FROM nginx
 
-# production environment
-FROM nginx:stable-alpine
+# Copying built assets from builder
 COPY --from=builder /app/build /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+
+# Copying our nginx.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
