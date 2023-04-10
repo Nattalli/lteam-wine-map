@@ -23,15 +23,14 @@
     .category {
       display: flex;
       justify-content: space-between;
-      font-size: 26px;
-      border-bottom: 1px solid;
+      font-size: 18px;
+      padding-bottom: 10px;
       cursor: pointer;
       text-transform: capitalize;
     }
 
     .category-selected {
       color: $primary;
-      border-bottom: 1px solid $primary;
     }
   }
 }

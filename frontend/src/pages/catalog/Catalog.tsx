@@ -44,7 +44,7 @@ export default function Catalog() {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
         api.error({
-          message: (err.response ? err.response.data.detail : '') || 'Помилка',
+          message: (err.response?.data.detail) || 'Помилка',
           placement: 'top',
         });
       }
@@ -59,7 +59,7 @@ export default function Catalog() {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
         api.error({
-          message: err.response ? err.response.data.detail : 'Помилка',
+          message: (err.response?.data.detail) || 'Помилка',
           placement: 'top',
         });
       }

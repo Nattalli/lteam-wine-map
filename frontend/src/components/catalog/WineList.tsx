@@ -55,7 +55,7 @@ export default function WineList({ favourites, getFavourites }: WineListProps) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
         api.error({
-          message: err.response ? err.response.data.detail : 'Помилка',
+          message: (err.response?.data.detail) || 'Помилка',
           placement: 'top',
         });
       }
@@ -76,7 +76,7 @@ export default function WineList({ favourites, getFavourites }: WineListProps) {
   return (
     <>
       {contextHolder}
-      <Row gutter={[70, 80]} className="wine-list">
+      <Row gutter={[35, 40]} className="wine-list">
         {wines.map((wine) => (
           <WineCard key={wine.id} 
             wine={wine} 

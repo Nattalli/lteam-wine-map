@@ -1,6 +1,8 @@
 @import "../../../assets/scss/variables";
 
 .wine-filters {
+  gap: 10px;
+  
   .wine-filter {
     display: flex;
     justify-content: center;
