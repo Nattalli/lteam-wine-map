@@ -1,0 +1,37 @@
+@import "../../assets/scss/variables";
+
+.categories-wrapper {
+  flex: 0 0 250px;
+
+  .catalog-btn {
+    width: 100%;
+    height: fit-content !important;
+    padding: 9px 11px !important;
+    font-weight: 500;
+    text-align: center;
+    border: 1px solid transparent;
+    font-size: 26px;
+    border-radius: 16px;
+    color: #fff;
+    background-color: $primary;
+    box-shadow: 0 2px 0 rgba(255, 5, 5, 0.06);
+  }
+
+  .categories {
+    padding: 20px;
+
+    .category {
+      display: flex;
+      justify-content: space-between;
+      font-size: 26px;
+      border-bottom: 1px solid;
+      cursor: pointer;
+      text-transform: capitalize;
+    }
+
+    .category-selected {
+      color: $primary;
+      border-bottom: 1px solid $primary;
+    }
+  }
+}

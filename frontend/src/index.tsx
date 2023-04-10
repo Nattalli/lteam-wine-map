@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import AntdConfigProvider from './utils/AntdConfigProvider';
 import {
@@ -15,6 +14,9 @@ import Registration from './pages/registration/Registration';
 import NewPassword from './pages/newPassword/NewPassword';
 import WinePage from './pages/winePage/Wine';
 import UserProfile from './pages/userProfile/UserProfile';
+import Catalog from './pages/catalog/Catalog';
+
+import './index.scss';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +26,8 @@ const router = createBrowserRouter(
       <Route path="register" element={<Registration />} />
       <Route path="reset-password" element={<NewPassword />} />
       <Route path="user-profile" element={<UserProfile />} />
-      <Route path="wine/:id" element={<WinePage />} />
+      <Route path="wines/:id" element={<WinePage />} />
+      <Route path="wines" element={<Catalog />} />
     </Route>
   )
 );
@@ -33,9 +36,7 @@ const root = ReactDOM.createRoot(document.getElementById(
   'root'
 ) as HTMLElement);
 root.render(
-  <React.StrictMode>
-    <AntdConfigProvider>
-      <RouterProvider router={router} />
-    </AntdConfigProvider>
-  </React.StrictMode>
+  <AntdConfigProvider>
+    <RouterProvider router={router} />
+  </AntdConfigProvider>
 );

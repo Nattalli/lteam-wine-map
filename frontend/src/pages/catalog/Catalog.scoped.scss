@@ -1,0 +1,9 @@
+.catalog-page {
+  display: flex;
+  gap: 60px;
+  padding: 60px 100px;
+
+  .wine-list {
+    flex-grow: 1;
+  }
+}

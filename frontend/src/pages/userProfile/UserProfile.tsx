@@ -5,15 +5,9 @@ import { Col, Row, Button, Form, Input, notification } from 'antd';
 import { Rule } from 'antd/es/form';
 import { patchRequest } from '../../api';
 import squares from '../../assets/img/squares.svg';
-import './UserProfile.scoped.scss';
+import { UserContext } from '../../App';
 
-interface UserContext {
-  user: {
-    first_name: string;
-    last_name: string;
-    email: string;
-  };
-}
+import './UserProfile.scoped.scss';
 
 const TextRules: Rule[] = [
   {
@@ -38,7 +32,7 @@ export default function UserProfile() {
   const [api, contextHolder] = notification.useNotification();
 
   const changePersonalInfo = async ({ username, email }: any) => {
-    if (username === user.first_name && email === user.email) return;
+    if (username === user?.first_name && email === user?.email) return;
     try {
       await patchRequest(`/api/users/me/`, {
         first_name: username,

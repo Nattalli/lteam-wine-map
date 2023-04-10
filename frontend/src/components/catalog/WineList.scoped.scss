@@ -1,0 +1,13 @@
+@import "../../assets/scss/variables";
+
+.wine-list {
+  padding: 40px 0px;
+  margin-right: 0px !important;
+}
+
+.no-wines {
+  width: 100%;
+  text-align: center;
+  font-size: 26px;
+  color: $primary;
+}

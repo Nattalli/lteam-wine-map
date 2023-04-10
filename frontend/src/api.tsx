@@ -1,7 +1,13 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import qs from 'qs';
 
 const axiosClient = axios.create({
   baseURL: 'http://127.0.0.1:8000',
+  paramsSerializer: {
+    serialize: (params) => {
+      return qs.stringify(params, { arrayFormat: 'repeat' });
+    }
+  }
 });
 
 axiosClient.defaults.headers['Content-Type'] = 'application/json';
@@ -19,8 +25,8 @@ const getRequest = async (URL: string) => {
     .then((response) => response);
 };
 
-const getRequestWithoutAuthorization = async (URL: string) => {
-  return axiosClient.get(URL).then((response) => response);
+const getRequestWithoutAuthorization = async (URL: string, config?: AxiosRequestConfig) => {
+  return axiosClient.get(URL, config).then((response) => response);
 };
 
 const postRequest = async (URL: string, payload: Object) => {

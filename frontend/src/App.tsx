@@ -6,8 +6,21 @@ import './App.scss';
 import { useEffect, useState } from 'react';
 import { getRequest } from './api';
 
+export interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+}
+
+export interface UserContext {
+  user: User | null;
+  setUser: (user: User | null) => void;
+}
+
 function App() {
-  const [user, setUser] = useState({ first_name: '' });
+  const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
     const { data } = await getRequest('/api/users/me/');
