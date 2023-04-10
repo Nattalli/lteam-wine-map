@@ -97,7 +97,7 @@ export default function WineList({ favourites, getFavourites }: WineListProps) {
               <Button
                 type="primary"
                 size="large"
-                style={{ fontSize: '26px' }}
+                style={{ fontSize: '18px' }}
                 onClick={loadMore}
               >
                 Показати більше
