@@ -167,6 +167,7 @@ DEFAULT_FROM_EMAIL = os.getenv("SENDGRID_EMAIL")
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://lteam-wine-map.fly.dev",
 ]
 
 SPECTACULAR_SETTINGS = {
@@ -184,7 +185,7 @@ EMAIL_HOST_USER = "apikey"
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 
 # password reset
-DOMAIN = "localhost:3000"
+DOMAIN = "lteam-wine-map.fly.dev"
 
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
