@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Col, Layout, Row, Typography } from 'antd';
+import { User } from '../../App';
 
 import './Footer.scss';
 
-export default function Footer() {
+interface HeaderProps {
+  user: User | null;
+}
+
+export default function Footer({ user }: HeaderProps) {
   return (
     <Layout.Footer className="footer">
       <Row className="footer-main-section" justify="center" align="middle">
@@ -18,14 +23,14 @@ export default function Footer() {
               </div>
               <Link to="/register">Реєстрація</Link>
               <Link to="/login">Авторизація</Link>
-              <div>Обране</div>
+              {user && <Link to="/favourites">Обране</Link>}
             </div>
             <Col className="footer-link-section">
               <div className="footer-link-title">
                 <span className="footer-link-title-text">Інше</span>
               </div>
               <div>Тест</div>
-              <div>Каталог</div>
+              <Link to="/wines">Каталог</Link>
             </Col>
           </Row>
         </Col>

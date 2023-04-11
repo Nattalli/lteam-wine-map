@@ -40,7 +40,7 @@ function App() {
         <Layout.Content className="main-section">
           <Outlet context={{ setUser, user }} />
         </Layout.Content>
-        <Footer />
+        <Footer user={user} />
       </Layout>
     </>
   );
