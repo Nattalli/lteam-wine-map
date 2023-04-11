@@ -1,4 +1,13 @@
-import { Button, Col, Dropdown, Layout, MenuProps, Row, Space, Typography } from 'antd';
+import {
+  Button,
+  Col,
+  Dropdown,
+  Layout,
+  MenuProps,
+  Row,
+  Space,
+  Typography
+} from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { User } from '../../App';
 import { getRequest } from '../../api';
@@ -6,7 +15,6 @@ import userIcon from '../../assets/img/user.svg';
 import heartIcon from '../../assets/img/heart_26.svg';
 
 import './Header.scss';
-
 
 interface HeaderProps {
   user: User | null;
@@ -32,12 +40,12 @@ export default function Header({ user, setUser }: HeaderProps) {
   const menuItems: MenuProps['items'] = [
     {
       key: '1',
-      label: <div onClick={redirectToProfilePage}>Особистий кабінет</div>,
+      label: <div onClick={redirectToProfilePage}>Особистий кабінет</div>
     },
     {
       key: '2',
-      label: <div onClick={logout}>Вийти</div>,
-    },
+      label: <div onClick={logout}>Вийти</div>
+    }
   ];
   return (
     <Layout.Header className="header">
@@ -52,6 +60,12 @@ export default function Header({ user, setUser }: HeaderProps) {
             <Space size={[35, 5]} className="header-tabs">
               <Link to="wines">Каталог</Link>
               <Typography.Link>Тест</Typography.Link>
+              {user && (
+                <Link to={'favourites'} className="fav-section">
+                  <img src={heartIcon} alt="fav" className="header-fav" />
+                  <span>Обране</span>
+                </Link>
+              )}
               {!user ? (
                 <Button type="primary" className="get-started-btn">
                   <Link to={'login'}>Увійти</Link>

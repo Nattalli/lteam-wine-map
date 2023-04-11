@@ -150,8 +150,8 @@ export default function Login() {
           <div className="success-sent">
             <img src={emailIcon} alt="email" />
             <span>
-              If you have an account linked to {resetEmail}, you will receive an
-              email with a password reset link.
+              Якщо у вас є акаунт, привʼязаний до цієї пошти {resetEmail}, ви
+              отримаєте лист на пошту з посиланням для зміни паролю за мить.
             </span>
           </div>
         </Modal>
