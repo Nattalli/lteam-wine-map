@@ -59,14 +59,14 @@ export default function Favourites() {
   const openSuccessNotification = (msg: string) => {
     api.success({
       message: msg,
-      placement: 'top',
+      placement: 'top'
     });
   };
 
   const openErrorNotification = (msg: string) => {
     api.error({
       message: msg || 'Помилка',
-      placement: 'top',
+      placement: 'top'
     });
   };
 
@@ -80,15 +80,15 @@ export default function Favourites() {
       <div className="header">Обране</div>
       {favourites && favourites.length === 0 && (
         <div className="no-fav">
-          Упс, здається у Вас все ще немає обраних вин. Перейдіть до сторінки&nbsp;
-          <Link to="/wines">каталогу</Link>, щоб додати вина до цього
-          списку.
+          Упс, здається у Вас все ще немає обраних вин. Перейдіть до
+          сторінки&nbsp;
+          <Link to="/wines">каталогу</Link>, щоб додати вина до цього списку.
         </div>
       )}
       {favourites && favourites.length !== 0 && (
         <div className="fav-section">
           {favourites.map((wine, index) => (
-            <Link className="fav-wine" to={`/wine/${wine.id}`} key={index}>
+            <Link className="fav-wine" to={`/wines/${wine.id}`} key={index}>
               <div className="img-section">
                 <Image src={wine.image_url} className="main-img" />
                 <img
