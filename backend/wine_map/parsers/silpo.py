@@ -13,6 +13,8 @@ SHOP_NAME = "silpo"
 API_ENDPOINT_URL = "https://api.catalog.ecom.silpo.ua/api/2.0/exec/EcomCatalogGlobal"
 REQUEST_TIMEOUT = 2
 SEARCH_RESULT_URL = "https://shop.silpo.ua/search/all"
+WINE_CATEGORY_ID = 22
+MIN_SIMILARITY_RATIO = 0.5
 
 
 def parse_silpo(wine_name: str) -> Optional[WineInShop]:
@@ -89,10 +91,9 @@ def is_wine(item: dict) -> bool:
         categories = item["categories"]
     except KeyError:
         return False
-    return any(category["id"] == 22 for category in categories)
+    return any(category["id"] == WINE_CATEGORY_ID for category in categories)
 
 
 def names_are_similar(name1: str, name2: str) -> bool:
-    min_similarity_ratio = 0.5
     matcher = difflib.SequenceMatcher(None, name1, name2)
-    return matcher.ratio() >= min_similarity_ratio
+    return matcher.ratio() >= MIN_SIMILARITY_RATIO
