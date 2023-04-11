@@ -1,4 +1,4 @@
-@import "assets/scss/variables";
+@import 'assets/scss/variables';
 
 body {
   margin: 0;
@@ -25,7 +25,7 @@ code {
 }
 
 .ant-image-img {
-  width: fit-content !important;
+  width: fit-content;
   position: absolute;
   top: 50%;
   left: 50%;
