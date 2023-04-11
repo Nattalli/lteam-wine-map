@@ -25,15 +25,14 @@
 
   .fav-section {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    gap: 30px;
+  }
 
-    button {
-      align-self: end;
-      background-color: $primary;
-      color: #fff;
-      font-size: 16px;
-    }
+  button {
+    align-self: end;
+    background-color: $primary;
+    color: #fff;
+    font-size: 16px;
   }
 
   .fav-wine {

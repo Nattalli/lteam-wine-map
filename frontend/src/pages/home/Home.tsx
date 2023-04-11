@@ -1,16 +1,81 @@
-import { Row, Col, Typography } from 'antd';
+import { Col, Row, Typography, notification } from 'antd';
+import axios, { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import { Link } from 'react-router-dom';
+import { getRequestWithoutAuthorization } from '../../api';
 import { aboutUsText, goodMoodText, socializingText } from './homeTextConsts';
 
 import AboutUs from '../../assets/img/about-us.svg';
-import SocializingIcon from '../../assets/img/socializing.svg';
 import GoodMood from '../../assets/img/good-mood.svg';
-import Wines from '../../assets/img/wines.svg';
+import QuizSlide from '../../assets/img/quiz-slide.svg';
+import SocializingIcon from '../../assets/img/socializing.svg';
 import Squares from '../../assets/img/squares.svg';
+import WineOfTheDaySlide from '../../assets/img/wine-of-the-day-slide.svg';
+import Wines from '../../assets/img/wines.svg';
+
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './Home.scss';
 
+const renderCarouselArrowPrev = (clickHandler: () => void, hasPrev: boolean) => {
+  if (!hasPrev) return null;
+
+  return (
+    <button className="carousel-change-button carousel-prev-button" onClick={clickHandler}></button>
+  );
+}
+
+const renderCarouselArrowNext = (clickHandler: () => void, hasNext: boolean) => {
+  if (!hasNext) return null;
+
+  return (
+    <button className="carousel-change-button carousel-next-button" onClick={clickHandler}></button>
+  );
+}
+
 export default function Home() {
+  const [wineOfTheDayId, setWineOfTheDayId] = useState();
+  const [api, contextHolder] = notification.useNotification();
+
+  useEffect(() => {
+    getWineOfTheDay();
+  }, []);
+
+  const getWineOfTheDay = async () => {
+    try {
+      const { data } = await getRequestWithoutAuthorization(`/api/wine/wine-of-the-day/`);
+      setWineOfTheDayId(data.id);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const err = error as AxiosError<{ detail: string }>;
+        api.error({
+          message: (err.response?.data.detail) || 'Помилка',
+          placement: 'top',
+        });
+      }
+    }
+  }
+
   return (
     <>
+      {contextHolder}
+      <Carousel 
+        showIndicators={false} 
+        showArrows={true} 
+        showThumbs={false} 
+        showStatus={false}
+        renderArrowPrev={renderCarouselArrowPrev}
+        renderArrowNext={renderCarouselArrowNext}
+        >
+        <div>
+          <img src={WineOfTheDaySlide} alt="Вино дня" />
+          <Link to={`wines/${wineOfTheDayId}`} className="carousel-button carousel-wine-button">Подивитись</Link>
+        </div>
+        <div>
+          <img src={QuizSlide} alt="Тест" />
+          <Link to="/" className="carousel-button carousel-quiz-button">Пройти тест</Link>
+        </div>
+      </Carousel>
       <Row className="home-info-section about-us-section" align="top">
         <Col xs={24} md={14}>
           <Typography.Title level={1} className="home-info-title">

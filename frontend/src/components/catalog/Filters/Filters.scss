@@ -1,0 +1,18 @@
+@import "../../../assets/scss/variables";
+
+.wine-filters {
+  gap: 20px;
+  
+  .wine-filter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    color: $primary;
+    font-size: 18px;
+  
+    input {
+      padding: 0 !important;
+    }
+  }
+}
