@@ -22,4 +22,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "config.wsgi"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "--worker-class", "gthread", "--threads", "2", "config.wsgi"]
