@@ -27,7 +27,7 @@ export default function SortFilter() {
       <div className="wine-filter-name">Сортування:</div>
       <Select
         value={selectValue}
-        style={{ width: '170px' }}
+        style={{ width: '210px' }}
         placeholder="Оберіть країну"
         onChange={handleChange}
         options={options}
