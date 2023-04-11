@@ -91,3 +91,78 @@
     }
   }
 }
+
+.carousel-button {
+  position: absolute;
+  width: 400px;
+  background: transparent;
+  padding: 10px 100px;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  cursor: pointer;
+
+  &.carousel-wine-button {
+    left: 10%;
+    bottom: 25%;
+    border: 2px solid white;
+    color: white;
+
+    &:hover,
+    &:active {
+      background-color: #a31d38;
+    }
+  }
+
+  &.carousel-quiz-button {
+    right: 5%;
+    bottom: 25%;
+    border: 2px solid #7a7774;
+    color: #7a7774;
+
+    &:hover,
+    &:active {
+      background-color: #7a7774;
+      color: #d9d9d9;
+    }
+  }
+}
+
+.carousel-change-button {
+  height: 38px !important;
+  width: 38px;
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background-repeat: no-repeat;
+
+  &.carousel-prev-button {
+    left: 1%;
+    bottom: 50%;
+    background-image: url('../../assets/img/prev-slide.svg');
+    background-position: 40% 50%;
+    background-color: white;
+
+    &:hover,
+    &:active {
+      background-color: #e2e2e2;
+    }
+  }
+
+  &.carousel-next-button {
+    right: 1%;
+    bottom: 50%;
+    background-image: url('../../assets/img/next-slide.svg');
+    background-position: 60% 50%;
+    background-color: white;
+
+    &:hover,
+    &:active {
+      background-color: #e2e2e2;
+    }
+  }
+}
