@@ -1,4 +1,4 @@
-ARG PYTHON_VERSION=3.10-slim-buster
+ARG PYTHON_VERSION=3.10-alpine
 
 FROM python:${PYTHON_VERSION}
 
@@ -22,4 +22,5 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "--worker-class", "gthread", "--threads", "2", "config.wsgi"]
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "--worker-class", "gthread", "--threads", "6", "--max-requests", \
+    "100", "--log-level", "info", "config.wsgi"]
