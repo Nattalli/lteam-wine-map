@@ -86,23 +86,25 @@ export default function Favourites() {
         </div>
       )}
       {favourites && favourites.length !== 0 && (
-        <div className="fav-section">
-          {favourites.map((wine, index) => (
-            <Link className="fav-wine" to={`/wines/${wine.id}`} key={index}>
-              <div className="img-section">
-                <Image src={wine.image_url} className="main-img" />
-                <img
-                  src={heartImgFilled}
-                  alt="fav"
-                  className="fav-icon"
-                  onClick={() => updateFavourites(wine)}
-                />
-              </div>
-              <span>{wine.name}</span>
-            </Link>
-          ))}
+        <>
+          <div className="fav-section">
+            {favourites.map((wine, index) => (
+              <Link className="fav-wine" to={`/wines/${wine.id}`} key={index}>
+                <div className="img-section">
+                  <Image src={wine.image_url} className="main-img" />
+                  <img
+                    src={heartImgFilled}
+                    alt="fav"
+                    className="fav-icon"
+                    onClick={() => updateFavourites(wine)}
+                  />
+                </div>
+                <span>{wine.name}</span>
+              </Link>
+            ))}
+          </div>
           <Button onClick={clearFavourites}>Очистити все</Button>
-        </div>
+        </>
       )}
     </Row>
   );
