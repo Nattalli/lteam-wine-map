@@ -368,3 +368,5 @@ poetry.toml
 [Ss]cripts
 pyvenv.cfg
 pip-selfcheck.json
+
+backend/static

@@ -1,17 +1,16 @@
-import { Layout, Button, Space, Typography, Row, Col, Dropdown } from 'antd';
-import { MenuProps } from 'antd';
+import { Button, Col, Dropdown, Layout, MenuProps, Row, Space, Typography } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
+import { User } from '../../App';
+import { getRequest } from '../../api';
 import userIcon from '../../assets/img/user.svg';
 import heartIcon from '../../assets/img/heart_26.svg';
 
 import './Header.scss';
-import { getRequest } from '../../api';
+
 
 interface HeaderProps {
-  user: {
-    first_name: string;
-  };
-  setUser: Function;
+  user: User | null;
+  setUser: (user: User | null) => void;
 }
 
 export default function Header({ user, setUser }: HeaderProps) {
@@ -19,7 +18,7 @@ export default function Header({ user, setUser }: HeaderProps) {
 
   const logout = async () => {
     await getRequest('/auth/logout/');
-    setUser({});
+    setUser(null);
 
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
@@ -51,15 +50,9 @@ export default function Header({ user, setUser }: HeaderProps) {
         <Col flex="auto">
           <Row justify="end" align="middle">
             <Space size={[35, 5]} className="header-tabs">
-              <Typography.Link>Каталог</Typography.Link>
+              <Link to="wines">Каталог</Link>
               <Typography.Link>Тест</Typography.Link>
-              {user.first_name && (
-                <Link to={'favourites'} className="fav-section">
-                  <img src={heartIcon} alt="fav" className="header-fav" />
-                  <span>Обране</span>
-                </Link>
-              )}
-              {!user.first_name ? (
+              {!user ? (
                 <Button type="primary" className="get-started-btn">
                   <Link to={'login'}>Увійти</Link>
                 </Button>

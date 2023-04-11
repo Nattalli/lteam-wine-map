@@ -80,8 +80,8 @@ export default function Favourites() {
       <div className="header">Обране</div>
       {favourites && favourites.length === 0 && (
         <div className="no-fav">
-          Упс, здається у Вас все ще немає обраних вин. Перейдіть до сторінки
-          &nbsp;<a href="/catalog">каталогу</a>, щоб додати вина до цього
+          Упс, здається у Вас все ще немає обраних вин. Перейдіть до сторінки&nbsp;
+          <Link to="/wines">каталогу</Link>, щоб додати вина до цього
           списку.
         </div>
       )}

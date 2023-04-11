@@ -18,11 +18,14 @@ import {
   putRequest,
 } from '../../api';
 import CommentCard from '../../components/layout/CommentCard';
+import { UserContext } from '../../App';
+
 import heartImg from '../../assets/img/heart_59.svg';
 import heartImgFilled from '../../assets/img/heart_filled_59.svg';
 import './Wine.scoped.scss';
 
-interface Wine {
+
+export interface Wine {
   id: number;
   image_url: string;
   name: string;
@@ -51,14 +54,6 @@ interface Comment {
   author: string;
   timestamp: string;
   content: string;
-}
-
-interface UserContext {
-  user: {
-    id: number;
-    first_name: string;
-    username: string;
-  };
 }
 
 const { TextArea } = Input;
@@ -96,7 +91,7 @@ export default function WinePage() {
     try {
       const { data } = await getRequestWithoutAuthorization(`/api/wine/${id}/`);
       setWine(data);
-      setIsFavourite(data.in_favourites_of.includes(user.id));
+      setIsFavourite(data.in_favourites_of.includes(user?.id));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
@@ -312,7 +307,7 @@ export default function WinePage() {
                     <span>У цього продукту коментарі відсутні. </span>
                   </div>
                 )}
-                {!user.first_name && (
+                {!user && (
                   <span className="login-to-leave-comment">
                     <Link to="/login" className="login-link">
                       Увійдіть,
@@ -322,7 +317,7 @@ export default function WinePage() {
                 )}
               </div>
             )}
-            {user.first_name && (
+            {user && (
               <div className="input-section">
                 <span>Залиште свій коментар</span>
                 <Form
@@ -348,7 +343,7 @@ export default function WinePage() {
                   <CommentCard
                     comment={comment}
                     key={comment.id}
-                    editable={user.username === comment.author}
+                    editable={user?.username === comment.author}
                     editComment={editComment}
                     requestDeleteComment={requestDeleteComment}
                     setEditableId={setEditableId}

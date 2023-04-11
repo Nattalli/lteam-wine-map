@@ -1,0 +1,54 @@
+.wine-name {
+  padding-top: 10px;
+  color: #848484;
+  font-size: 18px;
+  text-align: center;
+}
+
+.wine-img-container {
+  border: 1px solid #ebebeb;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding: 20px 0;
+  position: relative;
+  height: 400px;
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+
+  .overlay {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    pointer-events: none;
+  }
+}
+
+.add-to-favourites {
+  position: absolute;
+  z-index: 11;
+  right: 15%;
+  top: 5%;
+}
+
+.wine-img {
+  width: 100% !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.wine-card {
+  cursor: pointer;
+}

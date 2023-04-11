@@ -9,6 +9,7 @@ import emailIcon from '../../assets/img/email.svg';
 import { Rule } from 'antd/es/form';
 import { postRequestWithoutAthorization, getRequest } from '../../api';
 import axios, { AxiosError } from 'axios';
+import { UserContext } from '../../App';
 
 const TextRules: Rule[] = [
   {
@@ -25,10 +26,6 @@ const EmailRules: Rule[] = [
   ...TextRules,
 ];
 
-interface TokenContext {
-  setUser: Function;
-}
-
 export default function Login() {
   const [loginError, setLoginError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -42,7 +39,7 @@ export default function Login() {
   const [isSuccessModalOpen, setSuccessModalOpen] = useState(false);
 
   const navigate = useNavigate();
-  const { setUser }: TokenContext = useOutletContext();
+  const { setUser }: UserContext = useOutletContext();
 
   const showModal: () => void = () => {
     setResetModalOpen(true);
