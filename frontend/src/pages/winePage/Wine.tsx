@@ -9,13 +9,13 @@ import {
   Form,
   Button,
   Modal,
-  notification,
+  notification
 } from 'antd';
 import {
   deleteRequest,
   getRequestWithoutAuthorization,
   postRequest,
-  putRequest,
+  putRequest
 } from '../../api';
 import CommentCard from '../../components/layout/CommentCard';
 import { UserContext } from '../../App';
@@ -23,7 +23,6 @@ import { UserContext } from '../../App';
 import heartImg from '../../assets/img/heart_59.svg';
 import heartImgFilled from '../../assets/img/heart_filled_59.svg';
 import './Wine.scoped.scss';
-
 
 export interface Wine {
   id: number;
@@ -131,7 +130,7 @@ export default function WinePage() {
   const postComment = async ({ content }: any) => {
     try {
       await postRequest(`/api/wine/${wine && wine.id}/comments/create/`, {
-        content,
+        content
       });
       form.resetFields();
       openSuccessNotification('Коментар успішно додано');
@@ -149,7 +148,7 @@ export default function WinePage() {
       await putRequest(
         `/api/wine/${wine && wine.id}/comments/update/${editableId}/`,
         {
-          content,
+          content
         }
       );
       setEditableId(0);
@@ -205,14 +204,14 @@ export default function WinePage() {
   const openSuccessNotification = (msg: string) => {
     api.success({
       message: msg,
-      placement: 'top',
+      placement: 'top'
     });
   };
 
   const openErrorNotification = (msg: string) => {
     api.error({
       message: msg || 'Помилка',
-      placement: 'top',
+      placement: 'top'
     });
   };
 
@@ -223,20 +222,24 @@ export default function WinePage() {
         <>
           <Col span={10} className="wine-img">
             <Image src={wine.image_url} className="main-img" />
-            {isFavourite ? (
-              <img
-                src={heartImgFilled}
-                alt="fav"
-                className="fav"
-                onClick={updateFavourites}
-              />
-            ) : (
-              <img
-                src={heartImg}
-                alt="fav"
-                className="fav"
-                onClick={updateFavourites}
-              />
+            {user?.id && (
+              <>
+                {isFavourite ? (
+                  <img
+                    src={heartImgFilled}
+                    alt="fav"
+                    className="fav"
+                    onClick={updateFavourites}
+                  />
+                ) : (
+                  <img
+                    src={heartImg}
+                    alt="fav"
+                    className="fav"
+                    onClick={updateFavourites}
+                  />
+                )}
+              </>
             )}
           </Col>
           <Col span={12} style={{ position: 'sticky', top: 60 }}>
