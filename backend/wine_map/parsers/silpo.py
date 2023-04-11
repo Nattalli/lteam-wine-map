@@ -1,3 +1,4 @@
+import difflib
 import json
 import typing
 from typing import Optional
@@ -34,7 +35,11 @@ def fetch_data(wine_name: str) -> dict[str, typing.Any]:
 
 
 def parse_data(wine_name: str, data: dict[str, typing.Any]) -> Optional[WineInShop]:
-    wines = data.get("items")
+    wines = [
+        item
+        for item in data.get("items", [])
+        if is_wine(item) and names_are_similar(item.get("name", ""), wine_name)
+    ]
     if not wines:
         return None
     prices = [wine["price"] for wine in wines if "price" in wine]
@@ -77,3 +82,17 @@ def build_search_result_url(wine_name: str) -> str:
     params = {"find": wine_name}
     params = urlencode(params, quote_via=quote)
     return f"{SEARCH_RESULT_URL}?{params}"
+
+
+def is_wine(item: dict) -> bool:
+    try:
+        categories = item["categories"]
+    except KeyError:
+        return False
+    return any(category["id"] == 22 for category in categories)
+
+
+def names_are_similar(name1: str, name2: str) -> bool:
+    min_similarity_ratio = 0.5
+    matcher = difflib.SequenceMatcher(None, name1, name2)
+    return matcher.ratio() >= min_similarity_ratio
