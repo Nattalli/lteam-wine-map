@@ -1,6 +1,6 @@
-import { Col, notification } from 'antd';
+import { notification } from 'antd';
 import axios, { AxiosError } from 'axios';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { putRequest } from '../../api';
 import { Wine } from '../../pages/winePage/Wine';
@@ -23,7 +23,6 @@ export default function WineCard({
 }: WineCardProps) {
   const { user }: UserContext = useOutletContext();
   const [api, contextHolder] = notification.useNotification();
-  const navigate = useNavigate();
 
   const changeFavouriteState = async (
     e: React.MouseEvent<HTMLImageElement>
@@ -59,9 +58,9 @@ export default function WineCard({
   };
 
   return (
-    <Col span={8}>
+    <>
       {contextHolder}
-      <div onClick={() => navigate(`../wines/${wine.id}`)} className="wine-card">
+      <div className="wine-card">
         {user ? (
           <div className="add-to-favourites">
             {isFavourite ? (
@@ -81,12 +80,16 @@ export default function WineCard({
             )}
           </div>
         ) : null}
-        <div className="wine-img-container">
-          <img src={wine.image_url} alt="Вино" className="wine-img" />
-          <div className="overlay" />
-        </div>
-        <div className="wine-name">{wine.name}</div>
+        <Link to={`../wines/${wine.id}`}>
+          <div>
+            <div className="wine-img-container">
+              <img src={wine.image_url} alt="Вино" className="wine-img" />
+              <div className="overlay" />
+            </div>
+            <div className="wine-name">{wine.name}</div>
+          </div>
+        </Link>
       </div>
-    </Col>
+    </>
   );
 }

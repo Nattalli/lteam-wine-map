@@ -37,7 +37,7 @@
 .add-to-favourites {
   position: absolute;
   z-index: 11;
-  right: 15%;
+  right: 10%;
   top: 5%;
 }
 
@@ -51,4 +51,20 @@
 
 .wine-card {
   cursor: pointer;
+  position: relative;
+}
+
+.quiz {
+  .wine-img-container {
+    height: 300px;
+    width: 200px;
+  }
+
+  .wine-img {
+    width: 200px !important;
+  }
+
+  .wine-name {
+    width: 200px;
+  }
 }

@@ -12,7 +12,7 @@ const options = [
 
 export default function SortFilter() {
   const { filter, setFilter } = useCatalogFilter();
-  const [selectValue, setSelectValue] = useState('');
+  const [selectValue, setSelectValue] = useState(filter.ordering || '');
 
   const handleChange = (value: string) => {
     setSelectValue(value);

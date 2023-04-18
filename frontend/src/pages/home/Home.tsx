@@ -73,7 +73,7 @@ export default function Home() {
         </div>
         <div>
           <img src={QuizSlide} alt="Тест" />
-          <Link to="/" className="carousel-button carousel-quiz-button">Пройти тест</Link>
+          <Link to="quiz" className="carousel-button carousel-quiz-button">Пройти тест</Link>
         </div>
       </Carousel>
       <Row className="home-info-section about-us-section" align="top">
