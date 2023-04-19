@@ -110,7 +110,7 @@ export default function WinePage() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        openErrorNotification(err.response ? err.response.data.detail : '');
+        console.error(err);
       }
     }
   };
