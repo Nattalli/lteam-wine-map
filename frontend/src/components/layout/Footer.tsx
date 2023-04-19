@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { Col, Layout, Row, Typography } from 'antd';
 import { User } from '../../App';
 
+import telegramIcon from '../../assets/img/telegram.png';
+
 import './Footer.scss';
 
 interface HeaderProps {
@@ -31,6 +33,14 @@ export default function Footer({ user }: HeaderProps) {
               </div>
               <Link to="/quiz">Тест</Link>
               <Link to="/wines">Каталог</Link>
+              <Link to="https://t.me/Lteam_wine_bot" className="telegram-link">
+                <img
+                  src={telegramIcon}
+                  alt="telegram"
+                  className="telegram-icon"
+                />
+                <span>LWine бот</span>
+              </Link>
             </Col>
           </Row>
         </Col>
