@@ -13,7 +13,7 @@ interface MultiFilterProps {
 
 function MultiFilter({ filterName, filterProp, data, placeholder }: MultiFilterProps) {
   const { filter, setFilter } = useCatalogFilter();
-  const [selectValues, setSelectValues] = useState<string[]>([]);
+  const [selectValues, setSelectValues] = useState<string[]>(filter[filterProp] || []);
 
   const options = useMemo(() => {
     return data.map(x => ({ value: x, label: x }));

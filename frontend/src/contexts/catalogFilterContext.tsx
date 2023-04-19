@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 export interface CatalogFilter {
   search?: string;
@@ -16,8 +17,10 @@ interface CatalogFilterContextType {
 
 const CatalogFilterContext = createContext<CatalogFilterContextType | null>(null);
 
+const catalogFilterLocalStorageKey = 'catalog_filter';
+
 export const CatalogFilterProvider = ({ children }: React.PropsWithChildren) => {
-  const [filter, setFilter] = useState<Record<string, any>>({});
+  const [filter, setFilter] = useLocalStorage<Record<string, any>>({}, catalogFilterLocalStorageKey);
 
   return (
     <CatalogFilterContext.Provider value={{ filter, setFilter }}>
