@@ -13,6 +13,7 @@ import { User } from '../../App';
 import { getRequest } from '../../api';
 import userIcon from '../../assets/img/user.svg';
 import heartIcon from '../../assets/img/heart_26.svg';
+import telegramIcon from '../../assets/img/telegram.png';
 
 import './Header.scss';
 
@@ -78,6 +79,13 @@ export default function Header({ user, setUser }: HeaderProps) {
                   </Typography.Link>
                 </Dropdown>
               )}
+              <Link to="https://t.me/Lteam_wine_bot" className="telegram-link">
+                <img
+                  src={telegramIcon}
+                  alt="telegram"
+                  className="telegram-icon"
+                />
+              </Link>
             </Space>
           </Row>
         </Col>
