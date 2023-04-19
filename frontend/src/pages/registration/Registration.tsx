@@ -10,26 +10,23 @@ import axios, { AxiosError } from 'axios';
 const TextRules: Rule[] = [
   {
     required: true,
-    message: 'Це поле обовʼязкове',
+    message: 'Це поле обовʼязкове'
   },
+  { min: 3, message: 'Поле має містити мінімум 3 символи' }
+];
+
+const PasswordRules: Rule[] = [
+  ...TextRules,
+  { min: 8, message: 'Пароль має містити мінімум 8 символів' }
 ];
 
 const EmailRules: Rule[] = [
   {
     type: 'email',
-    message: 'Введіть валідний e-mail',
+    message: 'Введіть валідний e-mail'
   },
-  ...TextRules,
+  ...TextRules
 ];
-
-interface Error {
-  response: {
-    data: {
-      detail: string;
-      email: string[];
-    };
-  };
-}
 
 export default function Registration() {
   const [error, setError] = useState('');
@@ -80,7 +77,7 @@ export default function Registration() {
               <Input placeholder="Прізвище" />
             </Form.Item>
           </div>
-          <Form.Item name="password" rules={TextRules}>
+          <Form.Item name="password" rules={PasswordRules}>
             <Input.Password placeholder="Пароль" />
           </Form.Item>
           <Form.Item>
