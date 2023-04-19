@@ -216,6 +216,11 @@ export default function WinePage() {
   };
 
   return (
+    <Row className="container">
+      <Link to="/wines" className="back-to-catalog">
+        <img src={backArrow} alt="fav" className="fav" />
+        <span>Повернутися до каталогу</span>
+      </Link>
     <Row className="content">
       {contextHolder}
       {wine && (
@@ -333,7 +338,12 @@ export default function WinePage() {
                     <TextArea rows={4} />
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" size="large" block htmlType="submit">
+                      <Button
+                        type="primary"
+                        size="large"
+                        block
+                        htmlType="submit"
+                      >
                       Додати коментар
                     </Button>
                   </Form.Item>
@@ -367,6 +377,7 @@ export default function WinePage() {
         onOk={deleteComment}
         onCancel={() => setModalOpened(false)}
       />
+      </Row>
     </Row>
   );
 }
