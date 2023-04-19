@@ -13,19 +13,20 @@ const axiosClient = axios.create({
 axiosClient.defaults.headers['Content-Type'] = 'application/json';
 axiosClient.defaults.headers.Accept = 'application/json';
 
-axiosClient.defaults.timeout = 2000;
-
 const getRequest = async (URL: string) => {
   return axiosClient
     .get(URL, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access')}`,
-      },
+        Authorization: `Bearer ${localStorage.getItem('access')}`
+      }
     })
     .then((response) => response);
 };
 
-const getRequestWithoutAuthorization = async (URL: string, config?: AxiosRequestConfig) => {
+const getRequestWithoutAuthorization = async (
+  URL: string,
+  config?: AxiosRequestConfig
+) => {
   return axiosClient.get(URL, config).then((response) => response);
 };
 
@@ -33,8 +34,8 @@ const postRequest = async (URL: string, payload: Object) => {
   return axiosClient
     .post(URL, payload, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access')}`,
-      },
+        Authorization: `Bearer ${localStorage.getItem('access')}`
+      }
     })
     .then((response) => response);
 };
@@ -47,8 +48,8 @@ const putRequest = async (URL: string, payload: Object) => {
   return axiosClient
     .put(URL, payload, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access')}`,
-      },
+        Authorization: `Bearer ${localStorage.getItem('access')}`
+      }
     })
     .then((response) => response);
 };
@@ -57,8 +58,8 @@ const patchRequest = async (URL: string, payload: Object) => {
   return axiosClient
     .patch(URL, payload, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access')}`,
-      },
+        Authorization: `Bearer ${localStorage.getItem('access')}`
+      }
     })
     .then((response) => response);
 };
@@ -67,8 +68,8 @@ const deleteRequest = async (URL: string) => {
   return axiosClient
     .delete(URL, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access')}`,
-      },
+        Authorization: `Bearer ${localStorage.getItem('access')}`
+      }
     })
     .then((response) => response);
 };
@@ -80,5 +81,5 @@ export {
   postRequestWithoutAthorization,
   putRequest,
   patchRequest,
-  deleteRequest,
+  deleteRequest
 };
