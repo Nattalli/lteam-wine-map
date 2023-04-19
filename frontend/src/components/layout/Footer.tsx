@@ -29,7 +29,7 @@ export default function Footer({ user }: HeaderProps) {
               <div className="footer-link-title">
                 <span className="footer-link-title-text">Інше</span>
               </div>
-              <div>Тест</div>
+              <Link to="/quiz">Тест</Link>
               <Link to="/wines">Каталог</Link>
             </Col>
           </Row>
