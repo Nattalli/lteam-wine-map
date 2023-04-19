@@ -1,7 +1,30 @@
 @import '../../assets/scss/variables';
 
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 80px 80px 100px 80px;
+}
+
+.back-to-catalog {
+  display: flex;
+  align-items: center;
+  color: $primary;
+  gap: 8px;
+  font-size: 18px;
+
+  span {
+    display: inline-block;
+    margin-top: -4px;
+  }
+
+  span:hover {
+    text-decoration: underline;
+  }
+}
+
 .content {
-  padding: 100px 80px 100px 80px;
   row-gap: 40px;
   column-gap: 80px;
 
@@ -42,7 +65,7 @@
 
     .property {
       display: grid;
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 180px 1fr;
       gap: 30px;
       margin-bottom: 8px;
 
