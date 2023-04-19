@@ -37,6 +37,7 @@ export interface Wine {
   brand: {
     name: string;
   };
+  percent_of_alcohol: number;
   tastes: string;
   sweetness: string;
   pairs_with: string;
