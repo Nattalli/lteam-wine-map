@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Col, Row, Button, Form, Input, Alert, notification } from 'antd';
+import { Col, Row, Button, Form, Input, notification } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
 import { Rule } from 'antd/es/form';
