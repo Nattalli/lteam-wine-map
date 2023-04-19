@@ -10,9 +10,11 @@ export default function Categories({ wineTypes }: CategoriesProps) {
   const { filter, setFilter } = useCatalogFilter();
 
   const onCategoryClick = (wineType: string) => {
+    const currentCategory = filter.wine_type ? filter.wine_type[0] : '';
+
     setFilter({
       ...filter,
-      wine_type: [wineType],
+      wine_type: currentCategory === wineType ? [] : [wineType],
     });
   };
 

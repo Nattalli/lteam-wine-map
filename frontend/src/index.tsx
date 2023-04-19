@@ -16,6 +16,7 @@ import WinePage from './pages/winePage/Wine';
 import FavouritesPage from './pages/favouritesPage/Favourites';
 import UserProfile from './pages/userProfile/UserProfile';
 import Catalog from './pages/catalog/Catalog';
+import Quiz from './pages/quiz/Quiz';
 
 import './index.scss';
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter(
       <Route path="wines/:id" element={<WinePage />} />
       <Route path="favourites" element={<FavouritesPage />} />
       <Route path="wines" element={<Catalog />} />
+      <Route path="quiz" element={<Quiz />} />
     </Route>
   )
 );

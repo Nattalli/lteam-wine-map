@@ -78,11 +78,13 @@ export default function WineList({ favourites, getFavourites }: WineListProps) {
       {contextHolder}
       <Row gutter={[35, 40]} className="wine-list">
         {wines.map((wine) => (
-          <WineCard key={wine.id} 
-            wine={wine} 
-            isFavourite={favourites.map(x => x.id).includes(wine.id)} 
-            reloadFavourites={getFavourites} 
-          />
+          <Col key={wine.id} span={8}>
+            <WineCard
+              wine={wine} 
+              isFavourite={favourites.map(x => x.id).includes(wine.id)} 
+              reloadFavourites={getFavourites} 
+            />
+          </Col>
         ))}
         {isLoading ? (
           <Col span={24}>

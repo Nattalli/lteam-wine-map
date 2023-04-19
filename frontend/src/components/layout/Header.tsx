@@ -59,7 +59,7 @@ export default function Header({ user, setUser }: HeaderProps) {
           <Row justify="end" align="middle">
             <Space size={[35, 5]} className="header-tabs">
               <Link to="wines">Каталог</Link>
-              <Typography.Link>Тест</Typography.Link>
+              <Link to="quiz">Тест</Link>
               {user && (
                 <Link to={'favourites'} className="fav-section">
                   <img src={heartIcon} alt="fav" className="header-fav" />
