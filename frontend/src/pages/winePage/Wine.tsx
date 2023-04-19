@@ -20,6 +20,7 @@ import {
 import CommentCard from '../../components/layout/CommentCard';
 import { UserContext } from '../../App';
 
+import backArrow from '../../assets/img/back.svg';
 import heartImg from '../../assets/img/heart_59.svg';
 import heartImgFilled from '../../assets/img/heart_filled_59.svg';
 import './Wine.scoped.scss';
@@ -271,6 +272,10 @@ export default function WinePage() {
                 <span>{wine.tastes}</span>
               </div>
               <div className="property">
+                  <span>Відсоток алкоголю</span>
+                  <span>{wine.percent_of_alcohol} %</span>
+                </div>
+                <div className="property">
                 <span>Солодкість</span>
                 <span>{wine.sweetness}</span>
               </div>
