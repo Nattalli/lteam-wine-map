@@ -1,10 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Col, Row, Button, Form, Input, Alert } from 'antd';
+import { Col, Row, Button, Form, Input, notification } from 'antd';
 import './Registration.scoped.scss';
 import squares from '../../assets/img/squares.svg';
 import { Rule } from 'antd/es/form';
 import { postRequestWithoutAthorization } from '../../api';
-import { useState } from 'react';
 import axios, { AxiosError } from 'axios';
 
 const TextRules: Rule[] = [
@@ -29,10 +28,9 @@ const EmailRules: Rule[] = [
 ];
 
 export default function Registration() {
-  const [error, setError] = useState('');
-
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [api, contextHolder] = notification.useNotification();
 
   const signUp = async (values: object) => {
     try {
@@ -42,13 +40,21 @@ export default function Registration() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setError(err.response ? err.response.data.detail : '');
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
 
+  const openErrorNotification = (msg: string) => {
+    api.error({
+      message: msg || 'Помилка',
+      placement: 'top'
+    });
+  };
+
   return (
     <Row className="content">
+      {contextHolder}
       <Col span={11} className="login-redirect">
         <div className="title">Уже зареєстровані?</div>
         <img className="squares-img" src={squares} alt="Squares" />
@@ -86,7 +92,6 @@ export default function Registration() {
             </Button>
           </Form.Item>
         </Form>
-        {error && <Alert message={error} type="error" showIcon />}
       </Col>
     </Row>
   );

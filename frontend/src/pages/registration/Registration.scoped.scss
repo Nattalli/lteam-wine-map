@@ -44,8 +44,9 @@
     margin-bottom: 20px;
 
     .name-input {
-      display: flex;
+      display: grid;
       gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
 
       > * {
         flex: 1 auto;

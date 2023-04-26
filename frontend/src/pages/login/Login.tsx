@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useOutletContext, useNavigate } from 'react-router-dom';
-import { Col, Row, Button, Form, Input, Modal, Alert } from 'antd';
+import { Col, Row, Button, Form, Input, Modal, notification } from 'antd';
 import './Login.scoped.scss';
 import messageImg from '../../assets/img/message.svg';
 import heartImg from '../../assets/img/heart_26.svg';
@@ -14,22 +14,20 @@ import { UserContext } from '../../App';
 const TextRules: Rule[] = [
   {
     required: true,
-    message: 'Це поле обовʼязкове',
-  },
+    message: 'Це поле обовʼязкове'
+  }
 ];
 
 const EmailRules: Rule[] = [
   {
     type: 'email',
-    message: 'Введіть валідний e-mail',
+    message: 'Введіть валідний e-mail'
   },
-  ...TextRules,
+  ...TextRules
 ];
 
 export default function Login() {
-  const [loginError, setLoginError] = useState('');
-  const [emailError, setEmailError] = useState('');
-
+  const [api, contextHolder] = notification.useNotification();
   const [resetEmail, setResetEmail] = useState('');
 
   const [loginForm] = Form.useForm();
@@ -62,7 +60,7 @@ export default function Login() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ detail: string }>;
-        setLoginError(err.response ? err.response.data.detail : '');
+        openErrorNotification(err.response ? err.response.data.detail : '');
       }
     }
   };
@@ -82,20 +80,27 @@ export default function Login() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const err = error as AxiosError<{ email: string[] }>;
-        setEmailError(err.response ? err.response.data.email[0] : '');
+        openErrorNotification(err.response ? err.response.data.email[0] : '');
       }
     }
   };
 
+  const openErrorNotification = (msg: string) => {
+    api.error({
+      message: msg || 'Помилка',
+      placement: 'top'
+    });
+  };
+
   return (
     <Row className="content">
+      {contextHolder}
       <Col span={11} className="input-section">
         <div className="title">Уже зареєстровані?</div>
         <Form
           layout={'vertical'}
           form={loginForm}
           initialValues={{ layout: 'vertical' }}
-          onInput={() => setLoginError('')}
           onFinish={logIn}
         >
           <Form.Item name="username" rules={EmailRules}>
@@ -113,7 +118,6 @@ export default function Login() {
         <div onClick={showModal} className="forgot-password">
           Забув(ла) пароль
         </div>
-        {loginError && <Alert message={loginError} type="error" showIcon />}
         <Modal
           title="Я забув(ла) пароль"
           open={isResetModalOpen}
@@ -127,7 +131,6 @@ export default function Login() {
             initialValues={{ layout: 'vertical' }}
             className="forgot-password-form"
             onFinish={sendResetLink}
-            onInput={() => setEmailError('')}
           >
             <Form.Item name="email" rules={EmailRules}>
               <Input placeholder="Електронна пошта" />
@@ -138,7 +141,6 @@ export default function Login() {
               </Button>
             </Form.Item>
           </Form>
-          {emailError && <Alert message={emailError} type="error" showIcon />}
         </Modal>
         <Modal
           title="Я забув(ла) пароль"
