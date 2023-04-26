@@ -63,7 +63,7 @@ def game(update: Update, context: CallbackContext, user_id: int = None) -> None:
     cur = conn.cursor()
     cur.execute(
         """
-        SELECT name, country_id, sweetness, percent_of_alcohol, wine_type, image_url
+        SELECT name, country_id, sweetness, percent_of_alcohol, wine_type, image_url, id
         FROM wine_map_wine
         ORDER BY RANDOM()
         LIMIT 1
@@ -219,25 +219,27 @@ def game_over(update: Update, context: CallbackContext, user_id: int):
     points = context.user_data[user_id]["points"]
     total_questions = context.user_data[user_id]["total_questions"]
     answers = ", ".join(context.user_data[user_id]["answers"])
+    wine_id = context.user_data[user_id]["wine_data"][-1]
+    wine_page = SITE.format(wine_id=wine_id)
     if points == 0:
         result_text = (
             "Хм, мабуть Ви зовсім не знаєте це вино. "
             "Пропоную ознайомитись з ним, а можливо, навіть i спробувати його 😏🍷 "
             "Можете перейти за посиланням та подивитись у кого з наших партнерів "
-            f"його можна придбати: {SITE}"
+            f"його можна придбати: {wine_page}"
         )
     elif 1 <= points <= 2:
         result_text = (
             "Видно, щось-таки про це вино Ви знаєте, а можливо просто вгадали 🙈 "
             "Можливо Вам захочеться ознайомитись з цим вином краще 😏 "
             "Можете перейти за посиланням та подивитись у кого з наших партнерів "
-            f"його можна придбати: {SITE}"
+            f"його можна придбати: {wine_page}"
         )
     elif points == 3:
         result_text = (
             "Непогано, ще трішки, і станете знавцем цієї галузі. За такий гарний  "
             "результат пропонуємо Вам ознайомитись з наявністю даного вина у наших "
-            f"партнерів за посиланням: {SITE}😉 А ще, даємо "
+            f"партнерів за посиланням: {wine_page}😉 А ще, даємо "
             "Вам особисту знижку 10% на це вино. Ось Ваш промокод: 10LWINE2023 🤫"
         )
 
@@ -248,7 +250,7 @@ def game_over(update: Update, context: CallbackContext, user_id: int):
             "стандартної ціни. Використати знижку Ви можете за допомогою "
             "промокоду: 20LWINE2023, який діє у всіх магазинах-партнерах. Щоб "
             "дізнатись, в яких магазинах є це вино, перейдіть за посиланням: "
-            f"{SITE}🍷🔥"
+            f"{wine_page}🍷🔥"
         )
 
     message = (
@@ -262,7 +264,7 @@ def game_over(update: Update, context: CallbackContext, user_id: int):
         chat_id = update.callback_query.message.chat_id
     else:
         chat_id = update.message.chat_id
-    chat_id = update.message.chat_id
+    chat_id = update.effective_message.chat_id
     buttons = [
         InlineKeyboardButton("Так", callback_data="play_again"),
         InlineKeyboardButton("Ні", callback_data="quit")
@@ -274,13 +276,15 @@ def game_over(update: Update, context: CallbackContext, user_id: int):
         context.bot.send_photo(chat_id=chat_id, photo=image_url)
         query.edit_message_text(
             text=message,
-            reply_markup=InlineKeyboardMarkup.from_column(buttons)
+            reply_markup=InlineKeyboardMarkup.from_column(buttons),
+            disable_web_page_preview=True
         )
     else:
         context.bot.send_photo(chat_id=chat_id, photo=image_url)
         update.message.reply_text(
             message,
-            reply_markup=InlineKeyboardMarkup.from_column(buttons)
+            reply_markup=InlineKeyboardMarkup.from_column(buttons),
+            disable_web_page_preview=True
         )
 
     return QUESTION
