@@ -1,0 +1,14 @@
+# fly.toml file generated for lteam-wine-map-bot on 2023-04-12T00:13:39+02:00
+
+app = "lteam-wine-map-bot"
+kill_signal = "SIGINT"
+kill_timeout = 5
+mounts = []
+primary_region = "ams"
+processes = []
+
+[build]
+  builder = "paketobuildpacks/builder:base"
+
+[env]
+  SITE_LINK = "lteam-wine-map.fly.dev"

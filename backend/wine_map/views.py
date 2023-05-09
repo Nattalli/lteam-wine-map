@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, exceptions, status, filters
@@ -156,6 +158,7 @@ class WineInShopsView(APIView):
             status.HTTP_404_NOT_FOUND: None,
         }
     )
+    @method_decorator(cache_page(60))  # cache page for 1 minute
     def get(self, request: Request, wine_id: int) -> Response:
         try:
             wine = Wine.objects.get(pk=wine_id)

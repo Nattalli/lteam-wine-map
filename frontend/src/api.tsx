@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 
 const axiosClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'https://lteam-wine-map-backend.fly.dev',
   paramsSerializer: {
     serialize: (params) => {
       return qs.stringify(params, { arrayFormat: 'repeat' });

@@ -28,9 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.getenv("DEBUG")))
+DEBUG = bool(int(os.getenv("DEBUG") or 0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "lteam-wine-map-backend.fly.dev"]
+
+CSRF_TRUSTED_ORIGINS = ["https://lteam-wine-map-backend.fly.dev", "http://*.127.0.0.1"]
 
 # Application definition
 
@@ -165,6 +167,7 @@ DEFAULT_FROM_EMAIL = os.getenv("SENDGRID_EMAIL")
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://lteam-wine-map.fly.dev",
 ]
 
 SPECTACULAR_SETTINGS = {
@@ -182,7 +185,7 @@ EMAIL_HOST_USER = "apikey"
 EMAIL_HOST_PASSWORD = os.getenv("SENDGRID_API_KEY")
 
 # password reset
-DOMAIN = "localhost:3000"
+DOMAIN = "lteam-wine-map.fly.dev"
 
 if "test" in sys.argv or "test_coverage" in sys.argv:
     DATABASES["default"]["ENGINE"] = "django.db.backends.sqlite3"
